@@ -1,0 +1,359 @@
+{
+  "jungle_temple": {
+    "name": "Jungle Temple",
+    "biomes": ["jungle", "bamboo_jungle", "sparse_jungle"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Search jungle biomes; temples are partly hidden by leaves and terrain.",
+      "Use /locate structure minecraft:jungle_pyramid if commands are allowed.",
+      "Chunkbase/seed maps can help if external tools are allowed."
+    ],
+    "variants": [],
+    "loot": [
+      "tripwire_hook",
+      "bone",
+      "rotten_flesh",
+      "gold_ingot",
+      "iron_ingot",
+      "diamond",
+      "emerald",
+      "saddle",
+      "enchanted_book",
+      "horse_armor",
+      "bamboo"
+    ],
+    "notes": [
+      "Contains tripwire traps; tripwire hooks can be part of the trap setup and/or chest loot depending on version/loot table.",
+      "Not a reliable bulk source for tripwire hooks compared to crafting."
+    ]
+  },
+  "pillager_outpost": {
+    "name": "Pillager Outpost",
+    "biomes": ["plains", "desert", "savanna", "taiga", "snowy_plains", "meadow", "grove", "cherry_grove"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Explore open overworld biomes; outposts have a tall watchtower.",
+      "Use /locate structure minecraft:pillager_outpost if commands are allowed.",
+      "Villages can sometimes be near outposts, but this is not guaranteed."
+    ],
+    "variants": [
+      "watchtower with surrounding cages/targets/log piles/tents depending on generation"
+    ],
+    "loot": [
+      "tripwire_hook",
+      "crossbow",
+      "arrow",
+      "wheat",
+      "potato",
+      "carrot",
+      "dark_oak_log",
+      "bottle_o_enchanting",
+      "iron_ingot",
+      "enchanted_book"
+    ],
+    "notes": [
+      "Can be dangerous because pillagers respawn nearby.",
+      "Loot is not a high-volume source of tripwire hooks."
+    ]
+  },
+  "bastion_remnant": {
+    "name": "Bastion Remnant",
+    "biomes": ["nether_wastes", "crimson_forest", "warped_forest", "soul_sand_valley"],
+    "dimension": "nether",
+    "how_to_find": [
+      "Explore the Nether except basalt deltas; bastions do not generate there.",
+      "Look for large blackstone structures.",
+      "Use /locate structure minecraft:bastion_remnant if commands are allowed."
+    ],
+    "variants": [
+      "bridge",
+      "hoglin_stables",
+      "housing_units",
+      "treasure_room"
+    ],
+    "loot": [
+      "ancient_debris",
+      "netherite_upgrade_smithing_template",
+      "gold_block",
+      "gold_ingot",
+      "gilded_blackstone",
+      "crying_obsidian",
+      "obsidian",
+      "magma_cream",
+      "string",
+      "arrow",
+      "crossbow",
+      "lodestone",
+      "pigstep_music_disc",
+      "snout_banner_pattern"
+    ],
+    "notes": [
+      "Piglins become hostile if you open chests or mine gold nearby unless handled carefully.",
+      "Treasure room variant is usually the best for high-value loot."
+    ]
+  },
+  "village": {
+    "name": "Village",
+    "biomes": ["plains", "desert", "savanna", "taiga", "snowy_plains", "meadow"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Explore flat/open biomes and follow paths/lamps/houses.",
+      "Use /locate structure minecraft:village_* if commands are allowed.",
+      "Cartographer maps do not directly point to villages."
+    ],
+    "variants": ["plains", "desert", "savanna", "taiga", "snowy"],
+    "loot": [
+      "bread",
+      "apple",
+      "sapling",
+      "potato",
+      "carrot",
+      "wheat",
+      "emerald",
+      "iron_ingot",
+      "obsidian",
+      "saddle",
+      "armor",
+      "tool"
+    ],
+    "notes": [
+      "Village loot depends on house type/profession building.",
+      "Villages are mainly important for villager trades and beds/workstations, not for tripwire hooks."
+    ]
+  },
+  "ancient_city": {
+    "name": "Ancient City",
+    "biomes": ["deep_dark"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Search deep dark biomes, often under mountain ranges.",
+      "Use /locate structure minecraft:ancient_city if commands are allowed.",
+      "Move carefully around sculk shriekers to avoid summoning the Warden."
+    ],
+    "variants": [],
+    "loot": [
+      "swift_sneak_enchanted_book",
+      "echo_shard",
+      "disc_fragment_5",
+      "recovery_compass_materials",
+      "enchanted_golden_apple",
+      "diamond_hoe",
+      "diamond_leggings",
+      "saddle",
+      "name_tag"
+    ],
+    "notes": [
+      "High-risk, high-value loot structure.",
+      "Not intended as an early-game source."
+    ]
+  },
+  "mineshaft": {
+    "name": "Mineshaft",
+    "biomes": ["underground", "badlands"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Explore caves; mineshafts contain wooden supports, rails, and cobwebs.",
+      "Badlands have a higher chance of exposed mineshafts.",
+      "Use /locate structure minecraft:mineshaft if commands are allowed."
+    ],
+    "variants": ["normal", "badlands"],
+    "loot": [
+      "rail",
+      "powered_rail",
+      "detector_rail",
+      "activator_rail",
+      "minecart_with_chest",
+      "name_tag",
+      "saddle",
+      "golden_apple",
+      "enchanted_book",
+      "diamond",
+      "iron_ingot",
+      "lapis_lazuli",
+      "redstone"
+    ],
+    "notes": [
+      "Good source of rails, cobwebs/string, and cave spider spawners."
+    ]
+  },
+  "stronghold": {
+    "name": "Stronghold",
+    "biomes": ["underground"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Throw eyes of ender and follow their direction.",
+      "Strongholds generate underground in rings around spawn.",
+      "Use /locate structure minecraft:stronghold if commands are allowed."
+    ],
+    "variants": [],
+    "loot": [
+      "ender_pearl",
+      "iron_ingot",
+      "gold_ingot",
+      "redstone",
+      "bread",
+      "apple",
+      "ender_eye_related_progression",
+      "enchanted_book"
+    ],
+    "notes": [
+      "Primary progression structure for reaching the End portal."
+    ]
+  },
+  "desert_pyramid": {
+    "name": "Desert Pyramid",
+    "biomes": ["desert"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Explore desert biomes; pyramids are sandstone structures.",
+      "Avoid stepping on the central pressure plate above TNT.",
+      "Use /locate structure minecraft:desert_pyramid if commands are allowed."
+    ],
+    "variants": [],
+    "loot": [
+      "suspicious_sand",
+      "gunpowder",
+      "tnt",
+      "string",
+      "sand",
+      "gold_ingot",
+      "iron_ingot",
+      "diamond",
+      "emerald",
+      "saddle",
+      "horse_armor",
+      "enchanted_book",
+      "enchanted_golden_apple",
+      "smithing_template"
+    ],
+    "notes": [
+      "Good early treasure source but not renewable.",
+      "Loot table changes with archaeology/version."
+    ]
+  },
+  "shipwreck": {
+    "name": "Shipwreck",
+    "biomes": ["ocean", "beach", "river"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Explore oceans and beaches by boat.",
+      "Dolphins can lead to nearby underwater ruins or shipwreck-related treasure.",
+      "Use /locate structure minecraft:shipwreck if commands are allowed."
+    ],
+    "variants": ["upright", "sideways", "upside_down", "partial"],
+    "loot": [
+      "buried_treasure_map",
+      "iron_ingot",
+      "emerald",
+      "lapis_lazuli",
+      "gold_ingot",
+      "diamond",
+      "paper",
+      "book",
+      "feather",
+      "food"
+    ],
+    "notes": [
+      "One of the best ways to find buried treasure maps."
+    ]
+  },
+  "buried_treasure": {
+    "name": "Buried Treasure",
+    "biomes": ["beach", "ocean_floor"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Use buried treasure maps from shipwrecks or ocean ruins.",
+      "Dig near the X marker, usually under sand/gravel near beaches."
+    ],
+    "variants": [],
+    "loot": [
+      "heart_of_the_sea",
+      "diamond",
+      "iron_ingot",
+      "gold_ingot",
+      "emerald",
+      "tnt",
+      "potion",
+      "prismarine_crystals"
+    ],
+    "notes": [
+      "Primary source of Heart of the Sea."
+    ]
+  },
+  "end_city": {
+    "name": "End City",
+    "biomes": ["end_highlands", "end_midlands"],
+    "dimension": "end",
+    "how_to_find": [
+      "Defeat the Ender Dragon, enter an end gateway, then bridge/fly across outer End islands.",
+      "Look for tall purpur structures; ships generate near some cities."
+    ],
+    "variants": ["city_without_ship", "city_with_ship"],
+    "loot": [
+      "elytra",
+      "dragon_head",
+      "shulker_shell",
+      "diamond_gear",
+      "iron_ingot",
+      "gold_ingot",
+      "emerald",
+      "saddle",
+      "enchanted_gear"
+    ],
+    "notes": [
+      "Elytra only appears in End ships, not every End City.",
+      "Shulkers are the renewable-ish reason to revisit multiple cities for shells."
+    ]
+  },
+  "nether_fortress": {
+    "name": "Nether Fortress",
+    "biomes": ["nether"],
+    "dimension": "nether",
+    "how_to_find": [
+      "Explore Nether regions; long bridges and nether brick structures indicate fortresses.",
+      "Moving along one axis can help because fortress generation is region-based.",
+      "Use /locate structure minecraft:fortress if commands are allowed."
+    ],
+    "variants": [],
+    "loot": [
+      "nether_wart",
+      "blaze_rod",
+      "wither_skeleton_skull",
+      "diamond",
+      "gold_ingot",
+      "iron_ingot",
+      "saddle",
+      "horse_armor",
+      "obsidian",
+      "flint_and_steel"
+    ],
+    "notes": [
+      "Blaze spawners and nether wart make this a key progression structure."
+    ]
+  },
+  "trial_chambers": {
+    "name": "Trial Chambers",
+    "biomes": ["underground"],
+    "dimension": "overworld",
+    "how_to_find": [
+      "Use trial explorer maps from cartographers when available.",
+      "Explore underground deepslate layers.",
+      "Use /locate structure minecraft:trial_chambers if commands are allowed."
+    ],
+    "variants": [],
+    "loot": [
+      "trial_key",
+      "ominous_trial_key",
+      "breeze_rod",
+      "heavy_core",
+      "vault_loot",
+      "ominous_vault_loot",
+      "armor_trim",
+      "pottery_sherd"
+    ],
+    "notes": [
+      "Loot depends on vault/trial spawner mechanics and version.",
+      "Good source of trial-specific items in modern versions."
+    ]
+  }
+}

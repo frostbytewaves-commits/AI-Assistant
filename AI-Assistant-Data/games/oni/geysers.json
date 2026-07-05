@@ -1,0 +1,243 @@
+{
+  "carbon_dioxide_geyser": {
+    "name": "Carbon Dioxide Geyser",
+    "kind": "Geyser",
+    "description": "A highly pressurized geyser that periodically erupts with boiling liquid Carbon Dioxide.",
+    "summary": "Carbon Dioxide Geyser is a Geyser that produces renewable Carbon Dioxide as Liquid Carbon Dioxide. It may be found in any biome or particularly in the Radioactive Biome where it is guaranteed to appear.",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "2",
+    "effects": "Liquid Carbon Dioxide: Average 150 g/s @",
+    "decor": "+10"
+  },
+  "carbon_dioxide_vent": {
+    "name": "Carbon Dioxide Vent",
+    "kind": "Geyser",
+    "description": "Carbon Dioxide Vent is a Geyser which produces renewable high-temperature Carbon Dioxide.",
+    "width": "2",
+    "height": "4",
+    "cat": "Geysers",
+    "decor": "+10",
+    "effects": "Carbon Dioxide: Average 105 g/s @"
+  },
+  "chlorine_gas_vent": {
+    "name": "Chlorine Gas Vent",
+    "kind": "Geyser",
+    "description": "A highly pressurized vent that periodically erupts with warm Chlorine.",
+    "summary": "Chlorine Gas Vent is a Geyser that produces renewable Chlorine.",
+    "cat": "Geysers",
+    "width": "2",
+    "height": "4",
+    "effects": "Chlorine: Average 105 g/s @",
+    "decor": "+10"
+  },
+  "cool_chlorine_gas_vent": {
+    "name": "Cool Chlorine Gas Vent",
+    "kind": "Geyser",
+    "description": "A highly pressurized vent that periodically erupts with cool Chlorine Gas.",
+    "summary": "Cool Chlorine Gas Vent is a Geyser that produces renewable Chlorine Gas. It is exclusive to the Relica Asteroids.",
+    "cat": "Geysers",
+    "width": "2",
+    "height": "4",
+    "effects": "Chlorine Gas: Average 105g/s @",
+    "decor": "+10"
+  },
+  "cool_salt_slush_geyser": {
+    "name": "Cool Salt Slush Geyser",
+    "kind": "Geyser",
+    "description": "A highly pressurized geyser that periodically erupts with freezing Brine.",
+    "summary": "Cool Salt Slush Geyser is a Geyser that provides renewable Water as Brine. It is in the second tier of water-producing geysers, along Cool Slush Geyser and Cool Steam Vent. It can be found in the Frozen Biome.",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "2",
+    "effects": "Brine: Average 1.5 kg/s @",
+    "decor": "+10"
+  },
+  "cool_slush_geyser": {
+    "name": "Cool Slush Geyser",
+    "kind": "Geyser",
+    "description": "A highly pressurized geyser that periodically erupts with freezing Polluted Water.",
+    "summary": "Cool Slush Geyser is a Geyser that provides renewable Polluted Water close to its freezing point. It is in the second tier of water-producing geysers, along Cool Salt Slush Geyser and Cool Steam Vent.",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "2",
+    "effects": "Polluted Water: Average 1.5 kg/s @",
+    "decor": "+10"
+  },
+  "cool_steam_vent": {
+    "name": "Cool Steam Vent",
+    "kind": "Geyser",
+    "description": "A highly pressurized vent that periodically erupts with Steam.",
+    "summary": "Cool Steam Vent is a Geyser which provides renewable Water as Steam. It is in the second tier of water-producing geysers, along Cool Slush Geyser and Cool Salt Slush Geyser.",
+    "cat": "Geysers",
+    "width": "2",
+    "height": "4",
+    "effects": "Steam: Average 1.5kg/s @",
+    "decor": "+10"
+  },
+  "hot_polluted_oxygen_vent": {
+    "name": "Hot Polluted Oxygen Vent",
+    "kind": "Geyser",
+    "description": "Hot Polluted Oxygen Vent is a Geyser that produces renewable Polluted Oxygen."
+  },
+  "hydrogen_vent": {
+    "name": "Hydrogen Vent",
+    "kind": "Geyser",
+    "description": "Hydrogen Vent is a Geyser which provides renewable Hydrogen gas, useful both as an energy-efficient fuel and in Heat management.",
+    "width": "2",
+    "height": "4",
+    "cat": "Geysers",
+    "decor": "+10",
+    "effects": "Hydrogen: Average 105 g/s @"
+  },
+  "infectious_polluted_oxygen_vent": {
+    "name": "Infectious Polluted Oxygen Vent",
+    "kind": "Geyser",
+    "description": "A highly pressurized vent that periodically erupts with warm Polluted Oxygen.",
+    "summary": "Infectious Polluted Oxygen Vent is a Geyser that produces renewable Polluted Oxygen contaminated with Slimelung germs.",
+    "cat": "Geysers",
+    "width": "2",
+    "height": "4",
+    "effects": "Polluted Oxygen with Slimelung per kg: Average 105g/s @",
+    "decor": "+10"
+  },
+  "leaky_oil_fissure": {
+    "name": "Leaky Oil Fissure",
+    "kind": "Geyser",
+    "description": "A fissure that periodically erupts with boiling Crude Oil.",
+    "summary": "Leaky Oil Fissure is a Geyser that produces renewable Crude Oil, which can be found in Caustic Biomes. Unlike other geysers, the idle period is replaced with its dormancy period lasting 40 to 400 seconds, averaging 220 seconds.",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "2",
+    "effects": "Crude Oil: Average 125.5 g/s @",
+    "decor": "+10"
+  },
+  "liquid_sulfur_geyser": {
+    "name": "Liquid Sulfur Geyser",
+    "kind": "Geyser",
+    "description": "A highly pressurized geyser that periodically erupts with boiling Liquid Sulfur.",
+    "summary": "Liquid Sulfur Geyser is a Geyser that produces renewable Sulfur as Liquid Sulfur.",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "2",
+    "effects": "Liquid Sulfur: Average 1.5 kg/s @",
+    "decor": "+10"
+  },
+  "metal_volcano": {
+    "name": "Metal Volcano",
+    "kind": "Geyser",
+    "description": "A highly pressurized volcano that periodically erupts with Molten Metals.",
+    "summary": "Metal Volcano is a type of Geyser that provides renewable Refined Metals. In the Base Game it can always be found buried, but in the Spaced Out! DLC it can sometimes be found uncovered on new Planetoids.",
+    "image": "Iron Volcano.png",
+    "cat": "Geysers",
+    "width": "3",
+    "height": "3",
+    "effects": "Refined Metal: Average 300 g/sorNiobium: Average 1.2 kg/s",
+    "decor": "+10"
+  },
+  "natural_gas_geyser": {
+    "name": "Natural Gas Geyser",
+    "kind": "Geyser",
+    "description": "A highly pressurized geyser that periodically erupts with hot Natural Gas.",
+    "summary": "Natural Gas Geyser is a Geyser that produces renewable Natural Gas.",
+    "cat": "Geysers",
+    "width": "2",
+    "height": "4",
+    "effects": ": Average 105 g/s @",
+    "decor": "+10"
+  },
+  "oxygen": {
+    "name": "Oxygen",
+    "kind": "Geyser",
+    "description": "Oxygen, also known as O2, is one of the Resources in the game Oxygen Not Included. It is a Breathable Gas and required by Duplicants to survive. It can be produced by machines, such as the Oxygen Diffuser, Electrolyzer, Rust Deoxidizer, filtered from by Deodorizers or cooling to liquid form, or a small amount created by the Algae Terrarium.",
+    "rowspan": "2|"
+  },
+  "polluted_brine_vent": {
+    "name": "Polluted Brine Vent",
+    "kind": "Geyser",
+    "description": "A highly pressurized vent that periodically erupts with boiling Polluted Brine.",
+    "summary": "Polluted Brine Vent is a Geyser that provides renewable . It is in the highest tier of water-producing geysers, only matched by the Water Geyser, Salt Water Geyser and Polluted Water Vent.",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "2",
+    "effects": "Polluted Brine: Average 3 kg/s @",
+    "decor": "+10"
+  },
+  "polluted_water_vent": {
+    "name": "Polluted Water Vent",
+    "kind": "Geyser",
+    "description": "A highly pressured vent that produces Polluted Water that contains Food Poisoning germs",
+    "summary": "Polluted Water Vent is a Geyser that provides renewable Polluted Water contaminated with Food Poisoning germs. It is in the highest tier of water-producing geysers, only matched by the Water Geyser and Salt Water Geyser.",
+    "width": "4",
+    "height": "2",
+    "category": "Geysers",
+    "decor": "+10",
+    "effects": "Polluted Water with Food Poisoning per kg: Average 3 kg/s @"
+  },
+  "salt_water_geyser": {
+    "name": "Salt Water Geyser",
+    "kind": "Geyser",
+    "description": "A highly pressurized geyser that periodically erupts with Salt Water.",
+    "summary": "Salt Water Geyser is a Geyser that provides renewable Salt Water. It is in the highest tier of water-producing geysers, only matched by the Water Geyser and Polluted Water Vent.",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "2",
+    "effects": "Salt Water: Average 3 kg/s @",
+    "decor": "+10"
+  },
+  "steam_vent": {
+    "name": "Steam Vent",
+    "kind": "Geyser",
+    "description": "A highly pressurized vent that periodically erupts with scalding Steam.",
+    "summary": "Steam Vent is a Geyser which provides renewable Water as high-temperature Steam.",
+    "cat": "Geysers",
+    "width": "2",
+    "height": "4",
+    "effects": "Steam: Average 0.75 kg/s @",
+    "decor": "+10"
+  },
+  "thermal_gas_fissure": {
+    "name": "Thermal Gas Fissure",
+    "kind": "Geyser",
+    "description": "A subquatic fissure that allows high-pressure Natural Gas to escape from the planet's crust. Blockages caused by build-up Sulfur can be removed using a Marine Drill.",
+    "summary": "are naturally generated features found in the Abyss Biome that can generate and .",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "4",
+    "effects": "Emits: 83.3 g/s @ Sulfur build-up",
+    "decor": "+10"
+  },
+  "tidal_spring": {
+    "name": "Tidal Spring",
+    "kind": "Geyser",
+    "description": "An aquatic spring that periodically spouts highly pressurized Liquid drawn from its environment.",
+    "summary": "are naturally generated features found in the Reef Biome that can be used as a form of Power generation.",
+    "cat": "Geysers",
+    "width": "3",
+    "height": "2",
+    "effects": "Consumes Liquid: 500 kg/s (up to 15 t)Emits Liquid: 166.7 kg/s",
+    "decor": "+5"
+  },
+  "volcano": {
+    "name": "Volcano",
+    "kind": "Geyser",
+    "description": "A massive volcano that periodically erupts with molten Magma.",
+    "summary": "Volcano and Minor Volcano are Geysers that provides renewable Magma. The Minor Volcano variant has half the output rate.",
+    "cat": "Geysers",
+    "width": "3",
+    "height": "3",
+    "effects": "Magma: Average 1.2kg/s @",
+    "decor": "+10"
+  },
+  "water_geyser": {
+    "name": "Water Geyser",
+    "kind": "Geyser",
+    "description": "A highly pressurized geyser that periodically erupts with hot Water.",
+    "summary": "Water Geyser is a Geyser that provides renewable Water. It is in the highest tier of water-producing geysers, only matched by the Salt Water Geyser and Polluted Water Vent.",
+    "cat": "Geysers",
+    "width": "4",
+    "height": "2",
+    "effects": "Water: Average 3 kg/s @",
+    "decor": "+10"
+  }
+}

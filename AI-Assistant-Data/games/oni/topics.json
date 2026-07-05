@@ -1,0 +1,431 @@
+{
+  "co2_processing": {
+    "name": "CO2 Processing and Management",
+    "tags": [
+      "co2",
+      "carbon",
+      "dioxide",
+      "skimmer",
+      "slickster",
+      "ethanol",
+      "ventilation",
+      "gas",
+      "переработ",
+      "оптимиз",
+      "очист",
+      "углекисл"
+    ],
+    "summary": "CO2 is heavier than breathable oxygen and sinks to the lowest tiles. Duplicants cannot breathe it. Good colony design routes CO2 away from bedrooms and dining, then deletes or converts it for resources.",
+    "early_game": [
+      "Let CO2 pool in a dedicated pit below your main base; build bedrooms and farms above the CO2 layer.",
+      "Use CO2-permeable tiles (Mesh Tile, Airflow Tile) on pit ceilings so CO2 falls through but keeps gases separated.",
+      "Avoid building on the map bottom until you have a deletion or conversion plan — CO2 accumulates forever unless removed."
+    ],
+    "mid_game": [
+      "Carbon Skimmer at the bottom of the CO2 pit: consumes CO2 + Water → Polluted Water. Needs reliable water input and polluted water disposal (Sieve loop).",
+      "Place skimmers on Metal Tile or airflow tiles; one skimmer handles ~300 g/s CO2 — scale count to your colony size and generator load.",
+      "Coal Generator produces large CO2 volumes — pipe it away from the generator room or use an enclosed chamber with skimmers."
+    ],
+    "late_game": [
+      "Ethanol Distiller: converts Polluted Dirt/Sublimation → Ethanol + CO2; pair with Petroleum Generator for power; manage CO2 output with skimmers or slicksters.",
+      "Slickster ranch in a CO2 room: eats CO2, produces Crude Oil — excellent mid/late conversion if you can keep them fed and warm enough.",
+      "Supermaterial press / late refineries: minimize unnecessary combustion; prefer electric machines where possible to reduce CO2 from generators."
+    ],
+    "tips": [
+      "Deodorizer does NOT remove CO2 — only polluted oxygen and some germs.",
+      "Gas Pump in CO2 works best at the lowest point of the pit; use Gas Filter or multiple chambers for separation.",
+      "Overpressurization stops machines that output gas (Electrolyzer) — unrelated to CO2 but often confused; fix with ventilation or consumption.",
+      "Liquid lock + CO2 pit under doors is a classic way to keep CO2 out of food storage."
+    ],
+    "related_buildings": [
+      "carbon_skimmer",
+      "ethanol_distiller",
+      "coal_generator",
+      "petroleum_generator",
+      "gas_pump",
+      "gas_filter"
+    ]
+  },
+  "oxygen_production": {
+    "name": "Oxygen Production Systems",
+    "tags": [
+      "oxygen",
+      "o2",
+      "electrolyzer",
+      "oxylite",
+      "algae",
+      "rust",
+      "deoxidizer",
+      "air",
+      "дых",
+      "кислород"
+    ],
+    "summary": "Early oxygen comes from Oxylite, Algae Terrariums, or Diffusers. Mid-game standard is Electrolyzer (Water → O2 + H2). Rust Deoxidizer is a low-power alternative in Rust biomes.",
+    "early_game": [
+      "Oxylite in starting biome buys time — do not rely on it long-term.",
+      "Algae Terrarium + Deodorizer in a small room: simple but produces Polluted Oxygen and needs algae supply.",
+      "Diffuser + Algae Deoxidizer: steady O2 for 3–6 duplicants if algae is available."
+    ],
+    "mid_game": [
+      "Electrolyzer: 120 W, 1 kg/s Water → ~888 g/s O2 + ~112 g/s H2. Place in a ventilated room; pump H2 out top, O2 out bottom or let O2 fall.",
+      "Self-Powering Oxygen Machine (SPOM): Electrolyzer + Hydrogen Generator + Smart Battery + Gas Pump — classic infinite O2 + power loop once stable.",
+      "Always plan H2 disposal — one SPOM's H2 can feed a generator with excess for the grid."
+    ],
+    "late_game": [
+      "Multiple SPOMs for large colonies; keep them thermally isolated.",
+      "Rust Deoxidizer: 60 W, no water, good if Rust and Salt are abundant.",
+      "Liquid Oxygen for rockets — separate from base O2 loop."
+    ],
+    "tips": [
+      "Electrolyzer stops when room pressure > 1800 g — use Gas Pump or open ventilation.",
+      "Polluted Oxygen from Slimelung biomes needs Deodorizer or separation before breathing areas.",
+      "Water supply must be sustainable: Sleet Wheat, Puft ranch, or geysers."
+    ],
+    "related_buildings": [
+      "electrolyzer",
+      "rust_deoxidizer",
+      "algae_terrarrium",
+      "deodorizer",
+      "hydrogen_generator",
+      "gas_pump"
+    ]
+  },
+  "power_optimization": {
+    "name": "Power Grid Optimization",
+    "tags": [
+      "power",
+      "watt",
+      "watts",
+      "transformer",
+      "battery",
+      "generator",
+      "grid",
+      "энерг",
+      "электр",
+      "оптимиз"
+    ],
+    "summary": "Power in ONI is measured in Watts (W). Generators produce; consumers draw; Batteries buffer. Transformers isolate circuits and prevent overload wire damage.",
+    "early_game": [
+      "Manual Generator + Hamster Wheel for first research; switch to Coal ASAP.",
+      "One Smart Battery + Coal Generator: set high threshold ~90%, low ~50% to minimize fuel waste.",
+      "Avoid single long Wire runs — use Conductive Wire for heavy consumers (>1 kW)."
+    ],
+    "mid_game": [
+      "Separate heavy circuits (Electrolyzer, Metal Refinery) with Large Power Transformer.",
+      "Hydrogen Generator from SPOM often covers base load; Coal as backup.",
+      "Power Transformers: do not exceed 1000 W on downstream wire without Heavi-Watt or conductive wire tier."
+    ],
+    "late_game": [
+      "Steam Turbine + Aquatuner cooling loops: power-positive if tuned correctly.",
+      "Petroleum / Natural Gas generators for high sustained draw.",
+      "Power Control Station + Tune-Up for +50% generator output with skilled dupe."
+    ],
+    "tips": [
+      "Brownout: not enough generation — add capacity or reduce consumers.",
+      "Wire damage: overload — split circuits or upgrade wire.",
+      "Batteries lose 1 kJ/cycle idle — minimize large battery banks.",
+      "Watts Sensor + Automation for smart machine enable/disable."
+    ],
+    "related_buildings": [
+      "coal_generator",
+      "hydrogen_generator",
+      "smart_battery",
+      "power_transformer",
+      "large_power_transformer",
+      "steam_turbine"
+    ]
+  },
+  "heat_management": {
+    "name": "Heat Management and Cooling",
+    "tags": [
+      "heat",
+      "cool",
+      "cooling",
+      "temperature",
+      "aquatuner",
+      "steam",
+      "turbine",
+      "wheezewort",
+      "тепл",
+      "охлаж",
+      "температур"
+    ],
+    "summary": "There is no true heat deletion except Steam Turbine (converts heat to power + vented steam). Most cooling moves heat elsewhere — plan heat sinks (steam room, Abyssalite barriers, space).",
+    "early_game": [
+      "Insulate hot zones (Metal Refinery, Coal Generator) with Insulated Tile.",
+      "Do not mix hot polluted water with cold base without planning.",
+      "Ice biomes and Abyssalite natural barriers are free insulation."
+    ],
+    "mid_game": [
+      "Aquatuner + Hydrogen cooling loop: standard for base cooling; dump heat into steam room or oil reservoir.",
+      "Steam Turbine above 135°C steam: deletes heat while generating power — target ~200°C steam for efficiency.",
+      "Wheezewort in Hydrogen room: slow passive cooling for small rooms (food storage)."
+    ],
+    "late_game": [
+      "Antigravity Heat Sink (DLC): end-game heat deletion.",
+      "Multi-turbine steam rooms fed by Metal Refinery, Aquatuner exhaust.",
+      "Thermo Aquatuner in oil or supercoolant loop for precise target temps."
+    ],
+    "tips": [
+      "Machines generate fixed heat (e.g. Electrolyzer 1250 DTU/s) — account in room design.",
+      "Overheat temperature on buildings — keep refineries in cooled rooms.",
+      "Liquid reservoirs hold heat — large water pools are heat batteries."
+    ],
+    "related_buildings": [
+      "aquatuner",
+      "steam_turbine",
+      "thermo_aquatuner",
+      "insulated_tile"
+    ]
+  },
+  "water_and_polluted_water": {
+    "name": "Water Loops and Polluted Water",
+    "tags": [
+      "water",
+      "polluted",
+      "sieve",
+      "purifier",
+      "loop",
+      "sewage",
+      "вод",
+      "сток",
+      "очист"
+    ],
+    "summary": "Clean Water is lifeblood: O2, food, bathrooms. Polluted Water comes from toilets, showers, Carbon Skimmers — recycle with Water Sieve (Sand → filtration).",
+    "early_game": [
+      "Outhouse → Compost or early sewage pit; upgrade to Lavatory + Sink when Plastics available.",
+      "Hand Wash Basin before Mess Table reduces Food Poisoning.",
+      "Do not let Polluted Water off-gas Polluted Oxygen into food areas without plan."
+    ],
+    "mid_game": [
+      "Classic loop: Lavatory/Shower → Water Sieve → Clean Water back. Add Chlorine room for germ kill if needed.",
+      "Carbon Skimmer output (Polluted Water) feeds Sieve if Sand is available.",
+      "Bottle Emptier + Liquid Bridge trick for controlled filling."
+    ],
+    "late_game": [
+      "Desalinator for Salt Water geysers.",
+      "Tamed Water/Vapor geysers as infinite source.",
+      "Separate loops: one for toilets (germ-safe), one for industrial."
+    ],
+    "tips": [
+      "Sand is consumed by Sieve — ranch Hatches for Sand from coal/refinement or map deposits.",
+      "Thimble Reed for Reed Fiber — needs Polluted Water irrigation.",
+      "Liquid Pipe overflow and bridge priorities prevent dry pipes."
+    ],
+    "related_buildings": [
+      "water_sieve",
+      "lavatory",
+      "shower",
+      "liquid_pump",
+      "desalinator"
+    ]
+  },
+  "food_and_morale": {
+    "name": "Food Production and Morale",
+    "tags": [
+      "food",
+      "meal",
+      "morale",
+      "stress",
+      "ranch",
+      "farm",
+      "кухн",
+      "еда",
+      "морал",
+      "стресс"
+    ],
+    "summary": "Meal Lice + Mush Bar for early food. Progress to Berry Sludge, Pepper Bread, or Barbeque. Morale from Great Hall, bedroom quality, recreation, and decor prevents stress breaks.",
+    "early_game": [
+      "Mealwood farms: fast, low effort; Mush Fry or Pickled Meal for storage.",
+      "Compost Outhouse waste; watch food germ spread.",
+      "Mess Hall with Table and Mess Station — not Great Hall yet but functional."
+    ],
+    "mid_game": [
+      "Bristle Blossom under Grow Light; Sleet Wheat in cooled farm.",
+      "Ranch Hatches for Meat and Coal; Dreckos for Reed Fiber and Meat.",
+      "Great Hall: Mess Table + Food quality 4+ meal + Mess Station + Rec building nearby."
+    ],
+    "late_game": [
+      "Sushi / Spicy Tofu / Barbeque for high morale jobs.",
+      "Deep freeze food storage in Sterile atmosphere or near Wheezewort.",
+      "Multiple ranches for stable protein and byproducts."
+    ],
+    "tips": [
+      "Food Poisoning from Polluted Germs — wash hands, chlorine storage.",
+      "Calories from calculator: ~1000 kcal/dupe/cycle base need.",
+      "Decor and Room bonuses stack — check Room overlay."
+    ],
+    "related_buildings": [
+      "microbe_musher",
+      "electric_grill",
+      "gas_range",
+      "ranch_station"
+    ]
+  },
+  "ranching": {
+    "name": "Ranching and Critter Management",
+    "tags": [
+      "ranch",
+      "critter",
+      "hatch",
+      "drecko",
+      "puft",
+      "shove",
+      "vole",
+      "glossy",
+      "ранч",
+      "криттер"
+    ],
+    "summary": "Ranching provides food, materials, and byproducts. Each critter needs habitat, food, and population control via reproduction limits or culling.",
+    "strategies": [
+      "Hatch (Stone): eats minerals, lays eggs, produces Coal — great early power fuel.",
+      "Hatch (Sage/Vocab): fed specific diets for Smooth Hatch coal efficiency.",
+      "Drecko: eats Balm Lily or Pincha Pepper; produces Reed Fiber (scale) and Meat.",
+      "Puft: eats Slime, produces Polluted Oxygen + Puft Eggs; useful in Slimelung biomes with care.",
+      "Shove Vole: eats regolith, produces dirt — regolith clearing on Spaced Out.",
+      "Glossy Drecko: plastic from Pincha Pepper in hydrogen room — advanced ranch."
+    ],
+    "tips": [
+      "Ranch Station + Grooming for faster reproduction and happier critters.",
+      "One critter per 12 tiles (varies) — overcrowding reduces eggs.",
+      "Auto-critter dropper + drowning chamber for meat without stress (optional ethical min-max).",
+      "Critter feeders and storage bins keep diets stable."
+    ],
+    "related_buildings": [
+      "ranch_station",
+      "critter_feeder",
+      "critter_drop_off"
+    ]
+  },
+  "germ_and_disease_control": {
+    "name": "Germs and Disease Control",
+    "tags": [
+      "germ",
+      "disease",
+      "slime",
+      "food poisoning",
+      "chlorine",
+      "disinfect",
+      "зараж",
+      "болезн",
+      "микроб"
+    ],
+    "summary": "Food Poisoning and Slimelung are main threats. Chlorine gas kills germs on items. Hand washing and sterile storage prevent outbreaks.",
+    "strategies": [
+      "Chlorine room: store ore/food on Storage Bin in Chlorine — germs die over time.",
+      "Wash Basin / Hand Sanitizer before food and after toilet.",
+      "Separate Polluted Oxygen from base air with Deodorizer or don't dig Slimelung until ready.",
+      "Slimelung: exhaled by Duplicants when infected; cure with Curative Tablet or advanced medicine.",
+      "Bleach Stone in Deodorizer helps but Chlorine room is more reliable for items."
+    ],
+    "tips": [
+      "Germs overlay (G) to trace spread.",
+      "Polluted Water + Food Poisoning: sieve output may need chlorine treatment if input was dirty.",
+      "Do not store clean food in CO2 if it had germs — use Chlorine or freeze."
+    ],
+    "related_buildings": [
+      "hand_sanitizer",
+      "wash_basin",
+      "deodorizer",
+      "water_sieve"
+    ]
+  },
+  "petroleum_and_oil": {
+    "name": "Petroleum, Oil, and Plastic",
+    "tags": [
+      "petroleum",
+      "oil",
+      "plastic",
+      "crude",
+      "refinery",
+      "slickster",
+      "нефт",
+      "пластик"
+    ],
+    "summary": "Crude Oil from Oil Biome or Slicksters → Petroleum Generator or Refinery → Plastic for mid-game tech (Plastics, Steel precursors).",
+    "strategies": [
+      "Early oil: pump from Oil Biome; bring Atmo Suit for hot environment.",
+      "Slickster ranch: feed CO2, produce Crude Oil — sustainable mid-game.",
+      "Petroleum Generator: high power, CO2 output — plan skimmers.",
+      "Polymer Press: Petroleum → Plastic; foundation for insulated pipes and advanced buildings.",
+      "Metal Refinery + Steel: lime + refined carbon + iron — needs cooling."
+    ],
+    "tips": [
+      "Oil wells and reservoirs — watch overpressure.",
+      "Plastic ladder and tile for decor and construction.",
+      "Heat from Metal Refinery is major — pre-build steam turbine room."
+    ],
+    "related_buildings": [
+      "petroleum_generator",
+      "polymer_press",
+      "metal_refinery",
+      "oil_well"
+    ]
+  },
+  "geyser_taming": {
+    "name": "Geyser and Vent Taming",
+    "tags": [
+      "geyser",
+      "vent",
+      "steam",
+      "water",
+      "natural gas",
+      "chlorine",
+      "volcano",
+      "гейzer",
+      "источник"
+    ],
+    "summary": "Geysers provide infinite resources on a duty cycle. Taming = capture output, cool/pressurize as needed, store in reservoirs for steady use.",
+    "strategies": [
+      "Analyze with Geyser study (2 cycles observation) for output rate and active period.",
+      "Steam vent: cool to water with Aquatuner or use for steam turbine power.",
+      "Natural Gas geyser: store in Gas Reservoir, feed generators.",
+      "Water geyser: often core of SPOM + food farm water supply.",
+      "Volcano: extreme heat — metal aquatuner, steam turbines, or ignore until late game."
+    ],
+    "tips": [
+      "Insulate geyser chamber with Insulated Tile.",
+      "Liquid/Gas Reservoir buffers eruption bursts.",
+      "Multiple geysers can be merged with careful temperature matching."
+    ],
+    "related_buildings": [
+      "liquid_reservoir",
+      "gas_reservoir",
+      "thermo_sensor",
+      "aquatuner"
+    ]
+  },
+  "automation_basics": {
+    "name": "Automation for Efficient Bases",
+    "tags": [
+      "automation",
+      "sensor",
+      "logic",
+      "smart",
+      "buffer",
+      "AND",
+      "OR",
+      "автомат",
+      "логик"
+    ],
+    "summary": "Automation wires control machines without duplicant labor. Common uses: battery thresholds, gas/liquid pressure, food storage, radbolt gates.",
+    "strategies": [
+      "Smart Battery + Coal/Hydrogen Generator: wire Active/Standby to generators.",
+      "Gas Pressure Sensor: disable Electrolyzer or enable pump when pressure high.",
+      "Liquid Element Sensor: only pump desired liquid through pipe.",
+      "Clock Sensor: shift-based tasks or timed cooling.",
+      "Memory Toggle + Counter: advanced sequencing for multi-step processes."
+    ],
+    "tips": [
+      "Automation overlay (L) separate from power overlay.",
+      "Signal Distributor for one sensor → many machines.",
+      "Filter Gate delays prevent machine short-cycling."
+    ],
+    "related_buildings": [
+      "smart_battery",
+      "wattage_sensor",
+      "gas_pressure_sensor",
+      "liquid_element_sensor"
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "critter_morphs": {
+    "name": "Critter Morphs",
+    "kind": "Critter",
+    "description": "All critters have a base variant. When a critter lays an egg, there's a chance that the egg will produce a different variant (so call \"morph\") of that critter."
+  },
+  "drecko": {
+    "name": "Dreckos",
+    "kind": "Critter",
+    "description": "Drecko is a critter found in the Caustic Biome. They are a renewable source of Phosphorite, which makes them important for Wheezeworts maintenance and Fertilizer production. Dreckos grow scales in a atmosphere while not miserable and can be shorn for Reed Fiber or Plastic from Glossy Dreckos. Dreckos may also be killed for meat."
+  },
+  "egg": {
+    "name": "Egg",
+    "kind": "Critter",
+    "description": "Eggs are laid by critters. The subspecies of an egg can be different than the critter that laid it, with the chances for various subspecies be influenced by various conditions. An egg can either hatch into a new critter or be processed into Raw Egg at an Egg Cracker and then cooked into an Omelette at an Electric Grill. That process can be automated by letting the egg crack in a storage and cooking the egg to an omelette by heating it up above ."
+  },
+  "gassy_moo": {
+    "name": "Moos",
+    "kind": "Critter",
+    "description": "Gassy Moo is a non-aggressive, large flying critter that excrete , and can be milked for ."
+  },
+  "hatch": {
+    "name": "Hatches",
+    "kind": "Critter",
+    "description": "The Hatch is a Critter found in the starting Temperate Biome. They produce Coal, Eggs, Meat, and Refined Metal. They can be domesticated.",
+    "DietExhaustive": "yes",
+    "Hatch_Diet": "/cycle|foodLabel=Food|poopUnits= Consumed Mass/cycle|poopLabel=}}"
+  },
+  "morb": {
+    "name": "Morb",
+    "kind": "Critter",
+    "description": "Morbs are non-hostile, land-based critters that can be found naturally in the Caustic Biome. They passively excrete Polluted Oxygen and consume nothing. While they cannot be tamed, they can be captured with a Critter Trap and delivered to a Critter Drop-Off.",
+    "Effect": "Emits of periodically (average )",
+    "Age": "∞"
+  },
+  "pacu": {
+    "name": "Pacus",
+    "kind": "Critter",
+    "description": "Pacu is an aquatic Critter found in pools in the Swamp Biome. They produce Fish Fillets and Eggs, and their morphs can provide either fresh Water or decor bonuses. They can be domesticated.",
+    "DietExhaustive": "yes",
+    "Pacu_Diet": "|foodLabel=|poopUnits=|poopLabel=}}"
+  },
+  "pip": {
+    "name": "Pips",
+    "kind": "Critter",
+    "description": "The Pip is a critter added in the Launch Update. Pips eat growing branches straight off the Arbor Tree or growing Thimble Reeds and excrete Dirt. Juvenile Pips are called Pipsqueaks."
+  },
+  "plug_slug": {
+    "name": "Plug Slug",
+    "kind": "Critter",
+    "description": "Plug Slug is a Critter found in the Swampy Biome (Spaced Out). They produce Hydrogen, Eggs, Meat, and generate Power. They can be domesticated. The Morphs act as biological pumps for non breathable gasses and liquids.",
+    "DietExhaustive": "yes"
+  },
+  "pokeshell": {
+    "name": "Pokeshells",
+    "kind": "Critter",
+    "description": "Pokeshell is a critter that lives in the Ocean Biome. They can live in both air and liquid and can be domesticated. They will consume both Rot Piles and Polluted Dirt at 70 kg/cycle, with Oakshells and Sanishells also consuming Slime.",
+    "Oakshell_Effect": "Molts of Oakshell Molt when happy and fed",
+    "Sanishell_Effect": "Cleans nearby area of Germs while in liquid"
+  },
+  "puft": {
+    "name": "Pufts}}",
+    "kind": "Critter",
+    "description": "Puft is a non-aggressive critter that breathes in certain gasses (depending on their variation: Polluted Oxygen, Oxygen, and Chlorine) and excretes them as their solid counterparts (Slime, Oxylite, and Bleach Stone, respectively)."
+  },
+  "shine_bug": {
+    "name": "Shine Bugs",
+    "kind": "Critter",
+    "description": "The Shine Bug is a critter found in the Sandstone Biome. They emit light without creating heat, and provide a small decor bonus. They can be domesticated, and produce Shine Nymph Eggs when captive."
+  },
+  "shove_vole": {
+    "name": "Shove Vole",
+    "kind": "Critter",
+    "description": "Shove Voles are Critters that live on the surface of the asteroid. They can burrow through most tiles and climb on walls and ceilings. However, they cannot burrow through tiles made of refined metal or those made from materials with a hardness exceeding 150, such as Abyssalite, Insulite, Wolframite, Diamond, Neutronium, and Obsidian. They also cannot burrow through the Gravitas Door or Pneumatic Door of any material type."
+  },
+  "slickster": {
+    "name": "Slicksters",
+    "kind": "Critter",
+    "description": "Slickster is a critter found in Oil Biome. They consume large quantities of Carbon Dioxide and turn it to Crude Oil. The longhair variant consumes Oxygen and produce nothing but +50 decor in 7 tile radius."
+  },
+  "beeta": {
+    "name": "Beeta",
+    "kind": "Critter",
+    "description": "Beetas are Critters that live close to Beeta Hives in the Radioactive Biome. They can be pacified by filling their room with Carbon Dioxide so they fall asleep. Their lifespan is very limited at the age of five cycles, but the hive provides a replacement every cycle.",
+    "Effect": "/s"
+  },
+  "divergent": {
+    "name": "Divergent",
+    "kind": "Critter",
+    "description": "Divergent is the term for the two different variants of a single Critter species, those being Sweetles and Grubgrubs. While visually very different, one can lay the egg of the other. Both varieties can be found in the Wasteland Biome, along with Spindly Grubfruit Plants.",
+    "Sweetle_Effect": "Seeks nearby plants and applies Pollinated (Sweetle)",
+    "Grubgrub_Effect": "Seeks nearby plants and applies Pollinated (Grubgrub)"
+  },
+  "rover": {
+    "name": "Rover",
+    "kind": "Critter",
+    "description": "The Rover is an automated robot that can explore and build a small base on a new Planetoid before Duplicants get there. They get deployed from orbit by Rover Modules and do not need a Rocket Platform to land. They operate on an internal battery, which has a defined lifespan and cannot be recharged.",
+    "Manual": "True",
+    "Caption": "A curious bot that can remotely explore new Planetoid locations. It has a chemical battery with 180 kJ charge.Using 30W it has a lifetime of 10 cycles.",
+    "Health": "100"
+  }
+}

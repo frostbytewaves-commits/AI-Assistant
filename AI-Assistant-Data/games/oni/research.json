@@ -1,0 +1,1151 @@
+{
+  "acoustics": {
+    "name": "Acoustics",
+    "kind": "Research",
+    "description": "Precise control of the audio spectrum allows Duplicants to get funky.",
+    "unlocks": "Jukebot",
+    "category": "Decor",
+    "tier": "3",
+    "requires": "Artistic Expression",
+    "cargo": "no"
+  },
+  "advanced_automation": {
+    "name": "Advanced Automation",
+    "kind": "Research",
+    "description": "The only limit to colony automation is my own imagination.",
+    "summary": "Advanced Automation research unlocks the basic Automation gates.",
+    "unlocks": "AND Gate, OR Gate, BUFFER Gate, FILTER Gate",
+    "category": "Computers",
+    "tier": "4",
+    "requires": "Generic Sensors"
+  },
+  "advanced_caffeination": {
+    "name": "Advanced Caffeination",
+    "kind": "Research",
+    "description": "Let Duplicants relax after a long day of subterranean digging with a shot of warm beanjuice.",
+    "category": "Liquids",
+    "unlocks": "Espresso Machine, Mercury Ceiling Light",
+    "unlocksSO": "Espresso Machine, Large Liquid Fuel Tank, Mercury Ceiling Light",
+    "tier": "5",
+    "requires": "Liquid Tuning"
+  },
+  "advanced_chiselwork": {
+    "name": "Advanced Chiselwork",
+    "kind": "Research",
+    "description": "Methods for working with high quality art materials.",
+    "cargo": "no",
+    "unlocks": "Aero Pot, Window Tile, Marble Block, Metal Block",
+    "category": "Decor",
+    "tier": "5",
+    "requires": "Fine Art, Home Luxuries"
+  },
+  "advanced_combustion": {
+    "name": "Advanced Combustion",
+    "kind": "Research",
+    "description": "Sweet advancements in rocket engines.",
+    "unlocks": "Sugar Engine, Small Solid Oxidizer Tank",
+    "category": "Power",
+    "tier": "3",
+    "requires": "Internal Combustion",
+    "contentBase": "No"
+  },
+  "advanced_gas_flow": {
+    "name": "Advanced Gas Flow",
+    "kind": "Research",
+    "description": "Gas Enginges and transportation for rockets.",
+    "summary": "research unlocks Buildings related to rockets and gas management in the Spaced Out DLC.",
+    "unlocks": "Carbon Dioxide Engine, Gas Rocket Port Loader, Gas Rocket Port Unloader, Gas Cargo Canister",
+    "category": "Gases",
+    "tier": "3",
+    "requires": "Pressure Management",
+    "contentBase": "no"
+  },
+  "advanced_power_regulation": {
+    "name": "Advanced Power Regulation",
+    "kind": "Research",
+    "description": "Circuit components required for large scale Power management.",
+    "summary": "Advanced Power Regulation research unlocks several Power buildings used for circuits that require more wattage.",
+    "unlocks": "Heavi-Watt Wire, Heavi-Watt Joint Plate, Hydrogen Generator, Power Shutoff, Power Transformer, Wattage Sensor",
+    "category": "Power",
+    "tier": "3",
+    "requires": "Internal Combustion"
+  },
+  "advanced_research": {
+    "name": "Advanced Research",
+    "kind": "Research",
+    "description": "Advanced Research is the second tier of research points used in research. Advanced Research is required for all tier 3 and higher research categories."
+  },
+  "advanced_research_research": {
+    "name": "Advanced Research",
+    "kind": "Research",
+    "description": "The tools my colony needs to conduct more advanced, in-depth research.",
+    "summary": "Advanced Research allows the construction of a Super Computer, which in turn allows for the production of Advanced Research required for all tier 3 and higher research.",
+    "category": "Colony Development",
+    "unlocks": "Advanced Research=Advanced Research=Advanced Research Capability, Super Computer, Skill Scrubber, Soldering Station",
+    "unlocksSO": "Advanced Research=Advanced Research=Advanced Research Capability, Super Computer, Skill Scrubber, Telescope (Spaced Out), Mini-Pod, Soldering Station",
+    "tier": "2",
+    "requires": "Employment"
+  },
+  "advanced_sanitation": {
+    "name": "Advanced Sanitation",
+    "kind": "Research",
+    "description": "Clean up dirty Duplicants.",
+    "unlocks": "Decontamination Shower",
+    "category": "Liquids",
+    "tier": "5",
+    "requires": "Liquid-Based Refinement Processes, Liquid Distribution",
+    "contentBase": "No"
+  },
+  "agriculture_research": {
+    "name": "Agriculture (Research)",
+    "kind": "Research",
+    "description": "Master the agricultural art of crop raising.",
+    "summary": "Agriculture research unlocks three new components for farming using the Hydroponic Farm as well as the key component for a Natural Gas Generator, the Fertilizer Synthesizer. Additionally, it grants access to the Refrigerator, a building that consumes power to slow down spoiling of food inside.",
+    "category": "Food",
+    "unlocks": "Farm Station, Fertilizer Synthesizer, Refrigerator, Hydroponic Farm, Park Sign, Wall Planter, Wide Hydroponic Farm",
+    "unlocksSO": "Farm Station, Fertilizer Synthesizer, Refrigerator, Hydroponic Farm, Park Sign, Wall Planter, Wide Hydroponic Farm, Radiation Lamp",
+    "tier": "3",
+    "requires": "Meal Preparation"
+  },
+  "air_systems": {
+    "name": "Air Systems",
+    "kind": "Research",
+    "description": "Maintain clean, breathable air in the colony.",
+    "summary": "Air Systems research unlocks advanced methods of oxygen production.",
+    "category": "Liquids",
+    "unlocks": "Electrolyzer, Rust Deoxidizer",
+    "tier": "2",
+    "requires": "Plumbing"
+  },
+  "animal_control": {
+    "name": "Animal Control",
+    "kind": "Research",
+    "description": "Useful techniques to manage critter populations in the colony.",
+    "summary": "Animal Control research unlocks the Incubator, which allows quick hatching of Critters, the Critter Sensor, which enables Stable automation, and two types of traps for capturing critters passively.",
+    "unlocks": "Airborne Critter Trap, Critter Trap, Fish Trap, Incubator, Critter Sensor, Aquatic Grooming Station, Aquatic Shearing Station",
+    "category": "Food",
+    "tier": "4",
+    "requires": "Agriculture (Research), Ranching"
+  },
+  "applied_sciences_research": {
+    "name": "Applied Sciences Research",
+    "kind": "Research",
+    "description": "Applied Sciences Research is the tertiary tier of research points used in Spaced Out! along with Data Analysis Research. Materials Science Research is required for all tier 5 and higher research categories."
+  },
+  "artificial_friends": {
+    "name": "Artificial Friends",
+    "kind": "Research",
+    "description": "Sweeping advances in companion technology.",
+    "unlocks": "Sweepy Dock, Flydo=Flydo=Flydo Pattern",
+    "unlocksSO": "Sweepy Dock, Rover's Module, Flydo=Flydo=Flydo Pattern",
+    "category": "Colony Development",
+    "tier": "3",
+    "requires": "Brute-Force Refinement, Advanced Research"
+  },
+  "artistic_expression": {
+    "name": "Artistic Expression",
+    "kind": "Research",
+    "description": "Majorly improve Decor by giving Duplicants the tools of artistic and emotional expression.",
+    "summary": "research unlocks additional Decor-boosting buildings, including additional forms of Plant pots, plus several types of buildings which provide decor with no upkeep costs (such as Ceiling Trim and Corner Trim). The Pedestal can be used to turn almost any kind of Solid resource into a decor provider, while the Sculpting Block and Ice Block can provide additional decor after being worked by a Duplicant.",
+    "unlocks": "Wicker Door, Wall Pot, Hanging Pot, Corner Trim, Ceiling Trim, Pedestal, Sculpting Block, Ice Block",
+    "category": "Decor",
+    "tier": "2",
+    "requires": "Interior Decor"
+  },
+  "atomic_research": {
+    "name": "Atomic Research",
+    "kind": "Research",
+    "description": "Atomic Research was the fourth tier of Research points before it was reworked into Materials Science Research. It was necessary to unlock more advanced structures."
+  },
+  "basic_farming": {
+    "name": "Basic Farming",
+    "kind": "Research",
+    "description": "Learn the introductory principles of Plant domestication.",
+    "summary": "Basic farming allows for basic domestication of plants using the Planter Box, and grants access to early-game Carbon Dioxide recycling with the Algae Terrarium. Additionally, it permits access to the construction of additional Ration Boxes and allows the proper disposal of with Compost.",
+    "category": "Food",
+    "unlocks": "Algae Terrarium, Planter Box, Ration Box, Compost",
+    "tier": "1"
+  },
+  "bioengineering": {
+    "name": "Bioengineering",
+    "kind": "Research",
+    "description": "Mutation station.",
+    "summary": "Bioengineering is a Spaced Out! exclusive research that opens the way to use mutated plants on your farms.",
+    "category": "Food",
+    "unlocks": "Botanical Analyzer",
+    "tier": "5",
+    "requires": "Food Repurposing",
+    "contentBase": "No"
+  },
+  "brackene_flow": {
+    "name": "Brackene Flow",
+    "kind": "Research",
+    "description": "Advanced production, processing and distribution of this fluid resource.",
+    "unlocks": "Critter Fountain, Brackwax Gleaner, Milking Station, Aquatic Critter Fountain, Aquatic Milking Station",
+    "category": "Food",
+    "categorySO": "Power",
+    "tier": "6",
+    "requires": "Gourmet Meal Preparation, Valve Miniaturization"
+  },
+  "brute_force_refinement": {
+    "name": "Brute-Force Refinement",
+    "kind": "Research",
+    "description": "Low-tech refinement methods for producing clay and renewable sources of sand.",
+    "summary": "Brute-Force Refinement research unlocks the Kiln and Rock Crusher.",
+    "unlocks": "Rock Crusher, Kiln",
+    "category": "Solid Material",
+    "tier": "2",
+    "requires": "Employment"
+  },
+  "catalytics": {
+    "name": "Catalytics",
+    "kind": "Research",
+    "description": "Advanced gas manipulation using catalysts.",
+    "category": "Gases",
+    "unlocks": "Oxylite Refinery, Bleach Stone Hopper, Molecular Forge, Soda Fountain, Advanced Chemical Production",
+    "unlocksSO": "Oxylite Refinery, Bleach Stone Hopper, Molecular Forge, Soda Fountain, Large Gas Cargo Canister, Advanced Chemical Production",
+    "tier": "5",
+    "requires": "HVAC"
+  },
+  "celestial_detection": {
+    "name": "Celestial Detection",
+    "kind": "Research",
+    "description": "Turn Duplicants' eyes to the skies and discover what undiscovered wonders await out there.",
+    "summary": "Celestial Detection is an important research towards Rocketry and unlocks the Space Scanner, which is used to detect incoming Rockets and Meteor Showers, and a Telescope, which is needed to look at the Starmap and detect destinations.",
+    "category": "Rocketry",
+    "categorySO": "Colony Development",
+    "unlocks": "Space Scanner, Telescope",
+    "unlocksSO": "Space Scanner, Enclosed Telescope",
+    "tier": "6",
+    "tierSO": "4",
+    "requires": "Computing",
+    "requiresSO": "Space Program, Notification Systems"
+  },
+  "computing": {
+    "name": "Computing",
+    "kind": "Research",
+    "description": "Virtually extend the boundaries of Duplicant imagination.",
+    "summary": "Computing unlocks advanced Automation gates, as well as the Virtual Planetarium, which is required for Interstellar Research in the base game, the Duplicant checkpoint, which allows/disallows areas, and the Arcade Cabinet, a recreational building.",
+    "unlocks": "Signal Counter, Memory Toggle, XOR Gate, Arcade Cabinet, Duplicant Checkpoint, Virtual Planetarium",
+    "unlocksSO": "Signal Counter, Memory Toggle, XOR Gate, Arcade Cabinet, Duplicant Checkpoint",
+    "category": "Computers",
+    "tier": "5",
+    "requires": "Advanced Automation"
+  },
+  "crash_plan": {
+    "name": "Crash Plan",
+    "kind": "Research",
+    "description": "What goes up, must come down.",
+    "unlocks": "Orbital Research=Data Analysis Research=Data Analysis Research= Capability, Trailblazer Module, Orbital Data Collection Lab, Virtual Planetarium",
+    "category": "Colony Development",
+    "tier": "4",
+    "contentBase": "no",
+    "requires": "Space Program"
+  },
+  "creature_comforts": {
+    "name": "Creature Comforts",
+    "kind": "Research",
+    "description": "Strategies for maximizing critters' quality of life.",
+    "unlocks": "Critter Condo, Aquatic Critter Condo, Airborne Critter Condo",
+    "category": "Food",
+    "tier": "5",
+    "requires": "Animal Control"
+  },
+  "cryofuel_combustion": {
+    "name": "Cryofuel Combustion",
+    "kind": "Research",
+    "description": "With this technology, the sky is your oyster. Go exploring!",
+    "unlocks": "Hydrogen Engine, Liquid Oxidizer Tank",
+    "category": "Rocketry",
+    "tier": "10",
+    "requires": "Hydrocarbon Combustion",
+    "contentSO": "No"
+  },
+  "cryofuel_propulsion": {
+    "name": "Cryofuel Propulsion",
+    "kind": "Research",
+    "description": "A semi-powerful engine to propel you further into the galaxy.",
+    "summary": "Cryofuel Propulsion Research unlocks Hydrogen Engine which can send rockets further into space.",
+    "unlocks": "Hydrogen Engine (Spaced Out), Liquid Oxidizer Tank (Spaced Out)",
+    "category": "Colony Development",
+    "tier": "8",
+    "requires": "Improved Hydrocarbon Propulsion, Radbolt Propulsion",
+    "contentBase": "no"
+  },
+  "data_analysis_research": {
+    "name": "Data Analysis Research",
+    "kind": "Research",
+    "description": "Data Analysis Research is a tertiary tier of Research points. It is required for all tier 6 and higher research categories."
+  },
+  "data_science": {
+    "name": "Data Science",
+    "kind": "Research",
+    "description": "The science of making the data work for my Duplicants, instead of the other way around.",
+    "unlocks": "Data Miner, Remote Controller, Remote Worker Dock, Robo-Pilot Capsule",
+    "unlocksSO": "Data Miner, Remote Controller, Remote Worker Dock",
+    "category": "Computers",
+    "tier": "9",
+    "tierSO": "7",
+    "requires": "Solid Fuel Combustion",
+    "requiresSO": "Sensitive Microimaging"
+  },
+  "decontamination": {
+    "name": "Decontamination",
+    "kind": "Research",
+    "description": "Instruments to help reduce Germ spread within the base.",
+    "summary": "Decontamination research unlocks Buildings related to decontaminating your Colony.",
+    "unlocks": "Deodorizer, Carbon Skimmer, Mechanized Airlock, Breathing Station",
+    "category": "Gases",
+    "tier": "3",
+    "requires": "Pressure Management"
+  },
+  "distillation": {
+    "name": "Distillation",
+    "kind": "Research",
+    "description": "Distill difficult mixtures down to their most useful parts.",
+    "summary": "Distillation research unlocks the distillers and Water Sieve.",
+    "unlocks": "Algae Distiller, Ethanol Distiller, Water Sieve",
+    "category": "Liquids",
+    "tier": "3",
+    "requires": "Filtration"
+  },
+  "durable_life_support": {
+    "name": "Durable Life Support",
+    "kind": "Research",
+    "description": "Improved devices for extended missions into space.",
+    "summary": "Durable List Support is Spaced Out! only research opening the way to more ambitious space missions and artifact collecting.",
+    "unlocks": "Basic Nosecone, Spacefarer Module, Artifact Analysis Station, Artifact Transport Module, Critter Cargo Bay",
+    "category": "Colony Development",
+    "tier": "5",
+    "requires": "Smelting, Crash Plan",
+    "contentBase": "No"
+  },
+  "employment": {
+    "name": "Employment",
+    "kind": "Research",
+    "description": "Exchange the skill points earned by Duplicants for new traits and abilities.",
+    "unlocks": "Water Cooler, Crafting Station, Metal Power Bank=Metal Power Bank=Metal Power Bank Pettern, Wood Heater",
+    "category": "Colony Development",
+    "tier": "1"
+  },
+  "emulsification": {
+    "name": "Emulsification",
+    "kind": "Research",
+    "description": "Specialized production of Liquid compounds.",
+    "unlocks": "Emulsifier",
+    "category": "Liquids",
+    "tier": "4",
+    "requires": "Plumbing, Filtration, Distillation"
+  },
+  "environmental_appreciation": {
+    "name": "Environmental Appreciation",
+    "kind": "Research",
+    "description": "Improve Morale by lazing around in Light with a high level Lux value.",
+    "unlocks": "Beach Chair",
+    "category": "Decor",
+    "tier": "6",
+    "requires": "Glass Blowing"
+  },
+  "filtration": {
+    "name": "Filtration",
+    "kind": "Research",
+    "description": "Basic Technologies for filtering Liquids and Gases.",
+    "category": "Liquids",
+    "unlocks": "Gas Filter, Liquid Filter, Lubrication Station",
+    "unlocksSO": "Gas Filter, Liquid Filter, Sludge Press, Lubrication Station",
+    "tier": "2",
+    "requires": "Plumbing"
+  },
+  "fine_art": {
+    "name": "Fine Art",
+    "kind": "Research",
+    "description": "Broader options for artistic Decor improvements.",
+    "summary": "research unlocks new buildings which provide Decor bonuses, which can be transformed by Duplicants possessing Decorating skills to boost their decor further (depending on skill level).",
+    "unlocks": "Blank Canvas, Large Sculpting Block, Display Shelf",
+    "category": "Decor",
+    "tier": "3",
+    "requires": "Artistic Expression"
+  },
+  "flow_redirection": {
+    "name": "Flow Redirection",
+    "kind": "Research",
+    "description": "Balance on irrigated concave platforms for a Morale boost.",
+    "category": "Liquids",
+    "unlocks": "Bottle Filler, Mechanical Surfboard",
+    "unlocksSO": "Bottle Filler, Mechanical Surfboard, Liquid Rocket Port Loader, Liquid Rocket Port Unloader, Liquid Cargo Tank (Spaced Out)",
+    "tier": "3",
+    "requires": "Sanitation"
+  },
+  "food_repurposing": {
+    "name": "Food Repurposing",
+    "kind": "Research",
+    "description": "Blend that leftover Food into a Morale boosting slurry.",
+    "unlocks": "Juicer, Spice Grinder, Plant Pulverizer, Smoker",
+    "category": "Food",
+    "tier": "4",
+    "requires": "Agriculture (Research)"
+  },
+  "fossil_fuels": {
+    "name": "Fossil Fuels",
+    "kind": "Research",
+    "description": "Burn dirty fuels for exceptional Power production.",
+    "summary": "Fossil Fuels research unlocks several buildings related to the usage of Crude Oil.",
+    "unlocks": "Natural Gas Generator, Oil Refinery, Petroleum Generator",
+    "category": "Power",
+    "tier": "3",
+    "requires": "Internal Combustion"
+  },
+  "gas_distribution": {
+    "name": "Gas Distribution",
+    "kind": "Research",
+    "description": "Design building hookups to get Gas resources circulating properly.",
+    "unlocks": "Canister Drainer",
+    "unlocksSO": "Canister Drainer, Gas Intake Fitting, Gas Output Fitting, Large Solid Oxidizer Tank",
+    "category": "Gases",
+    "tier": "4",
+    "requires": "Advanced Gas Flow, Improved Ventilation"
+  },
+  "generic_sensors": {
+    "name": "Generic Sensors",
+    "kind": "Research",
+    "description": "Drive automation in a variety of new, inventive ways.",
+    "summary": "Generic Sensors research unlocks sensors used in Automation.",
+    "unlocks": "Weight Plate, Gas Element Sensor, Liquid Element Sensor, NOT Gate, Cycle Sensor, Timer Sensor, Light Sensor",
+    "unlocksSO": "Weight Plate, Gas Element Sensor, Liquid Element Sensor, NOT Gate, Cycle Sensor, Timer Sensor, Light Sensor, Starmap Location Sensor",
+    "category": "Computers",
+    "tier": "3",
+    "requires": "Smart Home"
+  },
+  "glass_blowing": {
+    "name": "Glass Blowing",
+    "kind": "Research",
+    "description": "The decorative benefits of glass are both apparent and transparent.",
+    "unlocks": "Window Tile, Aero Pot, Sun Lamp, Glass Backwall, Glass Jelly Ceiling Light",
+    "category": "Decor",
+    "tier": "5",
+    "requires": "Home Luxuries"
+  },
+  "gourmet_meal_preparation": {
+    "name": "Gourmet Meal Preparation",
+    "kind": "Research",
+    "description": "Raise colony Morale by cooking the most delicious, high quality Foods.",
+    "summary": "Gourmet Meal Preparation unlocks the Gas Range, which enables Duplicants to cook food with food qualities ranging from +4 (Great) to +6 (Ambrosial). Note that the Gas Range requires Natural Gas.",
+    "unlocks": "Gas Range, Dehydrator, Rehydrator, Deep Fryer, Sushi Bar",
+    "category": "Food",
+    "tier": "5",
+    "requires": "Animal Control"
+  },
+  "hazard_protection": {
+    "name": "Hazard Protection",
+    "kind": "Research",
+    "description": "Vital gear for surviving in extreme conditions and environments.",
+    "unlocks": "Exosuit Overlay Icon=Exosuit Overlay, Atmo Suit=Atmo Suit=Atmo Suit= Pattern, Exosuit Forge, Atmo Suit Checkpoint, Atmo Suit Dock",
+    "category": "Exosuits",
+    "tier": "4",
+    "requires": "Improved Ventilation, Textile Production"
+  },
+  "healthcare": {
+    "name": "Healthcare",
+    "kind": "Research",
+    "description": "Prevent injury and Disease from running rampant in the colony.",
+    "summary": "Healthcare research unlocks two Medical Buildings.",
+    "cargo": "no",
+    "unlocks": "Gas Pipe Germ Sensor, Liquid Pipe Germ Sensor, Hand Sanitizer, Disease Clinic=Disease Clinic=Pharma Chamber",
+    "category": "Medicine",
+    "tier": "3",
+    "requires": "Medical Research, Sanitation"
+  },
+  "high_culture": {
+    "name": "High Culture",
+    "kind": "Research",
+    "description": "New methods for working with extremely high quality art materials.",
+    "summary": "research unlocks new buildings which provide Decor bonuses, which can be transformed by Duplicants possessing Decorating skills to boost their decor further (depending on skill level). These buildings also inherently provide more decor than their equivalents from prior research tiers.",
+    "unlocks": "Landscape Canvas, Metal Block, Wood Block",
+    "category": "Decor",
+    "tier": "4",
+    "requires": "Fine Art"
+  },
+  "high_velocity_destruction": {
+    "name": "High Velocity Destruction",
+    "kind": "Research",
+    "description": "Mine the skies.",
+    "summary": "High Velocity Destruction Research unlocks Drillcone to mine material from space POI.",
+    "category": "Solid Material",
+    "unlocks": "Drillcone",
+    "tier": "7",
+    "requires": "High Velocity Transport",
+    "contentBase": "No"
+  },
+  "high_velocity_transport": {
+    "name": "High Velocity Transport",
+    "kind": "Research",
+    "description": "Hurl things through space.",
+    "summary": "High Velocity Transport Research unlocks Interplanetary Launcher to send Interplanetary Payloads and Targeting Beacon to receive it.",
+    "category": "Solid Material",
+    "unlocks": "Interplanetary Launcher, Targeting Beacon",
+    "tier": "6",
+    "requires": "Solid Control",
+    "contentBase": "No"
+  },
+  "home_luxuries": {
+    "name": "Home Luxuries",
+    "kind": "Research",
+    "description": "Luxury amenities for advanced Stress reduction.",
+    "unlocks": "Comfy Bed, Plastic Ladder, Plastic Tile, Clothing Refashionator, Communal Table, Wood Tile",
+    "category": "Decor",
+    "tier": "4",
+    "requires": "Textile Production"
+  },
+  "hvac": {
+    "name": "HVAC",
+    "kind": "Research",
+    "description": "Regulate Temperature in the colony for Plant cultivation and Duplicant comfort.",
+    "summary": "HVAC research unlocks buildings for Gas-based temperature management.",
+    "unlocks": "Thermo Regulator, Thermo Sensor, Gas Pipe Thermo Sensor, Gas Pipe Element Sensor, Radiant Gas Pipe, Gas Reservoir, Gas Meter Valve",
+    "category": "Gases",
+    "tier": "4",
+    "requires": "Temperature Modulation"
+  },
+  "hydrocarbon_combustion": {
+    "name": "Hydrocarbon Combustion",
+    "kind": "Research",
+    "description": "Delve deeper into the vastness of space than ever before.",
+    "unlocks": "Petroleum Engine, Biodiesel Engine, Liquid Fuel Tank, Solid Oxidizer Tank",
+    "category": "Rocketry",
+    "tier": "9",
+    "requires": "Solid Fuel Combustion",
+    "contentSO": "no"
+  },
+  "hydrocarbon_propulsion": {
+    "name": "Hydrocarbon Propulsion",
+    "kind": "Research",
+    "description": "Low-range rocket engines with lots of smoke.",
+    "summary": "Hydrocarbon Propulsion research unlocks Mission Control Station and Small Petroleum Engine, which burns petroleum as rocket fuel.",
+    "category": "Power",
+    "unlocks": "Small Petroleum Engine, Mission Control Station",
+    "tier": "6",
+    "requires": "Valve Miniaturization",
+    "contentBase": "No"
+  },
+  "improved_hydrocarbon_propulsion": {
+    "name": "Improved Hydrocarbon Propulsion",
+    "kind": "Research",
+    "description": "Mid-range rocket engines with lots of smoke.",
+    "summary": "Improved Hydrocarbon Propulsion research unlocks Petroleum Engine and Biodiesel Engine, which are bigger, and therefore have a longer range, than previously unlocked Small Petroleum Engine.",
+    "category": "Power",
+    "unlocks": "Petroleum Engine (Spaced Out), Biodiesel Engine=Biodiesel Engine (Spaced Out)",
+    "tier": "7",
+    "requires": "Hydrocarbon Propulsion, Renewable Energy",
+    "contentBase": "No"
+  },
+  "improved_plumbing": {
+    "name": "Improved Plumbing",
+    "kind": "Research",
+    "description": "Liquid infrastructure capable of withstanding more intense conditions, such as Heat and pressure",
+    "summary": "Improved Plumbing research unlocks Buildings useful for improving Plumbing systems.",
+    "unlocks": "Insulated Liquid Pipe, Hydro Sensor, Liquid Shutoff, Liquid Reservoir, Plastic Gasket=Gasket=Gasket Pattern",
+    "category": "Liquids",
+    "tier": "3",
+    "requires": "Filtration"
+  },
+  "improved_ventilation": {
+    "name": "Improved Ventilation",
+    "kind": "Research",
+    "description": "Gas infrastructure capable of withstanding more intense conditions, such as Heat and pressure.",
+    "unlocks": "Insulated Gas Pipe, Atmo Sensor, Gas Shutoff, High Pressure Gas Vent",
+    "category": "Gases",
+    "tier": "3",
+    "requires": "Pressure Management"
+  },
+  "interior_decor": {
+    "name": "Interior Decor",
+    "kind": "Research",
+    "description": "Decor boosting items to counteract the gloom of underground living.",
+    "summary": "Interior Decor Research unlocks Buildings that improve Decor.",
+    "unlocks": "Flower Pot, Lamp, Ceiling Light",
+    "category": "Decor",
+    "tier": "1"
+  },
+  "internal_combustion": {
+    "name": "Internal Combustion",
+    "kind": "Research",
+    "description": "Fuel-powered generators for crude yet powerful Power production.",
+    "summary": "research unlocks Coal Generator and Wood Burner that run on Coal and Wood separately. It also unlocks the Peat Burner with The Prehistoric Planet Pack DLC installed.",
+    "unlocks": "Coal Generator, Wood Burner, Peat Burner, Tidal Turbine",
+    "category": "Power",
+    "tier": "2",
+    "requires": "Power Regulation"
+  },
+  "interstellar_research": {
+    "name": "Interstellar Research",
+    "kind": "Research",
+    "description": "Interstellar Research is the third tier of Research points. Interstellar Research is necessary to unlock Rocketry structures more advanced than Steam Engine Rocket. Interstellar Research Points are obtainable by a Duplicant with Astronomy Skill to research at Virtual Planetarium, which consumes Data Banks collected with Research Modules from successful Space Missions."
+  },
+  "introductory_rocketry": {
+    "name": "Introductory Rocketry",
+    "kind": "Research",
+    "description": "Everything required for launching the colony's very first space program.",
+    "summary": "Introductory Rocketry Research is the fundamental turning point for the game, granting access to rockets and inter-planetary travel.",
+    "unlocks": "Command Capsule, Steam Engine, Research Module, Gantry",
+    "category": "Rocketry",
+    "tier": "7",
+    "requires": "Celestial Detection",
+    "contentSO": "no"
+  },
+  "liquid_and_gas_cargo": {
+    "name": "Liquid and Gas Cargo",
+    "kind": "Research",
+    "description": "Extract precious liquids and gases from the far reaches of space, and return with them to the colony.",
+    "unlocks": "Liquid Cargo Tank, Gas Cargo Canister",
+    "category": "Rocketry",
+    "tier": "9",
+    "requires": "Solid Cargo",
+    "contentSO": "no"
+  },
+  "liquid_distribution": {
+    "name": "Liquid Distribution",
+    "kind": "Research",
+    "description": "Advanced fittings ensure that Liquid resources get where they need to go.",
+    "summary": "Liquid Distribution research can help automate liquid shipping tasks.",
+    "unlocks": "Bottle Drainer",
+    "unlocksSO": "Bottle Drainer, Liquid Intake Fitting, Liquid Output Fitting, Wall Toilet",
+    "category": "Liquids",
+    "tier": "4",
+    "requires": "Flow Redirection"
+  },
+  "liquid_tuning": {
+    "name": "Liquid Tuning",
+    "kind": "Research",
+    "description": "Easily manipulate Liquid Heat with these temperature regulating technologies.",
+    "summary": "Liquid Tuning research unlocks Buildings for adjusting Liquid temperature.",
+    "unlocks": "Radiant Liquid Pipe, Thermo Aquatuner, Liquid Pipe Thermo Sensor, Liquid Pipe Element Sensor, Liquid Tepidizer, Liquid Meter Valve, Conduction Panel, Rubber Tile",
+    "category": "Liquids",
+    "tier": "4",
+    "requires": "Improved Plumbing"
+  },
+  "liquid_based_refinement_processes": {
+    "name": "Liquid-Based Refinement Processes",
+    "kind": "Research",
+    "description": "Use pumped Liquids to filter out unwanted elements.",
+    "summary": "Liquid-Based Refinement Processes Research unlocks the Desalinator and the Ore Scrubber.",
+    "unlocks": "Ore Scrubber, Desalinator",
+    "category": "Liquids",
+    "tier": "3",
+    "requires": "Air Systems"
+  },
+  "low_resistance_conductors": {
+    "name": "Low-Resistance Conductors",
+    "kind": "Research",
+    "description": "Pure-core wires that can handle more Electrical current without overloading.",
+    "summary": "Low-Resistance Conductors research unlocks conductive wiring.",
+    "unlocks": "Conductive Wire, Conductive Wire Bridge, Heavi-Watt Conductive Wire, Heavi-Watt Conductive Joint Plate, Large Power Transformer, Large Discharger",
+    "category": "Power",
+    "tier": "4",
+    "requires": "Advanced Power Regulation"
+  },
+  "materials_science_research": {
+    "name": "Materials Science Research",
+    "kind": "Research",
+    "description": "Harness sub-atomic particles to study the properties of matter.",
+    "unlocks": "Materials Science Research=Applied Sciences Research=Applied Sciences Research= Capability, Materials Study Terminal, Manual Radbolt Generator, Uranium Ore Power Bank=Uranium Ore Power Bank=Uranium Ore Power Bank= Pattern",
+    "category": "Radiation Technologies",
+    "tier": "3",
+    "contentBase": "no",
+    "requires": "Advanced Research"
+  },
+  "meal_preparation": {
+    "name": "Meal Preparation",
+    "kind": "Research",
+    "description": "Prepare more nutritious Food and store it longer before spoiling.",
+    "summary": "Meal Preparation allows for more Cooking recipes with the Electric Grill, as well as providing Duplicants somewhere to eat with the Mess Table. It also provides access to the Farm Tile, an upgrade of the Planter Box.",
+    "category": "Food",
+    "unlocks": "Electric Grill, Egg Cracker, Mess Table, Farm Tile",
+    "tier": "2",
+    "requires": "Basic Farming"
+  },
+  "medical_equipment": {
+    "name": "Medical Equipment",
+    "kind": "Research",
+    "description": "The basic necessities doctors need to facilitate patient care.",
+    "unlocks": "Sick Bay, Hand Sanitizer",
+    "category": "Medicine",
+    "tier": "2",
+    "requires": "Pharmacology"
+  },
+  "medical_research": {
+    "name": "Medical Research",
+    "kind": "Research",
+    "description": "Basic medical knowledge to light the common Diseases that plague Duplicants.",
+    "cargo": "no",
+    "unlocks": "Apothecary, Germ Sensor",
+    "category": "Medicine",
+    "tier": "2",
+    "requires": "Advanced Research"
+  },
+  "micro_targeted_medicine": {
+    "name": "Micro-Targeted Medicine",
+    "kind": "Research",
+    "description": "State of the art equipment to conquer the most stubborn of illnesses.",
+    "unlocks": "Disease Clinic, Hot Tub",
+    "unlocksSO": "Disease Clinic, Hot Tub, Radiation Sensor",
+    "category": "Medicine",
+    "tier": "4",
+    "requires": "Pathogen Diagnostics"
+  },
+  "missiles": {
+    "name": "Missiles",
+    "kind": "Research",
+    "description": "Craft explosives and fire them into outer space.",
+    "unlocks": "Meteor Blaster, Blastshot Maker",
+    "category": "Liquids",
+    "categorySO": "Colony Development",
+    "tier": "6",
+    "tierSO": "5",
+    "requires": "Advanced Caffeination",
+    "requiresSO": "Celestial Detection"
+  },
+  "monuments": {
+    "name": "Monuments",
+    "kind": "Research",
+    "description": "Monumental art projects.",
+    "unlocks": "Monument Base, Monument Midsection, Monument Top",
+    "category": "Decor",
+    "tier": "7",
+    "requires": "Environmental Appreciation, New Media"
+  },
+  "more_materials_science_research": {
+    "name": "More Materials Science Research",
+    "kind": "Research",
+    "description": "Harness sub-atomic particles to study the properties of matter even more.",
+    "summary": "More Materials Science Research is Spaced Out! exclusive research unlocking an alternative way of generating Radbolts and a better way of controlling them.",
+    "unlocks": "Radbolt Generator, Radbolt Reflector, Radbolt Joint Plate",
+    "category": "Radiation Technologies",
+    "tier": "4",
+    "requires": "Materials Science Research",
+    "contentBase": "No"
+  },
+  "multiplexing": {
+    "name": "Multiplexing",
+    "kind": "Research",
+    "description": "More choices for Automation signal distribution.",
+    "summary": "Multiplexing unlocks the final two pieces of Automation, allowing for more advanced routing of signals.",
+    "unlocks": "Signal Selector, Signal Distributor",
+    "category": "Computers",
+    "tier": "6",
+    "requires": "Computing"
+  },
+  "new_media": {
+    "name": "New Media",
+    "kind": "Research",
+    "description": "High tech displays with lots of pretty colors.",
+    "summary": "research unlocks the Pixel Pack, a useful Decor-providing building which can also display a visual representation of the signals carried on a connected Automation Wire or Automation Ribbon.",
+    "unlocks": "Pixel Pack",
+    "category": "Decor",
+    "tier": "6",
+    "requires": "Glass Blowing, Renaissance Art"
+  },
+  "notification_systems": {
+    "name": "Notification Systems",
+    "kind": "Research",
+    "description": "Get all the news you need to know about your complex colony.",
+    "unlocks": "Hammer, Automated Notifier",
+    "unlocksSO": "Hammer, Automated Notifier, Party Line Phone",
+    "category": "Colony Development",
+    "tier": "3",
+    "requires": "Advanced Research"
+  },
+  "novice_research": {
+    "name": "Novice Research",
+    "kind": "Research",
+    "description": "Novice Research is the first tier of research points used in research."
+  },
+  "parallel_automation": {
+    "name": "Parallel Automation",
+    "kind": "Research",
+    "description": "Multi-wire automation at a fraction of the space.",
+    "summary": "Parallel Automation research unlocks Automation Ribbon-related building.",
+    "unlocks": "Automation Ribbon, Automation Ribbon Bridge, Ribbon Writer, Ribbon Reader",
+    "category": "Computers",
+    "tier": "4",
+    "requires": "Generic Sensors"
+  },
+  "pathogen_diagnostics": {
+    "name": "Pathogen Diagnostics",
+    "kind": "Research",
+    "description": "Stop Germs at the source using special medical automation technology.",
+    "unlocks": "Gas Pipe Germ Sensor, Liquid Pipe Germ Sensor, Germ Sensor",
+    "category": "Medicine",
+    "tier": "3",
+    "requires": "Advanced Research, Medical Equipment"
+  },
+  "personal_flight": {
+    "name": "Personal Flight",
+    "kind": "Research",
+    "description": "Give Duplicants the gift of a walk-free commute.",
+    "summary": "The research node unlocks Jet Suits, Buildings which enable the use of Jet Suits, as well as some miscellaneous Rocketry-related buildings.",
+    "unlocks": "Jet Suit=Jet Suit=Jet Suit Pattern, Jet Suit Checkpoint, Jet Suit Dock",
+    "unlocksSO": "Jet Suit=Jet Suit=Jet Suit Pattern, Jet Suit Checkpoint, Jet Suit Dock, Large Liquid Cargo Tank",
+    "category": "Exosuits",
+    "categorySO": "Liquids",
+    "tier": "6",
+    "requires": "Advanced Caffeination, Transit Tubes"
+  },
+  "pharmacology": {
+    "name": "Pharmacology",
+    "kind": "Research",
+    "description": "Compound natural cures to fight the common Sicknesses that plague Duplicants.",
+    "unlocks": "Apothecary, Gear Balm=Gear Balm=Gear Balm= Pattern",
+    "category": "Medicine",
+    "tier": "1"
+  },
+  "plastic_manufacturing": {
+    "name": "Plastic Manufacturing",
+    "kind": "Research",
+    "description": "Stable lightweight, durable. Plastics are useful for a wide array of applications.",
+    "summary": "Plastic Manufacturing research unlocks the ability to create Plastic as well as the Oil Well, which can be a renewable source of Crude Oil, if set up correctly.",
+    "unlocks": "Polymer Press, Oil Well",
+    "category": "Power",
+    "tier": "4",
+    "requires": "Fossil Fuels",
+    "requiresSO": "Fossil Fuels, Advanced Combustion"
+  },
+  "plumbing_research": {
+    "name": "Plumbing",
+    "kind": "Research",
+    "description": "Rudimentary technologies for installing Liquid infrastructure.",
+    "summary": "Plumbing Research unlocks the basic Plumbing Buildings.",
+    "unlocks": "Liquid Pipe, Liquid Bridge, Liquid Pump, Liquid Vent",
+    "category": "Liquids",
+    "tier": "1"
+  },
+  "portable_gases": {
+    "name": "Portable Gases",
+    "kind": "Research",
+    "description": "Unlock technologies to easily move gases around your colony.",
+    "unlocks": "Canister Filler, Canister Emptier, Oxygen Mask=Oxygen Mask=Oxygen Mask Pattern, Oxygen Mask Dock, Oxygen Mask Checkpoint, Oxylite Sconce",
+    "category": "Gases",
+    "tier": "2",
+    "requires": "Ventilation"
+  },
+  "power_regulation": {
+    "name": "Power Regulation",
+    "kind": "Research",
+    "description": "Prevent wasted Power with improved electrical tools.",
+    "summary": "Power Regulation is the first tier Power related Research. This research unlocks the Battery, the Switch and the Wire Bridge. Power Regulation also unlocks the second tier Research, Internal Combustion.",
+    "unlocks": "Jumbo Battery, Switch, Wire Bridge, Compact Discharger",
+    "category": "Power",
+    "tier": "1"
+  },
+  "pressure_management": {
+    "name": "Pressure Management",
+    "kind": "Research",
+    "description": "Unlock technologies to manage colony pressure and atmosphere.",
+    "summary": "Pressure Management research unlocks Buildings used for managing Gas and Liquid pressure.",
+    "unlocks": "Liquid Valve, Gas Valve, Airflow Tile, Manual Airlock",
+    "category": "Gases",
+    "tier": "2",
+    "requires": "Ventilation"
+  },
+  "pressurized_forging": {
+    "name": "Pressurized Forging",
+    "kind": "Research",
+    "description": "High pressure diamond forging.",
+    "category": "Solid Material",
+    "unlocks": "Diamond Press",
+    "tier": "6",
+    "requires": "Superheated Forging",
+    "contentBase": "No"
+  },
+  "radbolt_containment": {
+    "name": "Radbolt Containment",
+    "kind": "Research",
+    "description": "Build a quality cache of radbolts.",
+    "summary": "Radbolt Containment is Spaced Out! exclusive research offering a long-term option for storing Radbolts.",
+    "unlocks": "Radbolt Chamber",
+    "category": "Radiation Technologies",
+    "tier": "5",
+    "requires": "More Materials Science Research",
+    "contentBase": "No"
+  },
+  "radbolt_propulsion": {
+    "name": "Radbolt Propulsion",
+    "kind": "Research",
+    "description": "Radical technology to get you to the stars.",
+    "summary": "Radbolt Propulsion Research unlocks Radbolt Engine, a powerful rocket engine.",
+    "unlocks": "Radbolt Engine",
+    "category": "Radiation Technologies",
+    "tier": "7",
+    "requires": "Radiation Refinement, Personal Flight",
+    "contentBase": "no"
+  },
+  "radiation_protection": {
+    "name": "Radiation Protection",
+    "kind": "Research",
+    "description": "Shield Duplicants from dangerous amounts of radiation.",
+    "summary": "Radiation Protection is Spaced Out! exclusive research unlocking harm-minimizing solutions to Radiation.",
+    "unlocks": "Lead Suit=Lead Suit=Lead Suit= Pattern, Lead Suit Checkpoint, Lead Suit Dock, Radbolt Sensor",
+    "category": "Medicine",
+    "tier": "5",
+    "requires": "More Materials Science Research, Micro-Targeted Medicine, Liquid-Based Refinement Processes",
+    "contentBase": "No"
+  },
+  "radiation_refinement": {
+    "name": "Radiation Refinement",
+    "kind": "Research",
+    "description": "Refine uranium and generate radiation.",
+    "summary": "unlocks the ability to refine Uranium Ore and use it for electricity generation.",
+    "unlocks": "Research Reactor, Uranium Centrifuge, Atomic Power Bank=Atomic Power Bank=Atomic Power Bank= Pattern",
+    "category": "Radiation Technologies",
+    "tier": "6",
+    "requires": "Superheated Forging, Radbolt Containment, Radiation Protection",
+    "contentBase": "no"
+  },
+  "ranching_research": {
+    "name": "Ranching",
+    "kind": "Research",
+    "description": "Tame and care for wild critters.",
+    "summary": "Ranching Research unlocks buildings that tame and care for wild critters.",
+    "category": "Food",
+    "unlocks": "Grooming Station, Shearing Station, Critter Feeder, Fish Release, Fish Pick-Up, Fish Feeder, Critter Drop-Off, Critter Pick-Up",
+    "tier": "3",
+    "requires": "Meal Preparation"
+  },
+  "refined_renovations": {
+    "name": "Refined Renovations",
+    "kind": "Research",
+    "description": "Improve base infrastructure with new objects crafted from Refined Metals.",
+    "summary": "Refined Renovations research unlocks the Plywood Press, Fire Pole and the Tempshift Plate. If the Spaced out DLC is installed it also unlocks the Ladder Bed.",
+    "unlocks": "Plywood Press, Fire Pole, Tempshift Plate",
+    "unlocksSO": "Plywood Press, Fire Pole, Tempshift Plate, Ladder Bed",
+    "category": "Solid Material",
+    "tier": "3",
+    "requires": "Brute-Force Refinement"
+  },
+  "renaissance_art": {
+    "name": "Renaissance Art",
+    "kind": "Research",
+    "description": "The kind of art that culture legacies are made of.",
+    "summary": "research unlocks new buildings which provide Decor bonuses, which can be transformed by Duplicants possessing Decorating skills to boost their decor further (depending on skill level). These buildings take different form factors than their equivalents from prior research tiers.",
+    "category": "Decor",
+    "unlocks": "Portrait Canvas, Marble Block, Fossil Block, Hanging Fossil Block",
+    "tier": "5",
+    "requires": "High Culture"
+  },
+  "renewable_energy": {
+    "name": "Renewable Energy",
+    "kind": "Research",
+    "description": "Clean, sustainable Power production that produces little to no waste.",
+    "summary": "Renewable Energy research unlocks the Sauna, Steam Turbine and the Solar Panel. It also unlocks the Steam Engine in Spaced Out!.",
+    "unlocks": "Steam Turbine, Solar Panel, Sauna, Insulated Conductive Wire, Insulated Conductive Wire Bridge",
+    "unlocksSO": "Steam Turbine, Solar Panel, Sauna, Insulated Conductive Wire, Insulated Conductive Wire Bridge, Steam Engine (Spaced Out)",
+    "category": "Power",
+    "tier": "5",
+    "requires": "Low-Resistance Conductors"
+  },
+  "robotic_tools": {
+    "name": "Robotic Tools",
+    "kind": "Research",
+    "description": "The goal of every great civilization is to one day make itself obsolete.",
+    "unlocks": "Robo-Miner, Marine Drill",
+    "unlocksSO": "Robo-Miner, Payload Opener, Robo-Pilot Module, Marine Drill",
+    "category": "Colony Development",
+    "tier": "4",
+    "requires": "Artificial Friends"
+  },
+  "sanitation": {
+    "name": "Sanitation",
+    "kind": "Research",
+    "description": "Make daily ablutions less of a hassle.",
+    "summary": "Sanitation research node unlocks Buildings used for keeping your Duplicants clean.",
+    "unlocks": "Lavatory, Sink, Shower, Mesh Tile, Gunk Extractor",
+    "category": "Liquids",
+    "tier": "2",
+    "requires": "Plumbing"
+  },
+  "sensitive_microimaging": {
+    "name": "Sensitive Microimaging",
+    "kind": "Research",
+    "description": "Computerized systems do the looking, so Duplicants don't have to.",
+    "unlocks": "Cartographic Module, Automation Broadcaster, Automation Receiver",
+    "category": "Computers",
+    "tier": "6",
+    "requires": "Computing",
+    "contentBase": "no"
+  },
+  "smart_home": {
+    "name": "Smart Home",
+    "kind": "Research",
+    "description": "Switches that grant full control of building operations within the colony.",
+    "summary": "Smart Home research unlocks several basic Automation buildings.",
+    "unlocks": "Automation Overlay Icon=Automation Overlay, Signal Switch, Automation Wire, Automation Wire Bridge, Duplicant Motion Sensor",
+    "category": "Computers",
+    "tier": "2",
+    "requires": "Interior Decor"
+  },
+  "smart_storage": {
+    "name": "Smart Storage",
+    "kind": "Research",
+    "description": "Completely automate the storage of solid resources.",
+    "unlocks": "Conveyor Overlay, Auto-Sweeper, Smart Storage Bin, Automatic Dispenser",
+    "category": "Solid Material",
+    "tier": "3",
+    "requires": "Brute-Force Refinement"
+  },
+  "smelting": {
+    "name": "Smelting",
+    "kind": "Research",
+    "description": "High temperatures facilitate the production of purer, special use metal resources.",
+    "summary": "Smelting research unlocks the Metal Refinery and the Metal Tile.",
+    "unlocks": "Metal Refinery, Metal Tile, Swimwear=Swimwear=Swimwear Pattern , Rubber Boots, Vulcanizer",
+    "category": "Solid Material",
+    "tier": "4",
+    "requires": "Refined Renovations"
+  },
+  "solid_cargo": {
+    "name": "Solid Cargo",
+    "kind": "Research",
+    "description": "Make extra use of journeys into space by mining and storing useful resources.",
+    "unlocks": "Cargo Bay",
+    "category": "Rocketry",
+    "tier": "8",
+    "requires": "Introductory Rocketry",
+    "contentSO": "no"
+  },
+  "solid_control": {
+    "name": "Solid Control",
+    "kind": "Research",
+    "description": "Transport and sort Solid resources.",
+    "unlocks": "Conveyor Shutoff, Conveyor Receptacle, Conveyor Meter",
+    "unlocksSO": "Conveyor Shutoff, Conveyor Receptacle, Conveyor Meter, Conveyor Receptacle Fitting, Conveyor Loader Fitting",
+    "category": "Solid Material",
+    "tier": "5",
+    "requires": "Solid Transport"
+  },
+  "solid_fuel_combustion": {
+    "name": "Solid Fuel Combustion",
+    "kind": "Research",
+    "description": "Rockets that fly further, longer.",
+    "unlocks": "Solid Fuel Thruster, Mission Control Station",
+    "category": "Rocketry",
+    "tier": "8",
+    "requires": "Personal Flight, Introductory Rocketry",
+    "contentSO": "no"
+  },
+  "solid_management": {
+    "name": "Solid Management",
+    "kind": "Research",
+    "description": "Make solid decisions in Solid sorting.",
+    "unlocks": "Solid Filter, Conveyor Rail Thermo Sensor, Conveyor Rail Element Sensor, Conveyor Rail Germ Sensor, Storage Tile",
+    "unlocksSO": "Solid Filter, Conveyor Rail Thermo Sensor, Conveyor Rail Element Sensor, Conveyor Rail Germ Sensor, Storage Tile, Large Cargo Bay",
+    "category": "Solid Material",
+    "tier": "6",
+    "requires": "Solid Control"
+  },
+  "solid_transport": {
+    "name": "Solid Transport",
+    "kind": "Research",
+    "description": "Free Duplicants from the drudgery of day-to-day material deliveries with new methods of automation.",
+    "unlocks": "Conveyor Loader, Conveyor Rail, Conveyor Bridge, Conveyor Chute",
+    "unlocksSO": "Conveyor Loader, Conveyor Rail, Conveyor Bridge, Conveyor Chute, Cargo Bay, Solid Rocket Port Loader, Solid Rocket Port Unloader, Rocket Port Extension",
+    "category": "Solid Material",
+    "tier": "4",
+    "requires": "Smart Storage, Advanced Power Regulation"
+  },
+  "sound_amplifiers": {
+    "name": "Sound Amplifiers",
+    "kind": "Research",
+    "description": "Precise control of the audio spectrum allows Duplicants to get funky.",
+    "unlocks": "Smart Battery, Jukebot, Power Control Station, Power Bank Charger, Eco Power Bank=Eco Power Bank=Eco Power Bank Pattern",
+    "category": "Power",
+    "tier": "3",
+    "requires": "Internal Combustion"
+  },
+  "space_power": {
+    "name": "Space Power",
+    "kind": "Research",
+    "description": "It's like power... in space!",
+    "category": "Power",
+    "unlocks": "Battery Module, Solar Panel Module, Power Outlet Fitting",
+    "tier": "5",
+    "requires": "Sound Amplifiers, Low-Resistance Conductors",
+    "contentBase": "No"
+  },
+  "space_program": {
+    "name": "Space Program",
+    "kind": "Research",
+    "description": "The first steps in getting a Duplicant to space.",
+    "summary": "Space Program Research unlocks buildings needed for launching a rocket.",
+    "unlocks": "Rocket Platform, Solo Spacefarer Nosecone, Orbital Cargo Module, Rocket Control Station",
+    "category": "Colony Development",
+    "tier": "3",
+    "requires": "Advanced Research",
+    "contentBase": "no"
+  },
+  "superheated_forging": {
+    "name": "Superheated Forging",
+    "kind": "Research",
+    "description": "Craft entirely new materials by harnessing the most extreme temperatures.",
+    "unlocks": "Glass Forge, Bunker Tile, Bunker Door, Geotuner",
+    "unlocksSO": "Glass Forge, Bunker Tile, Bunker Door, Geotuner, Gantry",
+    "category": "Solid Material",
+    "tier": "5",
+    "requires": "Smelting"
+  },
+  "temperature_modulation": {
+    "name": "Temperature Modulation",
+    "kind": "Research",
+    "description": "Precise Temperature altering technologies to keep my colony at the perfect Kelvin.",
+    "unlocks": "Insulated Door, Ice-E Fan, Ice Maker, Ice Liquefier, Insulated Tile, Space Heater",
+    "category": "Gases",
+    "tier": "3",
+    "requires": "Pressure Management"
+  },
+  "textile_production": {
+    "name": "Textile Production",
+    "kind": "Research",
+    "description": "Bring Duplicants the Morale boosting benefits of soft, cushy fabrics.",
+    "unlocks": "Textile Loom, Carpeted Tile, Drywall",
+    "category": "Decor",
+    "tier": "3",
+    "requires": "Artistic Expression"
+  },
+  "transit_tubes": {
+    "name": "Transit Tubes",
+    "kind": "Research",
+    "description": "A wholly futuristic way to move Duplicants around the base.",
+    "unlocks": "Transit Tube Access, Transit Tube, Transit Tube Crossing, Vertical Wind Tunnel",
+    "category": "Exosuits",
+    "tier": "5",
+    "requires": "Hazard Protection"
+  },
+  "unique_cargo": {
+    "name": "Unique Cargo",
+    "kind": "Research",
+    "description": "Allow Duplicants to take their friends to see the stars... or simply bring souvenirs back from their travels.",
+    "summary": "research unlocks the two final cargo modules for Rockets in the base game. The Biological Cargo Bay functions like a normal cargo bay, but it can store and retrieve critters from celestial bodies. A Sight-Seeing Module allows for an \"astronaut\" to bring one other Duplicant along the space mission, giving the passenger to get a \"Visited Space\" buff among other benefits.",
+    "unlocks": "Sight-Seeing Module, Biological Cargo Bay",
+    "category": "Rocketry",
+    "tier": "10",
+    "requires": "Liquid and Gas Cargo",
+    "contentSO": "no"
+  },
+  "valve_miniaturization": {
+    "name": "Valve Miniaturization",
+    "kind": "Research",
+    "description": "Smaller, more efficient pumps for those low-throughput situations.",
+    "summary": "Valve Minaturization research unlocks two low-power pumps.",
+    "unlocks": "Mini Liquid Pump, Mini Gas Pump, Mini Fridge",
+    "category": "Power",
+    "tier": "5",
+    "requires": "Plastic Manufacturing"
+  },
+  "ventilation_research": {
+    "name": "Ventilation",
+    "kind": "Research",
+    "description": "Rudimentary technologies for installing Gas infrastructure.",
+    "summary": "Ventilation Research unlocks the basic Ventilation Buildings.",
+    "unlocks": "Gas Pipe, Gas Bridge, Gas Pump, Gas Vent",
+    "category": "Gases",
+    "tier": "1"
+  }
+}

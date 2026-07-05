@@ -1,0 +1,32 @@
+{
+  "collections": {
+    "buildings": {
+      "file": "buildings.json"
+    },
+    "elements": {
+      "file": "elements.json"
+    },
+    "critters": {
+      "file": "critters.json"
+    },
+    "geysers": {
+      "file": "geysers.json"
+    },
+    "food": {
+      "file": "food.json"
+    },
+    "diseases": {
+      "file": "diseases.json"
+    },
+    "biomes": {
+      "file": "biomes.json"
+    },
+    "research": {
+      "file": "research.json"
+    },
+    "plants": {
+      "file": "plants.json"
+    }
+  },
+  "wiki": "https://oxygennotincluded.wiki.gg"
+}

@@ -1,0 +1,40 @@
+{
+  "minecraft": {
+    "id": "minecraft",
+    "name": "Minecraft Java/Bedrock",
+    "name_ru": "Minecraft",
+    "version_note": "Vanilla Java 1.20+",
+    "default": false,
+    "parser": "minecraft",
+    "collections": {
+      "mobs": "mobs.json",
+      "recipes": "recipes.json",
+      "blocks": "blocks.json",
+      "versions": "versions.json",
+      "villager_trades": "villager_trades.json",
+      "wandering_trader_trades": "wandering_trader_trades.json",
+      "structures": "structures.json"
+    }
+  },
+  "oni": {
+    "id": "oni",
+    "name": "Oxygen Not Included",
+    "name_ru": "Oxygen Not Included",
+    "version_note": "ONI wiki database",
+    "default": true,
+    "parser": "oni",
+    "collections": {
+      "buildings": "buildings.json",
+      "elements": "elements.json",
+      "critters": "critters.json",
+      "geysers": "geysers.json",
+      "food": "food.json",
+      "diseases": "diseases.json",
+      "biomes": "biomes.json",
+      "research": "research.json",
+      "plants": "plants.json",
+      "guides": "guides.json",
+      "topics": "topics.json"
+    }
+  }
+}

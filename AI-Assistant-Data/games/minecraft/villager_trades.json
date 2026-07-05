@@ -1,0 +1,239 @@
+{
+  "armorer": {
+    "profession": "Armorer",
+    "workstation": "blast_furnace",
+    "notes": [
+      "Trades depend on villager level, edition, and version.",
+      "Useful for armor, bells, emerald conversion, and sometimes diamond armor at high levels."
+    ],
+    "sells": [
+      {"item": "bell", "level": "apprentice", "cost": "emeralds"},
+      {"item": "chainmail_boots", "level": "apprentice", "cost": "emeralds"},
+      {"item": "chainmail_leggings", "level": "journeyman", "cost": "emeralds"},
+      {"item": "chainmail_helmet", "level": "expert", "cost": "emeralds"},
+      {"item": "chainmail_chestplate", "level": "expert", "cost": "emeralds"},
+      {"item": "diamond_armor", "level": "master", "cost": "emeralds + diamonds", "note": "exact piece and cost vary"}
+    ],
+    "buys": [
+      {"item": "coal", "level": "novice"},
+      {"item": "iron_ingot", "level": "apprentice"},
+      {"item": "lava_bucket", "level": "journeyman"},
+      {"item": "diamond", "level": "expert"}
+    ]
+  },
+  "butcher": {
+    "profession": "Butcher",
+    "workstation": "smoker",
+    "sells": [
+      {"item": "cooked_porkchop", "level": "novice", "cost": "emeralds"},
+      {"item": "cooked_chicken", "level": "novice", "cost": "emeralds"},
+      {"item": "rabbit_stew", "level": "apprentice", "cost": "emeralds"},
+      {"item": "cooked_mutton", "level": "journeyman", "cost": "emeralds"},
+      {"item": "cooked_beef", "level": "expert", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "raw_chicken", "level": "novice"},
+      {"item": "raw_porkchop", "level": "novice"},
+      {"item": "coal", "level": "apprentice"},
+      {"item": "raw_beef", "level": "journeyman"},
+      {"item": "raw_mutton", "level": "journeyman"},
+      {"item": "sweet_berries", "level": "master"}
+    ]
+  },
+  "cartographer": {
+    "profession": "Cartographer",
+    "workstation": "cartography_table",
+    "sells": [
+      {"item": "empty_map", "level": "novice", "cost": "emeralds"},
+      {"item": "ocean_explorer_map", "level": "apprentice", "cost": "emeralds + compass"},
+      {"item": "woodland_explorer_map", "level": "journeyman", "cost": "emeralds + compass"},
+      {"item": "item_frame", "level": "expert", "cost": "emeralds"},
+      {"item": "banner_pattern", "level": "master", "cost": "emeralds", "note": "pattern varies by edition/version"}
+    ],
+    "buys": [
+      {"item": "paper", "level": "novice"},
+      {"item": "glass_pane", "level": "apprentice"},
+      {"item": "compass", "level": "journeyman"}
+    ]
+  },
+  "cleric": {
+    "profession": "Cleric",
+    "workstation": "brewing_stand",
+    "sells": [
+      {"item": "redstone", "level": "novice", "cost": "emeralds"},
+      {"item": "lapis_lazuli", "level": "apprentice", "cost": "emeralds"},
+      {"item": "glowstone", "level": "journeyman", "cost": "emeralds"},
+      {"item": "ender_pearl", "level": "expert", "cost": "emeralds"},
+      {"item": "bottle_o_enchanting", "level": "master", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "rotten_flesh", "level": "novice"},
+      {"item": "gold_ingot", "level": "apprentice"},
+      {"item": "rabbit_foot", "level": "journeyman"},
+      {"item": "scute", "level": "expert"},
+      {"item": "nether_wart", "level": "master"}
+    ]
+  },
+  "farmer": {
+    "profession": "Farmer",
+    "workstation": "composter",
+    "sells": [
+      {"item": "bread", "level": "novice", "cost": "emeralds"},
+      {"item": "pumpkin_pie", "level": "apprentice", "cost": "emeralds"},
+      {"item": "apple", "level": "apprentice", "cost": "emeralds"},
+      {"item": "cookie", "level": "journeyman", "cost": "emeralds"},
+      {"item": "cake", "level": "expert", "cost": "emeralds"},
+      {"item": "golden_carrot", "level": "master", "cost": "emeralds"},
+      {"item": "glistering_melon_slice", "level": "master", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "wheat", "level": "novice"},
+      {"item": "potato", "level": "novice"},
+      {"item": "carrot", "level": "novice"},
+      {"item": "beetroot", "level": "novice"},
+      {"item": "pumpkin", "level": "apprentice"},
+      {"item": "melon", "level": "journeyman"}
+    ]
+  },
+  "fisherman": {
+    "profession": "Fisherman",
+    "workstation": "barrel",
+    "sells": [
+      {"item": "cod_bucket", "level": "apprentice", "cost": "emeralds + bucket"},
+      {"item": "campfire", "level": "apprentice", "cost": "emeralds"},
+      {"item": "enchanted_fishing_rod", "level": "journeyman", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "string", "level": "novice"},
+      {"item": "coal", "level": "novice"},
+      {"item": "raw_cod", "level": "novice"},
+      {"item": "raw_salmon", "level": "apprentice"},
+      {"item": "tropical_fish", "level": "journeyman"},
+      {"item": "pufferfish", "level": "journeyman"},
+      {"item": "boat", "level": "master", "note": "wood type varies"}
+    ]
+  },
+  "fletcher": {
+    "profession": "Fletcher",
+    "workstation": "fletching_table",
+    "sells": [
+      {"item": "arrow", "level": "novice", "cost": "emeralds"},
+      {"item": "bow", "level": "apprentice", "cost": "emeralds"},
+      {"item": "crossbow", "level": "journeyman", "cost": "emeralds"},
+      {"item": "enchanted_bow", "level": "expert", "cost": "emeralds"},
+      {"item": "enchanted_crossbow", "level": "master", "cost": "emeralds"},
+      {"item": "tipped_arrow", "level": "master", "cost": "emeralds", "note": "effect varies"}
+    ],
+    "buys": [
+      {"item": "stick", "level": "novice"},
+      {"item": "flint", "level": "novice"},
+      {"item": "string", "level": "apprentice"},
+      {"item": "feather", "level": "journeyman"},
+      {"item": "tripwire_hook", "level": "master", "note": "fletcher may buy hooks; this is a sink, not a source"}
+    ]
+  },
+  "leatherworker": {
+    "profession": "Leatherworker",
+    "workstation": "cauldron",
+    "sells": [
+      {"item": "leather_armor", "level": "novice", "cost": "emeralds", "note": "piece varies"},
+      {"item": "saddle", "level": "master", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "leather", "level": "novice"},
+      {"item": "flint", "level": "apprentice"},
+      {"item": "rabbit_hide", "level": "journeyman"},
+      {"item": "scute", "level": "expert"}
+    ]
+  },
+  "librarian": {
+    "profession": "Librarian",
+    "workstation": "lectern",
+    "sells": [
+      {"item": "bookshelf", "level": "novice", "cost": "emeralds"},
+      {"item": "enchanted_book", "level": "any", "cost": "emeralds + book", "note": "enchantment depends on trade roll/version"},
+      {"item": "lantern", "level": "apprentice", "cost": "emeralds"},
+      {"item": "glass", "level": "journeyman", "cost": "emeralds"},
+      {"item": "clock", "level": "expert", "cost": "emeralds"},
+      {"item": "compass", "level": "expert", "cost": "emeralds"},
+      {"item": "name_tag", "level": "master", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "paper", "level": "novice"},
+      {"item": "book", "level": "apprentice"},
+      {"item": "ink_sac", "level": "journeyman"},
+      {"item": "writable_book", "level": "expert"}
+    ]
+  },
+  "mason": {
+    "profession": "Mason",
+    "workstation": "stonecutter",
+    "sells": [
+      {"item": "brick", "level": "apprentice", "cost": "emeralds"},
+      {"item": "chiseled_stone_bricks", "level": "journeyman", "cost": "emeralds"},
+      {"item": "terracotta", "level": "expert", "cost": "emeralds"},
+      {"item": "glazed_terracotta", "level": "master", "cost": "emeralds"},
+      {"item": "quartz_block", "level": "master", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "clay_ball", "level": "novice"},
+      {"item": "stone", "level": "apprentice"},
+      {"item": "granite", "level": "journeyman"},
+      {"item": "diorite", "level": "journeyman"},
+      {"item": "andesite", "level": "journeyman"},
+      {"item": "quartz", "level": "expert"}
+    ]
+  },
+  "shepherd": {
+    "profession": "Shepherd",
+    "workstation": "loom",
+    "sells": [
+      {"item": "shears", "level": "novice", "cost": "emeralds"},
+      {"item": "wool", "level": "apprentice", "cost": "emeralds"},
+      {"item": "carpet", "level": "journeyman", "cost": "emeralds"},
+      {"item": "bed", "level": "journeyman", "cost": "emeralds"},
+      {"item": "banner", "level": "expert", "cost": "emeralds"},
+      {"item": "painting", "level": "master", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "white_wool", "level": "novice"},
+      {"item": "brown_wool", "level": "novice"},
+      {"item": "black_wool", "level": "novice"},
+      {"item": "gray_wool", "level": "novice"},
+      {"item": "dye", "level": "apprentice", "note": "color varies"}
+    ]
+  },
+  "toolsmith": {
+    "profession": "Toolsmith",
+    "workstation": "smithing_table",
+    "sells": [
+      {"item": "stone_tool", "level": "novice", "cost": "emeralds", "note": "axe/shovel/pickaxe/hoe varies"},
+      {"item": "bell", "level": "apprentice", "cost": "emeralds"},
+      {"item": "enchanted_iron_tool", "level": "journeyman", "cost": "emeralds"},
+      {"item": "enchanted_diamond_tool", "level": "master", "cost": "emeralds", "note": "tool varies"}
+    ],
+    "buys": [
+      {"item": "coal", "level": "novice"},
+      {"item": "iron_ingot", "level": "apprentice"},
+      {"item": "flint", "level": "journeyman"},
+      {"item": "diamond", "level": "expert"}
+    ]
+  },
+  "weaponsmith": {
+    "profession": "Weaponsmith",
+    "workstation": "grindstone",
+    "sells": [
+      {"item": "iron_axe", "level": "novice", "cost": "emeralds"},
+      {"item": "enchanted_iron_sword", "level": "apprentice", "cost": "emeralds"},
+      {"item": "bell", "level": "journeyman", "cost": "emeralds"},
+      {"item": "enchanted_diamond_axe", "level": "expert", "cost": "emeralds"},
+      {"item": "enchanted_diamond_sword", "level": "master", "cost": "emeralds"}
+    ],
+    "buys": [
+      {"item": "coal", "level": "novice"},
+      {"item": "iron_ingot", "level": "apprentice"},
+      {"item": "flint", "level": "journeyman"},
+      {"item": "diamond", "level": "expert"}
+    ]
+  }
+}

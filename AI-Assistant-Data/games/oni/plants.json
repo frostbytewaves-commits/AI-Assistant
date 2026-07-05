@@ -1,0 +1,15 @@
+{
+  "bonbon_tree": {
+    "name": "Bonbon Tree",
+    "kind": "Plant",
+    "description": "Bonbon Tree is a Plant that can live in Vacuum or cold environment and is found naturally in Nectar Biome. It grows up to 5 branches from its trunk, which produce Nectar when exposed to Light. The branches can be harvested for Wood; however, that will temporarily disrupt the nectar production. The nectar can be harvested from the trunk by a Duplicant skilled with (Crop Tending) or directly with pipes.",
+    "Produces": "x (Amount Varies)"
+  },
+  "saturn_critter_trap": {
+    "name": "Saturn Critter Trap",
+    "kind": "Plant",
+    "description": "The Saturn Critter Trap is a carnivorous food plant found in the Radioactive Biome that eats small land critters and expel Hydrogen.",
+    "Fertilizer": "Small Land Critters (Once per harvest)",
+    "Effect": "/cycle while growing"
+  }
+}

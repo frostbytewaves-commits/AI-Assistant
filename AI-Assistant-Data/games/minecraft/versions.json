@@ -1,0 +1,60 @@
+{
+  "default_play_version": "1.21.11",
+  "order": [
+    "1.21.1",
+    "1.21.3",
+    "1.21.4",
+    "1.21.5",
+    "1.21.6",
+    "1.21.8",
+    "1.21.9",
+    "1.21.11",
+    "26.1",
+    "26.2"
+  ],
+  "data_sources": {
+    "1.21.1": {
+      "type": "minecraft-data",
+      "id": "1.21.1"
+    },
+    "1.21.3": {
+      "type": "minecraft-data",
+      "id": "1.21.3"
+    },
+    "1.21.4": {
+      "type": "minecraft-data",
+      "id": "1.21.4"
+    },
+    "1.21.5": {
+      "type": "minecraft-data",
+      "id": "1.21.5"
+    },
+    "1.21.6": {
+      "type": "minecraft-data",
+      "id": "1.21.6"
+    },
+    "1.21.8": {
+      "type": "minecraft-data",
+      "id": "1.21.8"
+    },
+    "1.21.9": {
+      "type": "minecraft-data",
+      "id": "1.21.9"
+    },
+    "1.21.11": {
+      "type": "minecraft-data",
+      "id": "1.21.11"
+    }
+  },
+  "wiki_sources": {
+    "26.1": {
+      "type": "minecraft.wiki",
+      "page": "Java Edition 26.1"
+    },
+    "26.2": {
+      "type": "minecraft.wiki",
+      "page": "Java Edition 26.2"
+    }
+  },
+  "notes": "play_version — версия, на которой вы играете. Блоки/рецепты с added_in новее вашей версии недоступны в игре."
+}

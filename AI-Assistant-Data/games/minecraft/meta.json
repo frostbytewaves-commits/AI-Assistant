@@ -1,0 +1,34 @@
+{
+  "parser": "minecraft",
+  "collections": {
+    "mobs": {
+      "file": "mobs.json",
+      "description_ru": "Мобы и дроп (vanilla)"
+    },
+    "recipes": {
+      "file": "recipes.json",
+      "description_ru": "Рецепты крафта и источники предметов"
+    },
+    "blocks": {
+      "file": "blocks.json",
+      "description_ru": "Блоки"
+    },
+    "versions": {
+      "file": "versions.json",
+      "description_ru": "Версии"
+    },
+    "villager_trades": {
+      "file": "villager_trades.json",
+      "description_ru": "Торговля жителей по профессиям"
+    },
+    "wandering_trader_trades": {
+      "file": "wandering_trader_trades.json",
+      "description_ru": "Торги странствующего торговца"
+    },
+    "structures": {
+      "file": "structures.json",
+      "description_ru": "Структуры, поиск, варианты и лут"
+    }
+  },
+  "play_version": "1.21.11"
+}

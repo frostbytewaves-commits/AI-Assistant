@@ -1,0 +1,5 @@
+{
+  "data_root": "C:\\AI-Assistant-Data",
+  "games_dir": "C:\\AI-Assistant-Data\\games",
+  "comment": "База знаний игр для AI-Assistant. Можно менять путь."
+}

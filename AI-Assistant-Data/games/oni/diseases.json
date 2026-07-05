@@ -1,0 +1,42 @@
+{
+  "diarrhea": {
+    "name": "Diarrhea",
+    "kind": "Disease",
+    "description": "Diarrhea was a status causing duplicants to need to go to the toilet more often by decreasing bladder size. It was caused by food from the Microbe Musher."
+  },
+  "eye_irritation": {
+    "name": "Eye Irritation",
+    "kind": "Disease",
+    "description": "Eye Irritation temporarily reduces the Athletics attribute of Duplicants from exposure to irritating gases or liquids. Nonirritating gases are Oxygen, Polluted Oxygen, Carbon Dioxide, Water, Polluted Water, Mucin, and Visco-Gel. The severity of irritation decreases from exposure to nonirritating gases. Irritating gases and liquids are any substances other than the list of non-irritating gases and liquids."
+  },
+  "heat_stroke": {
+    "name": "Heat Stroke",
+    "kind": "Disease",
+    "description": "Heat Stroke is a temporary status appearing when Duplicants get overheated. When it is applied Duplicant will begin to take health damage until their body temperature drops. Additionally, athletics penalty from health damage is also applied until the injury is healed."
+  },
+  "hypothermia": {
+    "name": "Hypothermia",
+    "kind": "Disease",
+    "description": "Hypothermia is a temporary status affliction that affects a Duplicant if their Body Temperature drops to or below. There are no remedies, but resting on a Triage Cot slightly (~10%) speeds up recovery."
+  },
+  "radiation_sickness": {
+    "name": "Radiation Sickness",
+    "kind": "Disease",
+    "description": "Radiation Sickness is a disease caused by prolonged exposure to Radiation or Radioactive Contaminant, and comes in two stages."
+  },
+  "sneeziness": {
+    "name": "Sneeziness",
+    "kind": "Disease",
+    "description": "Sneeziness is caused by allergic reactions to Floral Scents, eating Curried Beans, or being stung by a Gnit. Affected Duplicants occasionally sneeze, producing a snoring-like effect that can annoy nearby Duplicants and disturb their sleep."
+  },
+  "sunburn": {
+    "name": "Sunburn",
+    "kind": "Disease",
+    "description": "Sunburn is a disease caused by prolonged exposure to light brighter than 72000 Lux. Once contracted, it takes 1.7 cycles (1020 seconds) to recover. The effect is a 20%/cycle increase in stress for the duration, as well as the duplicant pausing every 3-5 seconds to emote about their affliction. This temporarily interrupts any work task action they were taking. This occurs even in Transit Tubes, with the duplicant abruptly halting in the middle of the tube to emote, then just as suddenly resuming their journey. This regular interruption makes them substantially less efficient at working and comm"
+  },
+  "trench_stench": {
+    "name": "Trench Stench",
+    "kind": "Disease",
+    "description": "A Disease caught when standing too much on high concentrated polluted oxygen. Duplicant will stink for 2(?) cycles. Anyone standing on same spot cancels job/sleep because \"Smelled putrid odour!\". Change his bed to a side closer to toilet or wakes everyone up walking trough beds. Use massage if stressed, that keeps him quarantined. Can be assigned to medical cot, this keeps it there except basic needs."
+  }
+}

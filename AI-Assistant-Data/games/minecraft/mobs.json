@@ -1,0 +1,985 @@
+{
+  "sheep": {
+    "name_ru": "Овца",
+    "drops": [
+      {
+        "item": "raw mutton",
+        "name_ru": "Сырая баранина",
+        "count": "1–2"
+      },
+      {
+        "item": "wool",
+        "name_ru": "Шерсть",
+        "count": "1",
+        "note": "Цвет шерсти = цвет овцы; ножницы: 1–3 без убийства"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "cow": {
+    "name_ru": "Корова",
+    "drops": [
+      {
+        "item": "raw beef",
+        "name_ru": "Сырая говядина",
+        "count": "1–3"
+      },
+      {
+        "item": "leather",
+        "name_ru": "Кожа",
+        "count": "0–2"
+      }
+    ],
+    "xp": "1–7",
+    "note": "Живая корова: доится в ведро (молоко), не дроп"
+  },
+  "pig": {
+    "name_ru": "Свинья",
+    "drops": [
+      {
+        "item": "raw porkchop",
+        "name_ru": "Сырая свинина",
+        "count": "1–3"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "chicken": {
+    "name_ru": "Курица",
+    "drops": [
+      {
+        "item": "raw chicken",
+        "name_ru": "Сырое мясо курицы",
+        "count": "?"
+      },
+      {
+        "item": "feather",
+        "name_ru": "Перо",
+        "count": "0–2"
+      }
+    ],
+    "xp": "1–7",
+    "note": "Яйцо — раз в 5–10 мин, не дроп при убийстве"
+  },
+  "zombie": {
+    "name_ru": "Зомби",
+    "drops": [
+      {
+        "item": "rotten flesh",
+        "name_ru": "Гнилая плоть",
+        "count": "0–2"
+      },
+      {
+        "item": "iron ingot",
+        "name_ru": "Железный слиток",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко"
+      },
+      {
+        "item": "carrot",
+        "name_ru": "Морковь",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко"
+      },
+      {
+        "item": "potato",
+        "name_ru": "Картофель",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко; player or pet,je not burn"
+      },
+      {
+        "item": "baked potato",
+        "name_ru": "Печёный картофель",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко; player or pet,burn"
+      }
+    ],
+    "xp": "5"
+  },
+  "skeleton": {
+    "name_ru": "Скелет",
+    "drops": [
+      {
+        "item": "bone",
+        "name_ru": "Кость",
+        "count": "0–2"
+      },
+      {
+        "item": "arrow",
+        "name_ru": "Стрела",
+        "count": "0–2"
+      }
+    ],
+    "xp": "5"
+  },
+  "creeper": {
+    "name_ru": "Крипер",
+    "drops": [
+      {
+        "item": "gunpowder",
+        "name_ru": "Порох",
+        "count": "0–2"
+      }
+    ],
+    "xp": "5",
+    "note": "Заряд крипер = усиленный взрыв; музыкальный диск при убийстве скелетом"
+  },
+  "spider": {
+    "name_ru": "Паук",
+    "drops": [
+      {
+        "item": "string",
+        "name_ru": "Нить",
+        "count": "0–2"
+      },
+      {
+        "item": "spider eye",
+        "name_ru": "Паучий глаз",
+        "count": "–1–1",
+        "note": "player"
+      }
+    ],
+    "xp": "5"
+  },
+  "enderman": {
+    "name_ru": "Эндермен",
+    "drops": [
+      {
+        "item": "ender pearl",
+        "name_ru": "Жемчуг Эндера",
+        "count": "0–1"
+      }
+    ],
+    "xp": "5"
+  },
+  "iron golem": {
+    "name_ru": "Железный голем",
+    "drops": [
+      {
+        "item": "poppy",
+        "name_ru": "Мак",
+        "count": "0–2"
+      },
+      {
+        "item": "iron ingot",
+        "name_ru": "Железный слиток",
+        "count": "3–5"
+      }
+    ],
+    "xp": "0"
+  },
+  "villager": {
+    "name_ru": "Житель",
+    "drops": [],
+    "xp": "3–6",
+    "note": "Не дропает предметы при убийстве; торгует"
+  },
+  "wolf": {
+    "name_ru": "Волк",
+    "drops": [],
+    "xp": "1–3",
+    "note": "При ручном приручении не дроп; только опыт если враждебен"
+  },
+  "horse": {
+    "name_ru": "Лошадь",
+    "drops": [
+      {
+        "item": "leather",
+        "name_ru": "Кожа",
+        "count": "0–2"
+      }
+    ],
+    "xp": "1–7"
+  },
+  "rabbit": {
+    "name_ru": "Кролик",
+    "drops": [
+      {
+        "item": "rabbit hide",
+        "name_ru": "Кроличья шкурка",
+        "count": "0–1"
+      },
+      {
+        "item": "raw rabbit",
+        "name_ru": "Сырой кролик",
+        "count": "1",
+        "note": "notburn"
+      },
+      {
+        "item": "rabbit's foot",
+        "name_ru": "rabbit's foot",
+        "count": "?",
+        "note": "player"
+      }
+    ],
+    "xp": "1–7"
+  },
+  "bee": {
+    "name_ru": "Пчела",
+    "drops": [],
+    "xp": "1–3",
+    "note": "После ужаливания погибает; мёд из улья/пчелиного гнезда отдельно"
+  },
+  "blaze": {
+    "name_ru": "Ифрит (Blaze)",
+    "drops": [
+      {
+        "item": "blaze rod",
+        "name_ru": "Огненный стержень",
+        "count": "0–1",
+        "note": "Только если убит игроком/питомцем"
+      }
+    ],
+    "xp": "10"
+  },
+  "ghast": {
+    "name_ru": "Гаст",
+    "drops": [
+      {
+        "item": "ghast tear",
+        "name_ru": "Слеза гаста",
+        "count": "0–1"
+      },
+      {
+        "item": "gunpowder",
+        "name_ru": "Порох",
+        "count": "0–2"
+      }
+    ],
+    "xp": "5"
+  },
+  "slime": {
+    "name_ru": "Слайм",
+    "drops": [
+      {
+        "item": "slimeball",
+        "name_ru": "Слизь",
+        "count": "0–2",
+        "note": "Зависит от размера"
+      }
+    ],
+    "xp": "4"
+  },
+  "witch": {
+    "name_ru": "Ведьма",
+    "drops": [
+      {
+        "item": "glass bottle",
+        "name_ru": "Пустая бутылка",
+        "count": "0–2"
+      },
+      {
+        "item": "glowstone dust",
+        "name_ru": "Светопыль",
+        "count": "0–2"
+      },
+      {
+        "item": "redstone",
+        "name_ru": "Редстоун",
+        "count": "0–2"
+      },
+      {
+        "item": "stick",
+        "name_ru": "Палка",
+        "count": "0–2"
+      },
+      {
+        "item": "sugar",
+        "name_ru": "Сахар",
+        "count": "0–2"
+      },
+      {
+        "item": "spider eye",
+        "name_ru": "Паучий глаз",
+        "count": "0–1"
+      }
+    ],
+    "xp": "5",
+    "note": "Лечебные/огненные зелья при убийстве"
+  },
+  "phantom": {
+    "name_ru": "Фантом",
+    "drops": [
+      {
+        "item": "phantom membrane",
+        "name_ru": "Мембрана фантома",
+        "count": "0–1",
+        "note": "player"
+      }
+    ],
+    "xp": "5"
+  },
+  "drowned": {
+    "name_ru": "Утопленник",
+    "drops": [
+      {
+        "item": "rotten flesh",
+        "name_ru": "Гнилая плоть",
+        "count": "0–2"
+      },
+      {
+        "item": "copper ingot",
+        "name_ru": "Медный слиток",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем"
+      }
+    ],
+    "xp": "5"
+  },
+  "piglin": {
+    "name_ru": "Пиглин",
+    "drops": [
+      {
+        "item": "gold nugget",
+        "name_ru": "Золотой самородок",
+        "count": "0–1",
+        "note": "Редко"
+      }
+    ],
+    "xp": "5",
+    "note": "Дроп только если убит игроком; золотая броня не дроп"
+  },
+  "hoglin": {
+    "name_ru": "Хоглин",
+    "drops": [
+      {
+        "item": "raw porkchop",
+        "name_ru": "Сырая свинина",
+        "count": "2–4"
+      },
+      {
+        "item": "leather",
+        "name_ru": "Кожа",
+        "count": "0–1"
+      }
+    ],
+    "xp": "5"
+  },
+  "warden": {
+    "name_ru": "Warden",
+    "drops": [
+      {
+        "item": "sculk catalyst",
+        "name_ru": "Sculk-катализатор",
+        "count": "?"
+      }
+    ],
+    "xp": "5"
+  },
+  "allay": {
+    "name_ru": "Аллей",
+    "drops": []
+  },
+  "armadillo": {
+    "name_ru": "Броненосец",
+    "drops": [],
+    "xp": "1–7"
+  },
+  "axolotl": {
+    "name_ru": "Аксолotl",
+    "drops": []
+  },
+  "bat": {
+    "name_ru": "Летучая мышь",
+    "drops": []
+  },
+  "bogged": {
+    "name_ru": "Болотник",
+    "drops": [
+      {
+        "item": "bone",
+        "name_ru": "Кость",
+        "count": "0–2"
+      },
+      {
+        "item": "arrow",
+        "name_ru": "Стрела",
+        "count": "0–2"
+      },
+      {
+        "item": "arrow of poison",
+        "name_ru": "arrow of poison",
+        "count": "0–1",
+        "note": "Только если убит игроком/питомцем"
+      }
+    ],
+    "xp": "5"
+  },
+  "breeze": {
+    "name_ru": "Бриз",
+    "drops": [
+      {
+        "item": "breeze rod",
+        "name_ru": "breeze rod",
+        "count": "1–2",
+        "note": "Только если убит игроком/питомцем"
+      }
+    ],
+    "xp": "10"
+  },
+  "camel": {
+    "name_ru": "Верблюд",
+    "drops": [],
+    "xp": "1–3"
+  },
+  "cat": {
+    "name_ru": "Кошка",
+    "drops": [],
+    "xp": "1–3"
+  },
+  "cave spider": {
+    "name_ru": "Пещерный паук",
+    "drops": [
+      {
+        "item": "string",
+        "name_ru": "Нить",
+        "count": "0–2"
+      },
+      {
+        "item": "spider eye",
+        "name_ru": "Паучий глаз",
+        "count": "–1–1",
+        "note": "player"
+      }
+    ],
+    "xp": "5"
+  },
+  "cod": {
+    "name_ru": "Треска",
+    "drops": [
+      {
+        "item": "raw cod",
+        "name_ru": "raw cod",
+        "count": "?"
+      },
+      {
+        "item": "bone meal",
+        "name_ru": "bone meal",
+        "count": "?"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "dolphin": {
+    "name_ru": "Дельфин",
+    "drops": [
+      {
+        "item": "raw cod",
+        "name_ru": "raw cod",
+        "count": "0–1"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "donkey": {
+    "name_ru": "Осёл",
+    "drops": [
+      {
+        "item": "leather",
+        "name_ru": "Кожа",
+        "count": "0–2"
+      }
+    ],
+    "xp": "1–7"
+  },
+  "elder guardian": {
+    "name_ru": "Древний страж",
+    "drops": [],
+    "xp": "10"
+  },
+  "ender dragon": {
+    "name_ru": "Дракон Края",
+    "drops": [],
+    "xp": "12000"
+  },
+  "endermite": {
+    "name_ru": "Эндермит",
+    "drops": [],
+    "xp": "3"
+  },
+  "evoker": {
+    "name_ru": "Заклинатель",
+    "drops": [
+      {
+        "item": "totem of undying",
+        "name_ru": "totem of undying",
+        "count": "?"
+      },
+      {
+        "item": "emerald",
+        "name_ru": "emerald",
+        "count": "0–1",
+        "note": "je player"
+      }
+    ],
+    "xp": "10"
+  },
+  "fox": {
+    "name_ru": "Лиса",
+    "drops": [],
+    "xp": "1–3"
+  },
+  "frog": {
+    "name_ru": "Лягушка",
+    "drops": [],
+    "xp": "1–3"
+  },
+  "glow squid": {
+    "name_ru": "Светящийся спрут",
+    "drops": [
+      {
+        "item": "glow ink sac",
+        "name_ru": "glow ink sac",
+        "count": "1–3"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "goat": {
+    "name_ru": "Коза",
+    "drops": [],
+    "xp": "1–3"
+  },
+  "guardian": {
+    "name_ru": "Страж",
+    "drops": [],
+    "xp": "10"
+  },
+  "husk": {
+    "name_ru": "Кадавр",
+    "drops": [
+      {
+        "item": "rotten flesh",
+        "name_ru": "Гнилая плоть",
+        "count": "0–2"
+      },
+      {
+        "item": "iron ingot",
+        "name_ru": "Железный слиток",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко"
+      },
+      {
+        "item": "carrot",
+        "name_ru": "Морковь",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко"
+      },
+      {
+        "item": "potato",
+        "name_ru": "Картофель",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко; player or pet,je not burn"
+      },
+      {
+        "item": "baked potato",
+        "name_ru": "Печёный картофель",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко; player or pet,burn"
+      },
+      {
+        "item": "rabbit's foot",
+        "name_ru": "rabbit's foot",
+        "count": "0–1",
+        "note": "camel husk"
+      }
+    ],
+    "xp": "5"
+  },
+  "llama": {
+    "name_ru": "Лама",
+    "drops": [
+      {
+        "item": "leather",
+        "name_ru": "Кожа",
+        "count": "0–2"
+      }
+    ],
+    "xp": "1–7"
+  },
+  "magma cube": {
+    "name_ru": "Лавовый куб",
+    "drops": [
+      {
+        "item": "magma cream",
+        "name_ru": "magma cream",
+        "count": "–2–1",
+        "note": "medium cube,not frog"
+      },
+      {
+        "item": "verdant froglight",
+        "name_ru": "verdant froglight",
+        "count": "?",
+        "note": "cold frog"
+      },
+      {
+        "item": "ochre froglight",
+        "name_ru": "ochre froglight",
+        "count": "?",
+        "note": "temperate frog"
+      },
+      {
+        "item": "pearlescent froglight",
+        "name_ru": "pearlescent froglight",
+        "count": "?",
+        "note": "warm frog"
+      }
+    ],
+    "xp": "4"
+  },
+  "mooshroom": {
+    "name_ru": "Муушрум",
+    "drops": [
+      {
+        "item": "raw beef",
+        "name_ru": "Сырая говядина",
+        "count": "1–3"
+      },
+      {
+        "item": "leather",
+        "name_ru": "Кожа",
+        "count": "0–2"
+      }
+    ],
+    "xp": "1–7"
+  },
+  "mule": {
+    "name_ru": "Мул",
+    "drops": [
+      {
+        "item": "leather",
+        "name_ru": "Кожа",
+        "count": "0–2"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "ocelot": {
+    "name_ru": "Оцелот",
+    "drops": [],
+    "xp": "1–3"
+  },
+  "panda": {
+    "name_ru": "Панда",
+    "drops": [
+      {
+        "item": "bamboo",
+        "name_ru": "bamboo",
+        "count": "1",
+        "note": "MC-160006"
+      }
+    ],
+    "xp": "1–7"
+  },
+  "parrot": {
+    "name_ru": "Попугай",
+    "drops": [
+      {
+        "item": "feather",
+        "name_ru": "Перо",
+        "count": "1–2"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "piglin brute": {
+    "name_ru": "Брутальный пиглин",
+    "drops": [],
+    "xp": "20"
+  },
+  "pillager": {
+    "name_ru": "Разбойник",
+    "drops": [
+      {
+        "item": "ominous bottle",
+        "name_ru": "ominous bottle",
+        "count": "?",
+        "note": "leader"
+      }
+    ],
+    "xp": "5"
+  },
+  "polar bear": {
+    "name_ru": "Белый медведь",
+    "drops": [],
+    "xp": "1–3"
+  },
+  "pufferfish": {
+    "name_ru": "Иглобрюх",
+    "drops": [
+      {
+        "item": "pufferfish",
+        "name_ru": "pufferfish",
+        "count": "?"
+      },
+      {
+        "item": "bone meal",
+        "name_ru": "bone meal",
+        "count": "?"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "ravager": {
+    "name_ru": "Разоритель",
+    "drops": [
+      {
+        "item": "saddle",
+        "name_ru": "saddle",
+        "count": "?",
+        "note": "be player"
+      }
+    ],
+    "xp": "20"
+  },
+  "salmon": {
+    "name_ru": "Лосось",
+    "drops": [
+      {
+        "item": "raw salmon",
+        "name_ru": "raw salmon",
+        "count": "?"
+      },
+      {
+        "item": "bone meal",
+        "name_ru": "bone meal",
+        "count": "?"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "shulker": {
+    "name_ru": "Шалкер",
+    "drops": [
+      {
+        "item": "shulker shell",
+        "name_ru": "shulker shell",
+        "count": "?"
+      }
+    ],
+    "xp": "5"
+  },
+  "silverfish": {
+    "name_ru": "Чешуйница",
+    "drops": [],
+    "xp": "5"
+  },
+  "sniffer": {
+    "name_ru": "Нюхач",
+    "drops": [],
+    "xp": "1–3"
+  },
+  "snow golem": {
+    "name_ru": "Снежный голем",
+    "drops": [
+      {
+        "item": "snowball",
+        "name_ru": "snowball",
+        "count": "0–15"
+      }
+    ]
+  },
+  "squid": {
+    "name_ru": "Спрут",
+    "drops": [
+      {
+        "item": "ink sac",
+        "name_ru": "ink sac",
+        "count": "1–3"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "stray": {
+    "name_ru": "Зимогор",
+    "drops": [
+      {
+        "item": "bone",
+        "name_ru": "Кость",
+        "count": "0–2"
+      },
+      {
+        "item": "arrow",
+        "name_ru": "Стрела",
+        "count": "0–2"
+      },
+      {
+        "item": "arrow of slowness",
+        "name_ru": "arrow of slowness",
+        "count": "0–1",
+        "note": "player"
+      }
+    ],
+    "xp": "5"
+  },
+  "strider": {
+    "name_ru": "Страйдер",
+    "drops": [
+      {
+        "item": "string",
+        "name_ru": "Нить",
+        "count": "2–5"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "tadpole": {
+    "name_ru": "Головастик",
+    "drops": []
+  },
+  "trader llama": {
+    "name_ru": "Лама торговца",
+    "drops": [
+      {
+        "item": "leather",
+        "name_ru": "Кожа",
+        "count": "0–2"
+      }
+    ],
+    "xp": "1–7"
+  },
+  "tropical fish": {
+    "name_ru": "Тропическая рыба",
+    "drops": [
+      {
+        "item": "tropical fish",
+        "name_ru": "tropical fish",
+        "count": "?"
+      },
+      {
+        "item": "bone meal",
+        "name_ru": "bone meal",
+        "count": "?"
+      }
+    ],
+    "xp": "1–3"
+  },
+  "turtle": {
+    "name_ru": "Черепаха",
+    "drops": [
+      {
+        "item": "seagrass",
+        "name_ru": "seagrass",
+        "count": "0–2",
+        "note": "not-lightning"
+      },
+      {
+        "item": "bowl",
+        "name_ru": "bowl",
+        "count": "?",
+        "note": "lightning"
+      }
+    ],
+    "xp": "1–7"
+  },
+  "vex": {
+    "name_ru": "Досаждатель",
+    "drops": [],
+    "xp": "5"
+  },
+  "vindicator": {
+    "name_ru": "Поборник",
+    "drops": [
+      {
+        "item": "emerald",
+        "name_ru": "emerald",
+        "count": "0–1",
+        "note": "player,not raid"
+      }
+    ],
+    "xp": "5"
+  },
+  "wandering trader": {
+    "name_ru": "Странствующий торговец",
+    "drops": []
+  },
+  "wither": {
+    "name_ru": "Иссушитель",
+    "drops": [],
+    "xp": "50"
+  },
+  "wither skeleton": {
+    "name_ru": "Скелет-иссушитель",
+    "drops": [
+      {
+        "item": "coal",
+        "name_ru": "coal",
+        "count": "–1–1"
+      },
+      {
+        "item": "bone",
+        "name_ru": "Кость",
+        "count": "0–2"
+      },
+      {
+        "item": "wither skeleton skull",
+        "name_ru": "wither skeleton skull",
+        "count": "?",
+        "note": "Редко; player"
+      }
+    ],
+    "xp": "5"
+  },
+  "zoglin": {
+    "name_ru": "Зоглин",
+    "drops": [],
+    "xp": "5"
+  },
+  "zombie villager": {
+    "name_ru": "Зомби-житель",
+    "drops": [
+      {
+        "item": "rotten flesh",
+        "name_ru": "Гнилая плоть",
+        "count": "0–2"
+      },
+      {
+        "item": "iron ingot",
+        "name_ru": "Железный слиток",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко"
+      },
+      {
+        "item": "carrot",
+        "name_ru": "Морковь",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко"
+      },
+      {
+        "item": "potato",
+        "name_ru": "Картофель",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко; player or pet,je not burn"
+      },
+      {
+        "item": "baked potato",
+        "name_ru": "Печёный картофель",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко; player or pet,burn"
+      }
+    ],
+    "xp": "5"
+  },
+  "zombified piglin": {
+    "name_ru": "Зомби-пиглин",
+    "drops": [
+      {
+        "item": "rotten flesh",
+        "name_ru": "Гнилая плоть",
+        "count": "0–1"
+      },
+      {
+        "item": "gold nugget",
+        "name_ru": "Золотой самородок",
+        "count": "0–1"
+      },
+      {
+        "item": "gold ingot",
+        "name_ru": "gold ingot",
+        "count": "?",
+        "note": "Только если убит игроком/питомцем; Редко"
+      }
+    ],
+    "xp": "5"
+  }
+}

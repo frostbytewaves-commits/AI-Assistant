@@ -1,0 +1,1045 @@
+{
+  "solid": {
+    "name": "Solid",
+    "kind": "Element",
+    "description": "Solids are one of the three main substances in Oxygen Not Included. They exist naturally as tiles, and can be dug into raw materials. Solids serve a wide variety of purposes, from basic building to advanced machinery. Digging a solid tile will destroy half of its mass, while the other half is transformed into movable material. Solids melts 3°C above their specified melting point. The same, liquids solidify 3 °C under their specified freezing point."
+  },
+  "abyssalite": {
+    "name": "Abyssalite",
+    "kind": "Element",
+    "description": "Abyssalite is a very strong solid element in the Miscellaneous category and is found in large veins separating Biomes. It acts as a natural thermal insulator, preventing heat exchange between biomes as long as the Abyssalite boundary remains intact. In order to mine Abyssalite, a Duplicant must possess the Superhard Digging skill. Abyssalite cannot directly be used as a construction material, but can be combined with and the Rare Resource inside a Molecular Forge to create , which is an extremely similar material that can be used in construction."
+  },
+  "aerogel": {
+    "name": "Aerogel",
+    "kind": "Element"
+  },
+  "algae": {
+    "name": "Algae",
+    "kind": "Element",
+    "description": "Algae is one of the organic resources in the game. It is an important source in early game."
+  },
+  "aluminum": {
+    "name": "Aluminum",
+    "kind": "Element"
+  },
+  "aluminum_ore": {
+    "name": "Aluminum Ore",
+    "kind": "Element",
+    "description": "Aluminum Ore is a Metal Ore found in abundance in the Forest Biome. It has the highest heat capacity and conductivity among naturally occurring metal ores."
+  },
+  "amber": {
+    "name": "Amber",
+    "kind": "Element",
+    "description": "Amber is organic matter produced by Lura Plants and can be melted into Resin then transformed into Plastic."
+  },
+  "basalt": {
+    "name": "Basalt",
+    "kind": "Element",
+    "description": "is a Raw Mineral found in the Abyss Biome. It can be used as a construction material. A Duplicant must learn Super-Duperhard Digging to dig Basalt."
+  },
+  "bitumen": {
+    "name": "Bitumen",
+    "kind": "Element",
+    "description": "Bitumen is unused in current game despite its description."
+  },
+  "bleach_stone": {
+    "name": "Bleach Stone",
+    "kind": "Element",
+    "description": "Bleach Stone is a Consumable Ore that emits Chlorine in its mined state."
+  },
+  "brackwax": {
+    "name": "Brackwax",
+    "kind": "Element",
+    "description": "Brackwax is an end-game intermediate product directly obtained from Brackene required to manufacture Plastium and that can also be used to accelerate travel speed inside Transit Tubes."
+  },
+  "brick": {
+    "name": "Brick",
+    "kind": "Element"
+  },
+  "brine_ice": {
+    "name": "Brine Ice",
+    "kind": "Element"
+  },
+  "building_slab": {
+    "name": "Building Slab",
+    "kind": "Element"
+  },
+  "carbon_fiber": {
+    "name": "Carbon Fiber",
+    "kind": "Element"
+  },
+  "cement": {
+    "name": "Cement",
+    "kind": "Element"
+  },
+  "cement_mix": {
+    "name": "Cement Mix",
+    "kind": "Element"
+  },
+  "ceramic": {
+    "name": "Ceramic",
+    "kind": "Element",
+    "description": "Ceramic is an advanced building material available in mid-game."
+  },
+  "cinnabar_ore": {
+    "name": "Cinnabar Ore",
+    "kind": "Element",
+    "description": "Cinnabar Ore is a Metal Ore found in the Ice Cave Biome. It is exclusive to the Frosty Planet DLC. It can be used to construct buildings that require Metal Ore, or it can be refined into Mercury."
+  },
+  "clay": {
+    "name": "Clay",
+    "kind": "Element",
+    "description": "Clay is one of the Resources in the game Oxygen Not Included."
+  },
+  "coal": {
+    "name": "Coal",
+    "kind": "Element",
+    "description": "Coal is a Consumable Ore found in the Temperate and Caustic Biomes. It can be used to create power using a Coal Generator. Most Hatch types produce Coal after consuming enough resources. The only one that does not is the Smooth Hatch."
+  },
+  "cobalt": {
+    "name": "Cobalt",
+    "kind": "Element",
+    "description": "Cobalt is a Refined Metal produced by processing with a Rock Crusher, Metal Refinery, or Smooth Hatches. Cobalt is also produced in its by Cobalt Volcanoes."
+  },
+  "cobalt_ore": {
+    "name": "Cobalt Ore",
+    "kind": "Element",
+    "description": "Cobalt Ore is a Metal Ore found in abundance in the Swampy Biome. It is used as a construction material and can be refined into pure ."
+  },
+  "copper": {
+    "name": "Copper",
+    "kind": "Element",
+    "description": "Copper is a Refined Metal and can be refined from Copper Ore."
+  },
+  "copper_ore": {
+    "name": "Copper Ore",
+    "kind": "Element",
+    "description": "Copper Ore is the Metal Ore of the Sandstone Biome. It is the only Metal Ore there, and can be considered the Metal Ore equivelent of ."
+  },
+  "coquina": {
+    "name": "Coquina",
+    "kind": "Element",
+    "description": "is a building material and can be found in the Reef Biome."
+  },
+  "corallium": {
+    "name": "Corallium",
+    "kind": "Element",
+    "description": "is an organic material found in the Reef Biome, the starting biome of the Marinea Asteroid or equivalent planetoid in Planetoid Clusters."
+  },
+  "corium": {
+    "name": "Corium",
+    "kind": "Element",
+    "description": "Corium is a radioactive mixture of reactor material and , which it will emit as an Element. It vaporizes into at"
+  },
+  "crushed_ice": {
+    "name": "Crushed Ice",
+    "kind": "Element",
+    "description": "Crushed Ice is a Water source. It is unstable and will fall down if not sitting on another tile or material."
+  },
+  "crushed_rock": {
+    "name": "Crushed Rock",
+    "kind": "Element",
+    "description": "Crushed Rock can be brought from Arid Planet space destination as a filler. It has not much use except for being fed to Hatches (or melted into in a similar way as )."
+  },
+  "depleted_uranium": {
+    "name": "Depleted Uranium",
+    "kind": "Element",
+    "description": "Depleted Uranium is a Solid, a byproduct of enriching Uranium in an Uranium Centrifuge."
+  },
+  "diamond": {
+    "name": "Diamond",
+    "kind": "Element",
+    "description": "Diamond is a generic building material that is only obtainable in the Oil Biome or the Abyss Biome, where it is present in a moderately limited quantity."
+  },
+  "dirt": {
+    "name": "Dirt",
+    "kind": "Element",
+    "description": "Dirt is an important type of agricultural resource. It's especially important in the early game for the Research Station and initial food sources via Mush Bars and Mealwood. In the late game, it is necessary to grow domestic Sleet Wheat and to manufacture Fertilizer. Dirt has a overheat modifier."
+  },
+  "electrum": {
+    "name": "Electrum",
+    "kind": "Element",
+    "description": "Electrum is a Metal Ore no longer available in current game."
+  },
+  "enriched_uranium": {
+    "name": "Enriched Uranium",
+    "kind": "Element",
+    "description": "Enriched Uranium is a Manufactured Material, produced by a Uranium Centrifuge or Beeta Hive from Uranium Ore."
+  },
+  "fertilizer": {
+    "name": "Fertilizer",
+    "kind": "Element",
+    "description": "Fertilizer is an Agriculture Resource. It is found in the Temperate Biome, in tiles of 50 kg around ."
+  },
+  "fossil": {
+    "name": "Fossil",
+    "kind": "Element",
+    "description": "Fossil is a Mineral that can be found at the bottom of the map in the Oil Biome in moderate quantities and in small amounts in the Ocean Biome. It can be used as a general construction material."
+  },
+  "frozen_brackene": {
+    "name": "Frozen Brackene",
+    "kind": "Element",
+    "description": "Frozen Brackene is the solid state of Brackene."
+  },
+  "frozen_mucin": {
+    "name": "Frozen Mucin",
+    "kind": "Element",
+    "description": "is the Solid state of . It is frozen from Mucin by cooling it down to (freezing point - 3 °C)."
+  },
+  "frozen_ovolene": {
+    "name": "Frozen Ovolene",
+    "kind": "Element",
+    "description": "is the Solid state of . It is frozen from Ovolene by cooling it down to (freezing point - 3 °C)."
+  },
+  "frozen_phyto_oil": {
+    "name": "Frozen Phyto Oil",
+    "kind": "Element"
+  },
+  "frozen_squid_ink": {
+    "name": "Frozen Squid Ink",
+    "kind": "Element",
+    "description": "is the Solid state of . It is frozen from Squid Ink by cooling it down to (freezing point - 3 °C)."
+  },
+  "fullerene": {
+    "name": "Fullerene",
+    "kind": "Element"
+  },
+  "galena": {
+    "name": "Galena",
+    "kind": "Element"
+  },
+  "genetic_ooze": {
+    "name": "Genetic Ooze",
+    "kind": "Element",
+    "description": "Genetic Ooze is the material that Duplicants, Plants, Seeds, Critters, Eggs, Data Bank, Artifacts and Food are made from. It is not intended to be obtained in its raw form, although is typically a symptom of in-game bugs; it is useful primarily for knowing how these items exchange heat with their environment."
+  },
+  "glass": {
+    "name": "Glass",
+    "kind": "Element",
+    "description": "Glass is a Manufactured Material. It is the solidified phase of Molten Glass, which is made in a Glass Forge, and forms once its temperature drops below the melting point."
+  },
+  "gold": {
+    "name": "Gold",
+    "kind": "Element",
+    "description": "Gold is a Refined Metal. It can be obtained by Refinement of Gold Amalgam."
+  },
+  "gold_amalgam": {
+    "name": "Gold Amalgam",
+    "kind": "Element",
+    "description": "Gold Amalgam is a Metal Ore found in the Marsh Biome in small to modest abundance. It is used as a specialist construction material and can be refined into pure Gold."
+  },
+  "granite": {
+    "name": "Granite",
+    "kind": "Element",
+    "description": "Granite is a Raw Mineral found in the \"Granite ring\" that surrounds the starting Temperate Biome or the Forest Biome. It is also found in the Frozen Biome, Oil Biome, and the Barren Biome. It can be used as a general construction material. A Duplicant must learn the Hard Digging Skill to dig Granite."
+  },
+  "graphite": {
+    "name": "Graphite",
+    "kind": "Element",
+    "description": "New element exclusive to Spaced Out DLC. It is used to craft in the Molecular Forge. It is found exclusively on the Water Asteroid in the bottom half of the planetoid."
+  },
+  "gum_wood": {
+    "name": "Gum Wood",
+    "kind": "Element",
+    "description": "is a type of lumber and an intermediary product in the production of ."
+  },
+  "ice": {
+    "name": "Ice",
+    "kind": "Element",
+    "description": "Ice is a water source found in the Frozen Biome."
+  },
+  "igneous_rock": {
+    "name": "Igneous Rock",
+    "kind": "Element",
+    "description": "Igneous rock is a Mineral found in abundance in the Caustic and Oil Biomes and in smaller quantities in the Frozen and Temperate Biomes. It can be used as a general construction material."
+  },
+  "insulite": {
+    "name": "Insulite",
+    "kind": "Element",
+    "description": "\"Insulation\" redirects here, for other uses, see , ,"
+  },
+  "iridium": {
+    "name": "Iridium",
+    "kind": "Element"
+  },
+  "iron": {
+    "name": "Iron",
+    "kind": "Element",
+    "description": "Iron is a Refined Metal produced by processing Iron Ore with a Rock Crusher, Metal Refinery, or Smooth Hatches. It can be obtained by making a trip to a Metallic Asteroid with a Cargo Bay. Iron is also produced in its Liquid phase by Iron Volcanoes. Iron has a overheat modifier."
+  },
+  "iron_ore": {
+    "name": "Iron Ore",
+    "kind": "Element",
+    "description": "Iron Ore is a Metal Ore found in abundance in the Caustic Biome and Oil Biome. It is used as a construction material and can be refined into pure Iron."
+  },
+  "isosap": {
+    "name": "Isosap",
+    "kind": "Element",
+    "description": "Isosap is a rare resource that can be acquired from Space Missions to destinations containing it with a Cargo Bay equipped. In Spaced Out it can be acquired by heating the Sap produced by Experiment 52B."
+  },
+  "lead": {
+    "name": "Lead",
+    "kind": "Element",
+    "description": "Lead is a Refined Metal naturally obtainable in the Oil Biome. Lead has a overheat modifier."
+  },
+  "lime": {
+    "name": "Lime",
+    "kind": "Element",
+    "description": "Lime is a Consumable Ore that is used in the production of , and must be processed from Egg Shells, Pokeshell Molts, or in a Rock Crusher."
+  },
+  "mafic_rock": {
+    "name": "Mafic Rock",
+    "kind": "Element",
+    "description": "Mafic Rock is a construction material that exists in the Space Biome and the Rust Biome. When Mafic Rock is heated to (melting point + 2 °C), it will turn into ."
+  },
+  "mud": {
+    "name": "Mud",
+    "kind": "Element",
+    "description": "Mud is a resource found in Swampy Biome on the starting asteroid. Similar to Sand, it is affected by Gravity and will fall down if the tile beneath it is mined."
+  },
+  "neutronium": {
+    "name": "Neutronium",
+    "kind": "Element",
+    "description": "Neutronium is a special type of resource, that can be found at the outer edges (between 150~200 blocks around the Printing Pod) and in a row of 4 tiles under each Geyser."
+  },
+  "nickel": {
+    "name": "Nickel",
+    "kind": "Element",
+    "description": "Nickel is a Refined Metal produced by processing with a Rock Crusher, Metal Refinery, or Smooth Hatches."
+  },
+  "nickel_ore": {
+    "name": "Nickel Ore",
+    "kind": "Element",
+    "description": "Nickel Ore is one of the Resources found in the Garden Biome."
+  },
+  "niobium": {
+    "name": "Niobium",
+    "kind": "Element",
+    "description": "Niobium is a Rare Refined Metal that can be acquired via space missions."
+  },
+  "obsidian": {
+    "name": "Obsidian",
+    "kind": "Element",
+    "description": "Obsidian is a Mineral found in the Barren Biome and Volcanic Biome, and infrequently in the Frozen and Caustic biomes. Maps with any of the Boulders World Trait have Obsidian boulders scattered randomly outside the starting area. It is also found in small amounts blocking Geysers. A Duplicant must learn the Superduperhard Digging skill to dig Obsidian, making it a significant impediment in the early game."
+  },
+  "oxylite": {
+    "name": "Oxylite",
+    "kind": "Element",
+    "description": "Oxylite is a Consumable Ore resource. It is a fictitious compound that does not exist in the real world (The listed formula being that of Iridium (III) Oxide). It sublimates into if its surface is uncovered, losing mass until it disappears. Oxylite will stop releasing Oxygen if submerged in liquid or if the atmospheric pressure reaches 1,800 g in adjacent tiles (or in its tile, if mined) but will preserve its mass until the pressure is reduced, at which point it will continue emitting Oxygen in exchange for mass again."
+  },
+  "packed_snow": {
+    "name": "Packed Snow",
+    "kind": "Element",
+    "description": "Packed Snow is a resource. It is what Snow Tiles are automatically made out of, as opposed to regular Snow since regular Snow will just fall. Its properties are the exact same as Snow, with the only difference being that it isn't unstable, unlike Snow."
+  },
+  "pearl": {
+    "name": "Pearl",
+    "kind": "Element"
+  },
+  "peat": {
+    "name": "Peat",
+    "kind": "Element",
+    "description": "Peat is a Consumable Ore found in the Garden Biome. It can be used to create power using a Peat Burner. Lumbs produce Peat after consuming enough resources."
+  },
+  "phosphate_nodules": {
+    "name": "Phosphate Nodules",
+    "kind": "Element",
+    "description": "Phosphate Nodules are an unused resource."
+  },
+  "phosphorite": {
+    "name": "Phosphorite",
+    "kind": "Element",
+    "description": "Phosphorite is an Agriculture resource naturally found in Jungle Biomes and the Reef Biome."
+  },
+  "plastic": {
+    "name": "Plastic",
+    "kind": "Element",
+    "description": "Plastic is an advanced building material. It is created either by using a Polymer Press to refine Plastic Monomers (Petroleum/Nectar/Resin), shearing Glossy Dreckos, or harvested from Tublia plants."
+  },
+  "plastium": {
+    "name": "Plastium",
+    "kind": "Element",
+    "description": "Plastium is an end-game heat-resistant building material."
+  },
+  "plywood": {
+    "name": "Plywood",
+    "kind": "Element",
+    "description": "Plywood is an alternative form of Wood that can be used as a substitute in recipes and the construction of buildings. It is exclusively obtained via the Plywood Press."
+  },
+  "polluted_brine_ice": {
+    "name": "Polluted Brine Ice",
+    "kind": "Element",
+    "description": "is the Solid state of . It is frozen from Polluted Brine by cooling it down to (freezing point )."
+  },
+  "polluted_dirt": {
+    "name": "Polluted Dirt",
+    "kind": "Element"
+  },
+  "polluted_ice": {
+    "name": "Polluted Ice",
+    "kind": "Element",
+    "description": "Polluted Ice is naturally obtainable in the Tundra Biome. It is the solid state of Polluted Water."
+  },
+  "polluted_mud": {
+    "name": "Polluted Mud",
+    "kind": "Element",
+    "description": "Polluted Mud can be found in Swampy Biome on the starting asteroid in Spaced Out."
+  },
+  "pyrite": {
+    "name": "Pyrite",
+    "kind": "Element",
+    "description": "Pyrite is resource found on Gilded Asteroid space destination. It's equivalent in parameters to Copper Ore and can be smelted into Iron."
+  },
+  "radium": {
+    "name": "Radium",
+    "kind": "Element",
+    "description": "Radium is an unused element. It was likely meant to be used in the Spaced Out DLC, but it was replaced by Uranium. It still exists in the game and can be accessed with the Cell Painter in Sandbox or Debug mode."
+  },
+  "refined_carbon": {
+    "name": "Refined Carbon",
+    "kind": "Element",
+    "description": "Refined Carbon is a Consumable Ore which is obtained through Refinement, or by Rocketry. It can be created from , , , or using the Kiln. It is used for the production of Steel inside the Metal Refinery."
+  },
+  "refined_phosphorus": {
+    "name": "Refined Phosphorus",
+    "kind": "Element",
+    "description": "Refined Phosphorus is a Consumable Ore. It does not spawn as tiles in the world, but rather must be processed from Phosphorite."
+  },
+  "regolith": {
+    "name": "Regolith",
+    "kind": "Element",
+    "description": "Regolith is a filtration medium that is primarily found in the Space Biome and the Regolith Biome on the Regolith Asteroid and in small amounts around Crashed Satellites and on the Moo Asteroid. It is also brought by Meteor Showers."
+  },
+  "rubber": {
+    "name": "Rubber",
+    "kind": "Element",
+    "description": "is an insulator that is used to fabricate watertight equipment and advanced electrical cables."
+  },
+  "rust": {
+    "name": "Rust",
+    "kind": "Element",
+    "description": "Rust is a Consumable Ore, available in the Rust Biome."
+  },
+  "salt": {
+    "name": "Salt",
+    "kind": "Element",
+    "description": "Salt is Consumable Ore found in Ocean Biome, Rust Biome, and Beach Biome. When refined to Table Salt, it can be eaten with meals to increase Duplicant Morale by 1."
+  },
+  "sand": {
+    "name": "Sand",
+    "kind": "Element",
+    "description": "Sand is a filtration medium that exists predominantly in the Sandstone Biome and Ocean Biome."
+  },
+  "sand_cement": {
+    "name": "Sand Cement",
+    "kind": "Element"
+  },
+  "sandstone": {
+    "name": "Sandstone",
+    "kind": "Element",
+    "description": "Sandstone is one of the first materials someone will encounter. It is a Raw Mineral mostly found in the Sandstone Biome, the starting biome of Terra Asteroid or equivalent planetoid in Planetoid Clusters. Sandstone can be used in construction or as food for hatches."
+  },
+  "sedimentary_rock": {
+    "name": "Sedimentary Rock",
+    "kind": "Element",
+    "description": "Sedimentary Rock is a Mineral found in modest amounts in Swamp Biome and Ocean Biome. It can be used as a general construction material. Sedimentary Rock as food for Hatches increases the chance to produce a Stone Hatch Egg."
+  },
+  "shale": {
+    "name": "Shale",
+    "kind": "Element",
+    "description": "Shale is a Mineral found in the Garden Biome. It can be used as a general construction material."
+  },
+  "siltstone": {
+    "name": "Siltstone",
+    "kind": "Element",
+    "description": "is a Raw Mineral that can be found in the Beach Biome."
+  },
+  "slime": {
+    "name": "Slime",
+    "kind": "Element",
+    "description": "Slime is a resource found mostly in the Swamp Biome and in planetoids with the Slime Molds World Trait."
+  },
+  "snow": {
+    "name": "Snow",
+    "kind": "Element",
+    "description": "Snow is a water source found in the Frozen Biome. It is unstable and will fall down if not sitting on another tile or material."
+  },
+  "solid_carbon_dioxide": {
+    "name": "Solid Carbon Dioxide",
+    "kind": "Element",
+    "description": "Solid Carbon Dioxide is the solid state of Carbon Dioxide. It is converted from Liquid Carbon Dioxide by cooling it down to (freezing point - 3 °C)."
+  },
+  "solid_chlorine": {
+    "name": "Solid Chlorine",
+    "kind": "Element",
+    "description": "Solid Chlorine is the Solid state of Chlorine element."
+  },
+  "solid_crude_oil": {
+    "name": "Solid Crude Oil",
+    "kind": "Element",
+    "description": "Solid Crude Oil is the Solid state of Crude Oil."
+  },
+  "solid_ethanol": {
+    "name": "Solid Ethanol",
+    "kind": "Element",
+    "description": "Solid Ethanol is the Solid state of Ethanol."
+  },
+  "solid_gunk": {
+    "name": "Solid Gunk",
+    "kind": "Element"
+  },
+  "solid_hydrogen": {
+    "name": "Solid Hydrogen",
+    "kind": "Element",
+    "description": "Solid Hydrogen is the Solid state of Hydrogen."
+  },
+  "solid_mercury": {
+    "name": "Solid Mercury",
+    "kind": "Element",
+    "description": "Solid Mercury is a Solid Refined Metal fit for use in extremely cold environments."
+  },
+  "solid_methane": {
+    "name": "Solid Methane",
+    "kind": "Element",
+    "description": "Solid Methane is the Solid state of Methane."
+  },
+  "solid_naphtha": {
+    "name": "Solid Naphtha",
+    "kind": "Element",
+    "description": "Solid Naphtha is the Solid state of Naphtha."
+  },
+  "solid_nuclear_waste": {
+    "name": "Solid Nuclear Waste",
+    "kind": "Element",
+    "description": "Solid Nuclear Waste is a highly toxic solid full of radioactive contaminants. It melts into Nuclear Waste at ."
+  },
+  "solid_oxygen": {
+    "name": "Solid Oxygen",
+    "kind": "Element",
+    "description": "Solid Oxygen is the Solid state of Oxygen element."
+  },
+  "solid_petroleum": {
+    "name": "Solid Petroleum",
+    "kind": "Element"
+  },
+  "solid_propane": {
+    "name": "Solid Propane",
+    "kind": "Element",
+    "description": "Solid Propane is an unused material and can only be obtained through the debug/sandbox mode."
+  },
+  "solid_resin": {
+    "name": "Solid Resin",
+    "kind": "Element"
+  },
+  "solid_sap": {
+    "name": "Solid Sap",
+    "kind": "Element"
+  },
+  "solid_super_coolant": {
+    "name": "Solid Super Coolant",
+    "kind": "Element",
+    "description": "Solid Super Coolant is the Solid state of Super Coolant."
+  },
+  "solid_synthesis_gas": {
+    "name": "Solid Synthesis Gas",
+    "kind": "Element",
+    "description": "Solid Synthesis Gas is an unused resource."
+  },
+  "solid_visco_gel": {
+    "name": "Solid Visco-Gel",
+    "kind": "Element",
+    "description": "Solid Visco-Gel is the Solid state of Visco-Gel, it can be used as a Plastics for buildings."
+  },
+  "steel": {
+    "name": "Steel",
+    "kind": "Element",
+    "description": "Steel is a mid game building material produced in Metal Refinery. It is mainly used in extreme environments such as in the Space Biome."
+  },
+  "sucrose": {
+    "name": "Sucrose",
+    "kind": "Element"
+  },
+  "sulfur": {
+    "name": "Sulfur",
+    "kind": "Element",
+    "description": "Sulfur is a byproduct of cooling down into . Sulfur can be found in warm variants of Rust Biome. In Spaced Out it is a key resource for the plants and critters in the Wasteland Biome."
+  },
+  "tallow": {
+    "name": "Tallow",
+    "kind": "Element",
+    "description": "A chunk of raw grease that can be used in Food production or industrial processes."
+  },
+  "thermium": {
+    "name": "Thermium",
+    "kind": "Element",
+    "description": "Thermium is a manufactured material with excellent thermal conductivity."
+  },
+  "tungsten": {
+    "name": "Tungsten",
+    "kind": "Element",
+    "description": "Tungsten is a Refined Metal obtained by melting or refining . It has the highest melting point of any Refined Metal and the third-highest of any buildable material (after Insulite and Diamond)."
+  },
+  "unreleased_content": {
+    "name": "Unreleased Content",
+    "kind": "Element",
+    "description": "There is a large amount of unreleased content for Oxygen Not Included. Some of these can occasionally be reached in game (such as Refined Metals), but many of them are only hinted at in the files, art assets, or developer streams."
+  },
+  "uranium_ore": {
+    "name": "Uranium Ore",
+    "kind": "Element",
+    "description": "Uranium Ore is a Metal Ore found in the Radioactive Biome."
+  },
+  "wolframite": {
+    "name": "Wolframite",
+    "kind": "Element",
+    "description": "Wolframite is a Metal Ore that can be found in the Frozen Biome. It has the highest melting point of any metal ore, but provides no bonus to overheat temperature."
+  },
+  "wood": {
+    "name": "Wood",
+    "kind": "Element",
+    "description": "Wood can be harvested from Arbor Trees or Floxes, and by crushing the Molts of Oakshells, or by other natural sources."
+  },
+  "yellowcake": {
+    "name": "Yellowcake",
+    "kind": "Element"
+  },
+  "zinc": {
+    "name": "Zinc",
+    "kind": "Element",
+    "description": "is a Refined Metal produced by processing with a Rock Crusher, Metal Refinery, or Smooth Hatches."
+  },
+  "zinc_ore": {
+    "name": "Zinc Ore",
+    "kind": "Element",
+    "description": "is a Metal Ore found in the Beach and Reef Biomes."
+  },
+  "gas": {
+    "name": "Gas",
+    "kind": "Element",
+    "description": "Gases are substances that expand to fill their container."
+  },
+  "aluminum_gas": {
+    "name": "Aluminum Gas",
+    "kind": "Element",
+    "description": "Aluminum Gas is the Gas state of Aluminum. It has no use."
+  },
+  "atmospheric_pressure": {
+    "name": "Atmospheric Pressure",
+    "kind": "Element",
+    "description": "Atmospheric Pressure is based on the amount, mass, and type of gas filling a space at a time."
+  },
+  "breathable_gas": {
+    "name": "Breathable Gas",
+    "kind": "Element",
+    "description": "These gases will allow Duplicants to breathe."
+  },
+  "carbon_dioxide": {
+    "name": "Carbon Dioxide",
+    "kind": "Element",
+    "description": "Carbon Dioxide is a common gas resource. It is exhaled by Duplicants and occurs naturally in almost all Biomes. It is heavier than most other gases and will sink to the lowest elevation if lighter gases are present."
+  },
+  "carbon_gas": {
+    "name": "Carbon Gas",
+    "kind": "Element",
+    "description": "Gas Carbon is the Gas state of carbon element."
+  },
+  "chlorine_gas": {
+    "name": "Chlorine Gas",
+    "kind": "Element",
+    "description": "Chlorine is a gas found naturally occurring in the map. It is the second highest density gas after at room temperature. Chlorine is a great deterrent against germs, and the best possible heat insulator among gases."
+  },
+  "cobalt_gas": {
+    "name": "Cobalt Gas",
+    "kind": "Element",
+    "description": "Gas Cobalt is the gaseous state of the Cobalt element."
+  },
+  "copper_gas": {
+    "name": "Copper Gas",
+    "kind": "Element",
+    "description": "Gas Copper is the gas state of Copper element."
+  },
+  "ethanol_gas": {
+    "name": "Ethanol Gas",
+    "kind": "Element",
+    "description": "Gas Ethanol is the gas state of Ethanol. It is heavier than most common gasses, including Carbon Dioxide."
+  },
+  "gold_gas": {
+    "name": "Gold Gas",
+    "kind": "Element",
+    "description": "Gas Gold is the Gas state of Gold element."
+  },
+  "helium": {
+    "name": "Helium",
+    "kind": "Element",
+    "description": "Helium is an unused element, as can be seen in the gas.yaml file found in \\StreamingAssets\\elements which lists Helium as isDisabled: true."
+  },
+  "hydrogen_gas": {
+    "name": "Hydrogen Gas",
+    "kind": "Element",
+    "description": "Hydrogen Gas is one of the Resources in the game Oxygen Not Included. It is an unbreathable Gas that is extremely light and will rise above all other gases. This means that it will settle at the top of rooms and other open areas."
+  },
+  "iridium_gas": {
+    "name": "Iridium Gas",
+    "kind": "Element",
+    "description": "Iridium Gas is the Gas state of Iridium. It is produced by heating Molten Iridium up to (melting point + 3 °C)."
+  },
+  "iron_gas": {
+    "name": "Iron Gas",
+    "kind": "Element",
+    "description": "Gas Iron is the Gas state of Iron element."
+  },
+  "lead_gas": {
+    "name": "Lead Gas",
+    "kind": "Element",
+    "description": "Gas Lead is the Gas state of Lead element."
+  },
+  "mercury_gas": {
+    "name": "Mercury Gas",
+    "kind": "Element",
+    "description": "Gas Mercury is the Gas state of Mercury element."
+  },
+  "natural_gas": {
+    "name": "Natural Gas",
+    "kind": "Element",
+    "description": "Natural Gas is an unbreathable, relatively heavy gas, which sinks below but rises above and ."
+  },
+  "nickel_gas": {
+    "name": "Nickel Gas",
+    "kind": "Element",
+    "description": "Nickel Gas is the Gas state of Nickel. It is produced by heating Molten Nickel up to (melting point + 3 °C)."
+  },
+  "niobium_gas": {
+    "name": "Niobium Gas",
+    "kind": "Element",
+    "description": "Gas Niobium is the Gas state of Niobium element."
+  },
+  "nuclear_fallout": {
+    "name": "Nuclear Fallout",
+    "kind": "Element",
+    "description": "Nuclear Fallout is a highly toxic gas full of radioactive contaminants. It is formed in a reactor meltdown or as the exhaust of a rocket with a Radbolt Engine. It condenses into Nuclear Waste."
+  },
+  "oxygen": {
+    "name": "Oxygen",
+    "kind": "Element",
+    "description": "Oxygen, also known as O2, is one of the Resources in the game Oxygen Not Included. It is a Breathable Gas and required by Duplicants to survive. It can be produced by machines, such as the Oxygen Diffuser, Electrolyzer, Rust Deoxidizer, filtered from by Deodorizers or cooling to liquid form, or a small amount created by the Algae Terrarium.",
+    "rowspan": "2|"
+  },
+  "phosphorus_gas": {
+    "name": "Phosphorus Gas",
+    "kind": "Element",
+    "description": "Gas Phosphorus is the Gas state of Refined Phosphorus element."
+  },
+  "polluted_oxygen": {
+    "name": "Polluted Oxygen",
+    "kind": "Element",
+    "description": "Polluted Oxygen is a gas resource. Polluted Oxygen is breathable and works similarly to , allowing Duplicants to survive. However, it also acts as the primary vector of transmission for Slimelung germs and can just as easily spread Food Poisoning germs. Polluted Oxygen can be found in the world naturally in the Swamp Biome."
+  },
+  "propane_gas": {
+    "name": "Propane Gas",
+    "kind": "Element",
+    "description": "Propane Gas is currently unused and can only be obtained using the debug/sandbox mode."
+  },
+  "rock_gas": {
+    "name": "Rock Gas",
+    "kind": "Element",
+    "description": "* Magma is heated above (vaporization point + 3 °C)."
+  },
+  "salt_gas": {
+    "name": "Salt Gas",
+    "kind": "Element"
+  },
+  "sour_gas": {
+    "name": "Sour Gas",
+    "kind": "Element",
+    "description": "Sour Gas is an intermediary oil product, that can occasionally be found in the Oil Biome when there is a heat leakage from Magma Biome."
+  },
+  "steam": {
+    "name": "Steam",
+    "kind": "Element",
+    "description": "Steam is the Gas state of Water, and can therefore be created by heating various types of Water above a critical temperature. Steam is denser than Oxygen or Natural Gas, but lighter than Sour Gas and Chlorine."
+  },
+  "steel_gas": {
+    "name": "Steel Gas",
+    "kind": "Element"
+  },
+  "sulfur_gas": {
+    "name": "Sulfur Gas",
+    "kind": "Element"
+  },
+  "super_coolant_gas": {
+    "name": "Super Coolant Gas",
+    "kind": "Element",
+    "description": "Gas Super Coolant is the Gas state of Super Coolant."
+  },
+  "synthesis_gas": {
+    "name": "Synthesis Gas",
+    "kind": "Element",
+    "description": "Synthesis Gas is a Gas only available in debug mode."
+  },
+  "tungsten_gas": {
+    "name": "Tungsten Gas",
+    "kind": "Element",
+    "description": "Gas Tungsten is the Gas state of Tungsten element."
+  },
+  "zinc_gas": {
+    "name": "Zinc Gas",
+    "kind": "Element",
+    "description": "is the Gas state of . It is vaporized from by heating it up to (vaporization point + 3 °C)."
+  },
+  "biodiesel": {
+    "name": "Biodiesel",
+    "kind": "Element",
+    "description": "Biodiesel is a Liquid composed of highly processed fatty acids from purified natural oils."
+  },
+  "brackene": {
+    "name": "Brackene",
+    "kind": "Element",
+    "description": "Brackene is a late-game liquid Resource useful for Ranching purposes and required to produce , an advanced intermediate product."
+  },
+  "brine": {
+    "name": "Brine",
+    "kind": "Element",
+    "description": "Brine is a source of and . It is naturally obtainable in low temperature areas of the Ocean Biome."
+  },
+  "crude_oil": {
+    "name": "Crude Oil",
+    "kind": "Element",
+    "description": "Crude Oil is one of the Resources in Oxygen Not Included. It is heavier than , , and and will sink if in a pool with these Liquids."
+  },
+  "ethanol": {
+    "name": "Ethanol",
+    "kind": "Element",
+    "description": "Ethanol is a liquid fuel refined from Wood. It also appears naturally in Rust Biome and Cool Pool Biome. It can be used as a Power source."
+  },
+  "gunk": {
+    "name": "Gunk",
+    "kind": "Element",
+    "description": "Gunk is a liquid produced by Bionic Duplicants."
+  },
+  "latex": {
+    "name": "Latex",
+    "kind": "Element",
+    "description": "is an liquid intermediary product used in the production of ."
+  },
+  "liquid_carbon": {
+    "name": "Liquid Carbon",
+    "kind": "Element",
+    "description": "Liquid Carbon is the Liquid state of carbon element."
+  },
+  "liquid_carbon_dioxide": {
+    "name": "Liquid Carbon Dioxide",
+    "kind": "Element",
+    "description": "Liquid Carbon Dioxide is the liquid state of Carbon Dioxide. It is converted from Carbon Dioxide by cooling it down to (condensation point - 3 °C)."
+  },
+  "liquid_chlorine": {
+    "name": "Liquid Chlorine",
+    "kind": "Element",
+    "description": "Liquid Chlorine is the Liquid state of Chlorine element. It is converted from Chlorine by cooling it down to (condensation point - 3 °C)."
+  },
+  "liquid_helium": {
+    "name": "Liquid Helium",
+    "kind": "Element",
+    "description": "Liquid Helium is currently unused and can only be obtained through debug mode."
+  },
+  "liquid_hydrogen": {
+    "name": "Liquid Hydrogen",
+    "kind": "Element",
+    "description": "Liquid Hydrogen is the Liquid state of Hydrogen. It is obtained by cooling Hydrogen down to (condensation point - 3 °C)."
+  },
+  "liquid_methane": {
+    "name": "Liquid Methane",
+    "kind": "Element",
+    "description": "Methane is liquid made from condensing Natural Gas."
+  },
+  "liquid_naphtha": {
+    "name": "Liquid Naphtha",
+    "kind": "Element",
+    "description": "Naphtha is a waste product resulting from melting Plastic at (melting point ), Isosap at (melting point +3°C. in ) or Visco-Gel at (melting point +3°C). It has a 1:1 conversion-ratio."
+  },
+  "liquid_nuclear_waste": {
+    "name": "Liquid Nuclear Waste",
+    "kind": "Element",
+    "description": "Liquid Nuclear Waste is a highly toxic liquid full of radioactive contaminant. It emits radiation proportional to the mass of the waste. It vaporizes into at and solidifies into . Unless pressurized up to above before freezing, it will freeze as debris rather than form a solid tile."
+  },
+  "liquid_oxygen": {
+    "name": "Liquid Oxygen",
+    "kind": "Element"
+  },
+  "liquid_phosphorus": {
+    "name": "Liquid Phosphorus",
+    "kind": "Element",
+    "description": "Liquid Phosphorus is the liquid state of Refined Phosphorus element and the melting form of Phosphorite."
+  },
+  "liquid_propane": {
+    "name": "Liquid Propane",
+    "kind": "Element",
+    "description": "Liquid Propane is an unused material and can only be obtained through the debug/sandbox mode."
+  },
+  "liquid_sucrose": {
+    "name": "Liquid Sucrose",
+    "kind": "Element",
+    "description": "Liquid sucrose is the result of melting Sucrose"
+  },
+  "liquid_sulfur": {
+    "name": "Liquid Sulfur",
+    "kind": "Element",
+    "description": "Liquid Sulfur is the Liquid state of Sulfur element."
+  },
+  "liquid_uranium": {
+    "name": "Liquid Uranium",
+    "kind": "Element",
+    "description": "Liquid Uranium is the Liquid state of Uranium element. It is melted from Depleted Uranium or Uranium Ore when heated to or from Enriched Uranium heated to ."
+  },
+  "magma": {
+    "name": "Magma",
+    "kind": "Element",
+    "description": "Magma is found in the Magma Biome, most likely at the bottom end of the map, and produced by Volcanoes and Minor Volcanoes. Its high temperature can cause problems but also can provide processing opportunities. Handle with care."
+  },
+  "mercury": {
+    "name": "Mercury",
+    "kind": "Element",
+    "description": "Mercury is a metallic Liquid. It is particularly useful as a thermal conductor."
+  },
+  "molten_aluminum": {
+    "name": "Molten Aluminum",
+    "kind": "Element",
+    "description": "Molten Aluminum is the Liquid state of Aluminum element."
+  },
+  "molten_cobalt": {
+    "name": "Molten Cobalt",
+    "kind": "Element",
+    "description": "Liquid Cobalt is the Liquid state of Cobalt element. It is melted from Cobalt by heating it up to (melting point + 2 °C)."
+  },
+  "molten_copper": {
+    "name": "Molten Copper",
+    "kind": "Element",
+    "description": "Molten Copper is the liquid state of Copper element. It is melted from Copper by heating it up to (melting point + 3 °C)."
+  },
+  "molten_glass": {
+    "name": "Molten Glass",
+    "kind": "Element",
+    "description": "Molten Glass is the Liquid state of Glass. It is produced by the Glass Forge at ."
+  },
+  "molten_gold": {
+    "name": "Molten Gold",
+    "kind": "Element",
+    "description": "Liquid Gold is the Liquid state of Gold element. It is melted from Gold or Gold Amalgam when heating them up to (melting point + 3 °C)."
+  },
+  "molten_iridium": {
+    "name": "Molten Iridium",
+    "kind": "Element",
+    "description": "Molten Iridium is the Liquid state of Iridium. It is produced by heating Iridium up to (melting point + 3 °C)."
+  },
+  "molten_iron": {
+    "name": "Molten Iron",
+    "kind": "Element",
+    "description": "Liquid Iron is the Liquid state of Iron element. It is melted from Iron by heating it up to (melting point + 3 °C)."
+  },
+  "molten_lead": {
+    "name": "Molten Lead",
+    "kind": "Element",
+    "description": "Molten Lead is the Liquid state of Lead element."
+  },
+  "molten_nickel": {
+    "name": "Molten Nickel",
+    "kind": "Element",
+    "description": "Molten Nickel is the Liquid state of Nickel. It is produced by heating Nickel up to (melting point + 3 °C)."
+  },
+  "molten_niobium": {
+    "name": "Molten Niobium",
+    "kind": "Element",
+    "description": "Liquid Niobium is the liquid form of Niobium. If it is heated any more it may become Gas Niobium."
+  },
+  "molten_salt": {
+    "name": "Molten Salt",
+    "kind": "Element"
+  },
+  "molten_steel": {
+    "name": "Molten Steel",
+    "kind": "Element",
+    "description": "Liquid Steel is the Liquid state of Steel. It has the highest thermal conductivity and largest thermal range of any liquid, making it ideal for complex high-temperature processing."
+  },
+  "molten_synthesis_gas": {
+    "name": "Molten Synthesis Gas",
+    "kind": "Element",
+    "description": "Molten Synthesis Gas is an unused resource."
+  },
+  "molten_tungsten": {
+    "name": "Molten Tungsten",
+    "kind": "Element",
+    "description": "Liquid Tungsten is the Liquid state of Tungsten. It has the highest boiling point of all Liquids."
+  },
+  "molten_zinc": {
+    "name": "Molten Zinc",
+    "kind": "Element",
+    "description": "is the Liquid state of . It is melted from Zinc by heating it up to (melting point + 3 °C)."
+  },
+  "mucin": {
+    "name": "Mucin",
+    "kind": "Element",
+    "description": "is a viscous gel produced by Slogos that can be used as a substitute."
+  },
+  "nectar": {
+    "name": "Nectar",
+    "kind": "Element",
+    "description": "Nectar is an organic liquid only produced by Bonbon Trees. It can be used in the production of Plastic, Ethanol and Sucrose."
+  },
+  "ovolene": {
+    "name": "Ovolene",
+    "kind": "Element",
+    "description": "is a liquid intermediary product made by Seaquines."
+  },
+  "petroleum": {
+    "name": "Petroleum",
+    "kind": "Element",
+    "description": "Petroleum is a late game, powerful fuel for Power generation and Rocket engines. It stacks up to 740 kg/tile when not pressurized."
+  },
+  "phyto_oil": {
+    "name": "Phyto Oil",
+    "kind": "Element",
+    "description": "Phyto Oil is a Liquid produced at a Plant Pulverizer used as lubricant and creating Biodiesel. It turns to Algae and Carbon Dioxide when heated."
+  },
+  "polluted_brine": {
+    "name": "Polluted Brine",
+    "kind": "Element",
+    "description": "is a source of and . It is naturally found in abundance in the Abyss Biome."
+  },
+  "polluted_water": {
+    "name": "Polluted Water",
+    "kind": "Element",
+    "description": "Polluted Water is the most common naturally occurring liquid on most asteroids, especially in the Swamp Biome. It also fills caves with Polluted Oxygen. Polluted Ice in the Frozen Biomes will also start melting into cold puddles of Polluted Water once they are breached."
+  },
+  "resin": {
+    "name": "Resin",
+    "kind": "Element",
+    "description": "Resin is an organic liquid that can be transformed into Plastic."
+  },
+  "salt_water": {
+    "name": "Salt Water",
+    "kind": "Element",
+    "description": "Salt Water is a source of Water and Salt. It is naturally obtainable in Ocean Biome."
+  },
+  "sap": {
+    "name": "Sap",
+    "kind": "Element"
+  },
+  "squid_ink": {
+    "name": "Squid Ink",
+    "kind": "Element"
+  },
+  "super_coolant": {
+    "name": "Super Coolant",
+    "kind": "Element",
+    "description": "Super Coolant is a special liquid with the lowest freezing point (), a high boiling point, the highest Specific Heat Capacity (8.440 (DTU/g)/°C) and a very high Thermal Conductivity."
+  },
+  "visco_gel_fluid": {
+    "name": "Visco-Gel Fluid",
+    "kind": "Element",
+    "description": "is a special liquid which does not flow horizontally like normal liquids when stacked on top of another tile with ."
+  },
+  "water": {
+    "name": "Water",
+    "kind": "Element",
+    "description": "Water, also known as H20, is one of the most important Resources in the game. Water is necessary for making food and supplying but does not need to be directly consumed by Duplicants for survival, contrary to what its description suggests."
+  }
+}

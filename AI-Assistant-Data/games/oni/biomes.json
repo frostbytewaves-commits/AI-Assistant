@@ -1,0 +1,112 @@
+{
+  "aquatic_biome": {
+    "name": "Aquatic Biome",
+    "kind": "Biome",
+    "description": "The is a Biome that contains large quantities of , along with some special materials like and . It is a unique biome that can only be found on the Water Asteroid."
+  },
+  "barren_biome": {
+    "name": "Barren Biome",
+    "kind": "Biome",
+    "description": "The contains large quantities of , and both and . Beyond this; it does live up to its namesake as there is no living creatures here."
+  },
+  "cool_pool_biome": {
+    "name": "Cool Pool Biome",
+    "kind": "Biome",
+    "description": "The is a frigid Biome with large amounts of and"
+  },
+  "forest_biome": {
+    "name": "Forest Biome",
+    "kind": "Biome",
+    "description": "The is the starting Biome in several Asteroid Types and Planetoids. Compared to the Sandstone Biome, the is much drier with fewer deposits of ."
+  },
+  "ice_cave_biome": {
+    "name": "Ice Cave Biome",
+    "kind": "Biome",
+    "description": "The is a frigid Biome and the starting biome of every Ceres start. It also has the highest content of all 4 starting biomes, albeit in the form of and ."
+  },
+  "jungle_biome": {
+    "name": "Jungle Biome",
+    "kind": "Biome",
+    "description": "The , also known as The Caustic Biome, is a hot biome with no source of breathable air. A Cool Steam Vent is often spawned here (depending on the asteroid)."
+  },
+  "magma_biome": {
+    "name": "Magma Biome",
+    "kind": "Biome",
+    "description": "The is an extremely hot biome often filled with , as the name would imply. It is often found in an asteroid's core at the bottom of the map; but may also spawn elsewhere due to World Traits like Magma Channels and Volcanic Activity, or as part of an Asteroids gimmick like Flipped Asteroid or Blasted Ceres Asteroid."
+  },
+  "marsh_biome": {
+    "name": "Marsh Biome",
+    "kind": "Biome",
+    "description": "The , also known as the Swamp Biome (not to be confused with the Swampy Biome from Spaced Out!) is a warm and volatile Biome filled with , , and . Most of the slime is infested with Slimelung."
+  },
+  "metallic_biome": {
+    "name": "Metallic Biome",
+    "kind": "Biome",
+    "description": "The is a Biome that provides an abundance of Metal Ores; notably including ."
+  },
+  "moo_biome": {
+    "name": "Moo Biome",
+    "kind": "Biome",
+    "description": "The is a cold Biome that contains large amounts of and . Gas Grass and Gassy Moos can also be found here, and are exclusive to this biome. It can only be found on the Moo Asteroid."
+  },
+  "nectar_biome": {
+    "name": "Nectar Biome",
+    "kind": "Biome",
+    "description": "The is an extremely cold Biome and contains a source of which can be used to produce ."
+  },
+  "niobium_biome": {
+    "name": "Niobium Biome",
+    "kind": "Biome",
+    "description": "The is an extremely hot Biome exclusively found on the Superconductive Asteroid and containing no plants or critters. It contains veins of encased in ."
+  },
+  "ocean_biome": {
+    "name": "Ocean Biome",
+    "kind": "Biome",
+    "description": "The , also known as the Tide Pool Biome, is a warm Biome with large amounts of , , and . There is no Metal Ore in this biome."
+  },
+  "oily_biome": {
+    "name": "Oily Biome",
+    "kind": "Biome",
+    "description": "The is a hot Biome with large amounts of , , and . It contains the only renewable sources of Crude Oil. Its also highly dangerous; as the temperature is hot enough to scald Duplicants and Sporechids generate Zombie Spores which can cripple a dupe for several cycles."
+  },
+  "radioactive_biome": {
+    "name": "Radioactive Biome",
+    "kind": "Biome",
+    "description": "The is a cold Biome mainly composed of , and . Also includes Beetas, Wheezeworts, Saturn Critter Traps, and Tranquil Toes."
+  },
+  "regolith_biome": {
+    "name": "Regolith Biome",
+    "kind": "Biome",
+    "description": "The is exclusively found on the Regolith Asteroid and, as the name would suggest, contains large amounts of . Outside of classic starts this is also the only place where Shove Voles can be found, although they can be found in care packages after cycle 500 whether they were discovered before or not."
+  },
+  "rust_biome": {
+    "name": "Rust Biome",
+    "kind": "Biome",
+    "description": "The is a cold Biome filled with and . It also contains Nosh Sprouts and Dasha Saltvines; which are both exclusive to this biome."
+  },
+  "sandstone_biome": {
+    "name": "Sandstone Biome",
+    "kind": "Biome",
+    "description": "The is the starting Biome on several Asteroids and Planetoid Clusters. It contains rich resources to help Duplicants survive in the early game."
+  },
+  "space_biome": {
+    "name": "Space Biome",
+    "kind": "Biome",
+    "description": "The Space Biome is at the top of every map where Liquids and Gases are quickly destroyed due to space exposure at a rate of for liquids and for gases."
+  },
+  "swampy_biome": {
+    "name": "Swampy Biome",
+    "kind": "Biome",
+    "description": "The one of the possible starting Biomes. Despite the heavy presence of polluted materials there is a complete lack of germs, unlike the Marsh Biome. While there is a lack of fresh ; using a Water Sieve can convert the copious amounts of into it. Pacu and Plug Slugs are also found here."
+  },
+  "tundra_biome": {
+    "name": "Tundra Biome",
+    "kind": "Biome",
+    "description": "The sub-zero temperatures of the provide large frozen deposits of and , and rare deposits of ."
+  },
+  "wasteland_biome": {
+    "name": "Wasteland Biome",
+    "kind": "Biome",
+    "description": "The is a temperate Biome and one of the few with a diverse selection of Raw Mineral. Divergents and Grubfruit Plants are found here."
+  }
+}
