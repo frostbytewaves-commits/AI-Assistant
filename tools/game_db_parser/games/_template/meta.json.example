@@ -1,0 +1,13 @@
+{
+  "parser": "my_game",
+  "collections": {
+    "entities": {
+      "file": "entities.json",
+      "description_ru": "Персонажи, NPC, враги"
+    },
+    "items": {
+      "file": "items.json",
+      "description_ru": "Предметы, крафт, лут"
+    }
+  }
+}

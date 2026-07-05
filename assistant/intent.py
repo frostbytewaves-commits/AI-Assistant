@@ -1,0 +1,411 @@
+"""Route user requests through an LLM instead of long keyword lists."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from .screen_context import ScreenContext
+
+
+@dataclass
+class QueryIntent:
+    needs_screen: bool
+    needs_web: bool
+    pipeline: str  # vision_answer | vision_then_text | text_only
+    focus: str  # crosshair | hud | scene | none
+    hint: str = ""
+
+    @classmethod
+    def fallback_in_game(cls, question: str) -> "QueryIntent":
+        return cls(
+            needs_screen=True,
+            needs_web=False,
+            pipeline="vision_then_text",
+            focus="crosshair",
+            hint=question[:120],
+        )
+
+    @classmethod
+    def fallback_text(cls, question: str) -> "QueryIntent":
+        return cls(
+            needs_screen=False,
+            needs_web=False,
+            pipeline="text_only",
+            focus="none",
+            hint=question[:120],
+        )
+
+    @classmethod
+    def screen_describe(cls, question: str = "") -> "QueryIntent":
+        return cls(
+            needs_screen=True,
+            needs_web=True,
+            pipeline="vision_answer",
+            focus="scene",
+            hint=(question[:120] if question else "Analyze the attached screenshot"),
+        )
+
+    @classmethod
+    def force_screen(cls, question: str) -> "QueryIntent":
+        return cls(
+            needs_screen=True,
+            needs_web=False,
+            pipeline="vision_then_text",
+            focus="scene",
+            hint=question[:120],
+        )
+
+
+ROUTER_SYSTEM = (
+    "You are a routing model for a universal AI assistant running on the user's computer. "
+    "Given the user's question, decide whether the assistant needs the current screen "
+    "and whether it needs web search. Reply ONLY with one JSON object, no Markdown or explanation."
+)
+
+ROUTER_USER_TEMPLATE = """Context: {context}
+User question: {question}
+
+JSON fields:
+- needs_screen (bool): whether a screenshot of the current screen is needed.
+- needs_web (bool): whether web search is needed for fresh data, prices, versions, news, websites, rare facts, or screen-based identification.
+- pipeline (str): "text_only" | "vision_answer" | "vision_then_text"
+- focus (str): "crosshair" | "hud" | "scene" | "none"
+- hint (str): one short sentence describing what the user wants.
+
+Rules:
+- needs_screen=true when the question is about what is visible right now: "what is on screen", "who is this", "what is this", "here", "in the crosshair", "in front of me", HUD, a window, an image, or an on-screen error.
+- needs_screen=true when the user asks what to play / which game to choose while a game launcher or library may be on screen; visible library contents are important context.
+- needs_screen=false for general questions, explanations, planning, programming, math, history, advice, recipes, or reference questions that do not depend on the current screen.
+- needs_screen=false for generic game how-to ("how do I get XP", "best farm", "how to build") unless the user mentions the screen, crosshair, or what they see now.
+- needs_screen=false when a browser, YouTube, or video is in the background — visible media is NOT proof the user is playing that game.
+- needs_web=true when the answer needs up-to-date information after 2024, prices, news, versions, websites, product/character/app lookup, or the user explicitly asks to search the web.
+- pipeline=vision_then_text: the assistant must see the screen and then reason with knowledge, such as software errors, game advice, or what to do next.
+- pipeline=vision_answer: visual description or direct image-based answer is enough.
+- pipeline=text_only: no screenshot is needed.
+- focus=crosshair: object in the center/crosshair.
+- focus=hud: health, hunger, hotbar, inventory, or other HUD.
+- focus=scene: overall scene/environment.
+
+Example: {{"needs_screen":false,"needs_web":false,"pipeline":"text_only","focus":"none","hint":"explain the topic in depth"}}"""
+
+
+FOCUS_VISION_PROMPTS = {
+    "crosshair": (
+        "Look at the CENTER of the screenshot (crosshair). "
+        "If Minecraft: name mob/block/item in crosshair. "
+        "If NOT Minecraft: describe what is in the center. Do not invent game UI."
+    ),
+    "hud": (
+        "If Minecraft: describe HUD — health, hunger, hotbar. "
+        "If NOT Minecraft: describe visible UI elements only. Do not invent hearts or hunger icons."
+    ),
+    "scene": (
+        "Describe what is clearly visible: desktop, app, game, or scene. "
+        "If NOT Minecraft, say it is not Minecraft. Do not invent game elements."
+    ),
+    "none": "Describe only what is clearly visible and relevant to the question.",
+}
+
+
+def question_needs_screen(question: str) -> bool:
+    """Нужен ли скриншот для этого текстового вопроса."""
+    q = question.lower()
+    screen_markers = (
+        "на экране",
+        "what's on screen",
+        "whats on screen",
+        "what is on screen",
+        "что видно",
+        "что на",
+        "что здесь",
+        "что это",
+        "что за",
+        "кто это",
+        "в прицеле",
+        "передо мной",
+        "вижу",
+        "скрин",
+        "screen",
+        "crosshair",
+        "какую игру",
+        "во что поиграть",
+        "что поиграть",
+        "what should i play",
+        "which game",
+        "what game",
+        "choose a game",
+        "pick a game",
+    )
+    if any(m in q for m in screen_markers):
+        return True
+    text_only_markers = (
+        "крафт",
+        "рецепт",
+        "скрафт",
+        "craft",
+        "recipe",
+        "как сделать",
+        "как получить",
+        "дроп",
+        "механик",
+        "версии",
+    )
+    if any(m in q for m in text_only_markers):
+        return False
+    return False
+
+
+def should_auto_capture_screen(question: str, *, always_capture: bool = False) -> bool:
+    """Silent screenshot only when the user asked about the screen or enabled always-capture."""
+    return always_capture or question_needs_screen(question)
+
+
+def is_minecraft_question(question: str) -> bool:
+    """Вопрос явно про Minecraft — можно использовать базу игры без окна."""
+    q = question.lower()
+    markers = (
+        "minecraft",
+        "майнкрафт",
+        "майн",
+        "крипер",
+        "creeper",
+        "vanilla",
+        "hotbar",
+        "незер",
+        "nether",
+        "энд",
+        "end ",
+        " villager",
+        "житель",
+        "моб ",
+        "дроп ",
+        "скрафт",
+        "крафт",
+        "рецепт",
+        "xp farm",
+        " xp",
+        "experience",
+        "level up",
+        "levels",
+        "опыт",
+        "уровн",
+        "ферм",
+        " farm",
+        "spawner",
+        "спawner",
+        "piglin",
+        "свинозомби",
+        "zombified pig",
+        "iron farm",
+        "gold farm",
+        "mob farm",
+        "автоферм",
+        "опыт",
+        "redstone",
+        "редстоун",
+        "enchant",
+        "зачар",
+    )
+    return any(m in q for m in markers)
+
+
+_ADVISORY_MARKERS = (
+    "how to",
+    "how do i",
+    "how should",
+    "how can i",
+    "best way",
+    "optimize",
+    "optimiz",
+    "efficient",
+    "efficiency",
+    "setup",
+    "set up",
+    "build a",
+    "build an",
+    "build my",
+    "design",
+    "improve",
+    "strategy",
+    "advice",
+    "recommend",
+    "what should i",
+    "early game",
+    "mid game",
+    "late game",
+    "system",
+    " loop",
+    "manage",
+    "deal with",
+    "fix my",
+    "help me",
+    "как ",
+    "как мне",
+    "как лучше",
+    "как постро",
+    "как сделать",
+    "как настро",
+    "оптимиз",
+    "настро",
+    "постро",
+    "систем",
+    "совет",
+    "улучш",
+    "эффектив",
+    "ранняя игра",
+    "что делать",
+    "вариант",
+    "guide",
+    "tutorial",
+)
+
+_GAME_ADVISORY_TOPICS = (
+    "farm", "ферм", "xp", "опыт", "grinder", "ranch", "base",
+    "автомат", "automatic", "spawner", "generator", "loop",
+    "co2", "oxygen", "cool", "heat", "power", "food", "water",
+)
+
+
+def is_advisory_question(question: str) -> bool:
+    """How-to / build / optimize — brief answer first, then pick-a-variant deep dive."""
+    q = question.lower()
+    if "earlier question:" in q and "user follow-up:" in q:
+        return True
+    if any(m in q for m in _ADVISORY_MARKERS):
+        return True
+    if any(m in q for m in _GAME_ADVISORY_TOPICS):
+        return True
+    return False
+
+
+def is_oni_strategy_question(question: str) -> bool:
+    """Deprecated alias — use is_advisory_question for ONI context."""
+    if not is_advisory_question(question):
+        return False
+    return is_oni_question(question) or any(
+        w in question.lower()
+        for w in ("co2", "oxygen", "duplicant", "geyser", "electrolyzer", "colony")
+    )
+
+
+def is_oni_question(question: str) -> bool:
+    q = question.lower()
+    markers = (
+        "oxygen not included",
+        "oni ",
+        " duplicant",
+        "duplicants",
+        "electrolyzer",
+        "oxylite",
+        "geyser",
+        "hatch",
+        "dreckos",
+        "puft",
+        "morale",
+        "watts",
+        "power grid",
+        "liquid pipe",
+        "gas pipe",
+        "polluted oxygen",
+        "meal lice",
+        "sleet wheat",
+        "bristle blossom",
+        "research tree",
+        "colony",
+        "cycle ",
+        "stress",
+        "germs",
+        "food poisoning",
+        "slime lung",
+        "carbon skimmer",
+        "co2",
+        "spom",
+        "aquatuner",
+        "steam turbine",
+        "ranch",
+        "slickster",
+        "petroleum",
+        "automation",
+    )
+    return any(m in q for m in markers)
+
+
+SCREEN_CAPTURE_DEFAULT_PROMPT = (
+    "The user captured a screenshot but did not type a specific question. "
+    "Look at the image and respond with whatever is most helpful for what you see:\n"
+    "- Game (Minecraft, Oxygen Not Included, etc.): contextual advice — base problems, "
+    "what they are looking at, suggested next steps.\n"
+    "- Error dialog or app issue: explain it and how to fix it.\n"
+    "- Game launcher / library: summarize visible titles; offer a recommendation only if obvious.\n"
+    "- Desktop or browser: briefly describe the scene; identify characters or content if relevant.\n"
+    "Do not say you lack a question — infer intent from the screenshot. "
+    "End with one line offering to go deeper on a specific topic."
+)
+
+
+def effective_screen_question(question: str) -> str:
+    q = question.strip()
+    return q if q else SCREEN_CAPTURE_DEFAULT_PROMPT
+
+
+def plan_attached_screen_query(question: str, ctx: ScreenContext) -> QueryIntent:
+    """Route a user question that already has a captured screenshot attached."""
+    q = question.strip()
+    if not q:
+        if ctx.minecraft_window:
+            return QueryIntent(
+                needs_screen=True,
+                needs_web=False,
+                pipeline="vision_then_text",
+                focus="crosshair",
+                hint="Infer what the player needs from the Minecraft view.",
+            )
+        if ctx.oni_window:
+            return QueryIntent(
+                needs_screen=True,
+                needs_web=False,
+                pipeline="vision_then_text",
+                focus="scene",
+                hint="Colony view — spot issues and suggest practical next steps.",
+            )
+        if ctx.active_game:
+            return QueryIntent(
+                needs_screen=True,
+                needs_web=False,
+                pipeline="vision_then_text",
+                focus="scene",
+                hint="Game screen — give contextual advice for what is visible.",
+            )
+        return QueryIntent(
+            needs_screen=True,
+            needs_web=True,
+            pipeline="vision_answer",
+            focus="scene",
+            hint="No text question — describe and assist with what's on screen.",
+        )
+
+    if ctx.active_game:
+        focus = "crosshair" if ctx.minecraft_window else "scene"
+        return QueryIntent(
+            needs_screen=True,
+            needs_web=is_advisory_question(q) or is_minecraft_question(q),
+            pipeline="vision_then_text",
+            focus=focus,
+            hint=q[:120],
+        )
+
+    ql = q.lower()
+    needs_web = any(m in ql for m in (
+        "who is", "who's", "what is", "identify", "кто это", "что это", "what's this",
+        "error code", "news", "price",
+    ))
+    pipeline = "vision_then_text" if any(m in ql for m in (
+        "how", "why", "fix", "help", "should i", "как", "почему", "исправ", "ошиб", "что делать",
+    )) else "vision_answer"
+    return QueryIntent(
+        needs_screen=True,
+        needs_web=needs_web or question_needs_screen(q),
+        pipeline=pipeline,
+        focus="scene",
+        hint=q[:120],
+    )

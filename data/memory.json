@@ -1,0 +1,28 @@
+{
+  "user_preferences": {
+    "answer_style": "brief_first",
+    "assume_vanilla": true,
+    "require_mod_confirmation": true
+  },
+  "games": {
+    "minecraft": {
+      "edition": "unknown",
+      "version": "unknown",
+      "vanilla_confirmed": true,
+      "mods_confirmed": false,
+      "dlc_confirmed": false
+    },
+    "oni": {
+      "dlc_confirmed": false,
+      "vanilla_confirmed": true
+    },
+    "noita": {
+      "mods_confirmed": false,
+      "vanilla_confirmed": true
+    }
+  },
+  "corrections": [
+    "Minecraft tripwire hooks: allowed sources are crafting, jungle temple chests, pillager outpost chests, and version/server-rule dependent minecart+door dupe exploit. Do not add other sources unless a specific current source confirms them."
+  ],
+  "pending_confirmation": null
+}

@@ -1,0 +1,82 @@
+{
+  "diamond_pickaxe": {
+    "name_ru": "Алмазная кирка",
+    "recipe": [
+      "DDD /  S  /  S ",
+      "D=diamond, S=stick"
+    ],
+    "grid": "DDD /  S  /  S "
+  },
+  "diamond": {
+    "name_ru": "Алмаз",
+    "source": "Алмазная руда (кирка железная+), сундуки, торговля"
+  },
+  "iron_ingot": {
+    "name_ru": "Железный слиток",
+    "source": "Плавка iron ore / raw iron / железных предметов в печи"
+  },
+  "torch": {
+    "name_ru": "Факел",
+    "recipe": [
+      "C / S",
+      "C=charcoal, S=stick"
+    ],
+    "grid": "C / S"
+  },
+  "crafting_table": {
+    "name_ru": "Верстак",
+    "recipe": [
+      "PP / PP",
+      "P=доски"
+    ],
+    "grid": "PP / PP"
+  },
+  "stick": {
+    "name_ru": "Палка",
+    "recipe": [
+      "P / P",
+      "P=доски"
+    ],
+    "grid": "P / P"
+  },
+  "iron_pickaxe": {
+    "name_ru": "Железная кирка",
+    "recipe": [
+      "III /  S  /  S ",
+      "I=iron_ingot, S=stick"
+    ],
+    "grid": "III /  S  /  S "
+  },
+  "iron_sword": {
+    "name_ru": "Железный меч",
+    "recipe": [
+      "I / I / S",
+      "I=iron_ingot, S=stick"
+    ],
+    "grid": "I / I / S"
+  },
+  "bow": {
+    "name_ru": "Лук",
+    "recipe": [
+      " SB / S C /  SD",
+      "B=string, C=string, D=string, S=stick"
+    ],
+    "grid": " SB / S C /  SD"
+  },
+  "furnace": {
+    "name_ru": "Печь",
+    "recipe": [
+      "CCC / C C / CCC",
+      "C=cobblestone"
+    ],
+    "grid": "CCC / C C / CCC"
+  },
+  "chest": {
+    "name_ru": "Сундук",
+    "recipe": [
+      "PPP / P P / PPP",
+      "P=доски"
+    ],
+    "grid": "PPP / P P / PPP"
+  }
+}

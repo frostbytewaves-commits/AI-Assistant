@@ -1,0 +1,26 @@
+"""Шаблон парсера для новой игры.
+
+1. Скопируйте в tools/game_db_parser/games/<game_id>/parser.py
+2. Зарегистрируйте в registry.py (_ensure_loaded)
+3. Укажите parser: "<game_id>" в registry.json
+"""
+
+from __future__ import annotations
+
+from ...core.base import GameParser, PopulateContext, PopulateResult
+from ...core.registry import register_parser
+
+
+@register_parser
+class ExampleGameParser(GameParser):
+    game_id = "GAME_ID"
+
+    def available_collections(self) -> list[str]:
+        return ["entities"]
+
+    def populate(self, ctx: PopulateContext) -> PopulateResult:
+        result = PopulateResult()
+        # TODO: загрузить данные из wiki / API / файлов игры
+        # path = ctx.game_dir / "entities.json"
+        result.errors.append("Парсер не реализован — заполните populate()")
+        return result

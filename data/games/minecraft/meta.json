@@ -1,0 +1,13 @@
+{
+  "parser": "minecraft",
+  "collections": {
+    "mobs": {
+      "file": "mobs.json",
+      "description_ru": "Мобы и дроп (vanilla)"
+    },
+    "recipes": {
+      "file": "recipes.json",
+      "description_ru": "Рецепты крафта и источники предметов"
+    }
+  }
+}
