@@ -2,7 +2,8 @@
 
 **Проект:** AI-Assistant → персональный локальный ассистент уровня «Джарвис»  
 **Целевое железо:** RTX 5070 Ti 16GB · 64GB RAM · Intel Core Ultra 7 265KF  
-**Статус:** конспект-план (не спецификация реализации)
+**Статус:** конспект-план (не спецификация реализации)  
+**Обновлено:** учтён внешний архитектурный аудит (Core API, Plugin API, MemoryBackend)
 
 ---
 
@@ -14,10 +15,10 @@
 - понимает контекст ПК (окна, игры, приложения);
 - выполняет разрешённые действия одной фразой («включи музыку», «запусти Minecraft»);
 - помнит предпочтения и историю;
-- позже может вести долгие сценарии (farm / grind) как отдельный агент.
+- позже может вести долгие сценарии (farm / grind) как **отдельный продукт**, не «ещё один if в чате».
 
 **Не цель:** копия фильма (полный автономный контроль ОС без ограничений).  
-**Цель:** надёжный локальный помощник с чёткими слоями и безопасными «руками».
+**Цель:** надёжный локальный помощник с стабильным ядром (Core API) и расширяемыми слоями поверх.
 
 ---
 
@@ -33,7 +34,13 @@
 - отдельные regex на каждый синоним намерения;
 - «ещё одно правило, и точно заработает».
 
-### 2.2 Что разрешено в коде
+### 2.2 Второй закон (анти–God Object)
+
+> **Orchestrator тонкий. Работа в именованных компонентах с интерфейсами.**
+
+Запрещено складывать в один файл/класс: голос, память, плагины, routing, vision, TTS, planning, game agents.
+
+### 2.3 Что разрешено в коде
 
 | Тип | Примеры | Зачем |
 |-----|---------|--------|
@@ -42,18 +49,21 @@
 | **Политика безопасности** | whitelist приложений, confirm на опасное | защита пользователя |
 | **Короткие системные принципы** | «понимай замысел, не цепляйся к редкому техчтению» | как у ChatGPT, не чеклист |
 | **Hard overrides только для железа** | hotkey F8/F9, single-instance | UX/ОС, не NLP |
+| **Интерфейсы / backends** | `MemoryBackend`, `ScreenProvider` | смена реализации без сноса ядра |
 
-### 2.3 Как принимать решения в PR / чате
+### 2.4 Как принимать решения в PR / чате
 
 Перед добавлением логики спросить:
 
 1. Это **инструмент** или **попытка угадать язык**?
 2. Справится ли **роутер/LLM с thinking**, если дать tool + контекст?
 3. Не размножаем ли мы `if "…"` под новый синоним?
+4. Не раздуваем ли **Orchestrator / overlay.py** вместо нового модуля?
 
-Если ответ «угадываем язык» → **не мержить**. Усилить промпт роутера, включить thinking, добавить tool или поиск — не словарь.
+Если «угадываем язык» → **не мержить**.  
+Если «ещё одна ответственность в оркестратор» → вынести в компонент.
 
-### 2.4 Закрепление в репозитории
+### 2.5 Закрепление в репозитории
 
 - Cursor rule: `.cursor/rules/model-first-reasoning.mdc` (всегда активен)
 - Этот документ: источник правды по архитектуре
@@ -63,83 +73,187 @@
 ## 3. Целевая схема слоёв
 
 ```text
-┌─────────────────────────────────────────────────────────────┐
-│  UX: Overlay · Voice · Wake-word · Status ("Ready")         │
-└───────────────────────────┬─────────────────────────────────┘
-                            │
-┌───────────────────────────▼─────────────────────────────────┐
-│  ORCHESTRATOR  (мозг сессии)                                │
-│  plan → gather context → (tools) → answer / act → remember  │
-└───────┬─────────────────┬─────────────────┬─────────────────┘
-        │                 │                 │
-   ┌────▼────┐      ┌─────▼─────┐     ┌─────▼─────┐
-   │ SENSE   │      │  REASON   │     │   ACT     │
-   │ глаза   │      │  модели   │     │   руки    │
-   └────┬────┘      └─────┬─────┘     └─────┬─────┘
-        │                 │                 │
-   windows/games     LLM + router      whitelist
-   screen/OCR        think on/off      apps/OS APIs
-   audio in/out      web search        game agents*
-                            │
-                     ┌──────▼──────┐
-                     │   MEMORY    │
-                     └─────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│  UX: Overlay · Voice · Wake-word · Status ("Ready")          │
+└──────────────────────────────┬───────────────────────────────┘
+                               │
+┌──────────────────────────────▼───────────────────────────────┐
+│  ORCHESTRATOR  (тонкий)                                      │
+│  context = builder.build()                                   │
+│  plan    = planner.plan(context, utterance)                  │
+│  result  = executor.execute(plan)                            │
+│  memory.store(...) · ux.emit(...)                            │
+└───┬──────────┬──────────┬──────────┬──────────┬──────────────┘
+    │          │          │          │          │
+┌───▼───┐  ┌───▼───┐  ┌───▼────┐ ┌───▼───┐  ┌──▼──────────┐
+│ SENSE │→│CONTEXT│→│ REASON │→│PLANNER│→│ ACT / Tools │
+│providers│ │Manager│ │ (LLM)  │ │(1..N) │  │ + Plugins   │
+└───────┘  └───────┘  └────────┘ └───────┘  └──────┬───────┘
+     ▲                                              │
+     │         ┌────────────┐                       │
+     └─────────┤  MEMORY    │◄──────────────────────┘
+               │  (backend) │
+               └────────────┘
 
-* game agents — отдельный контур, не смешивать с чатом
+Отдельный контур (НЕ в assistant/):
+  game_agents/   ← Minecraft Agent и т.п. — другой продукт
+  plugins/       ← spotify, steam, discord, obs, browser
 ```
 
----
+**Sense / Reason / Act / Memory** остаются стержнем.  
+Между ними явно:
 
-## 4. Модули
-
-### 4.1 Sense — «глаза и уши»
-
-| Модуль | Назначение | MVP | Дальше |
-|--------|------------|-----|--------|
-| **WindowInsight** | активное окно, title, process, «какая игра открыта» | да | подписка на focus-change |
-| **ScreenInsight** | screenshot + OCR + vision (как сейчас F8) | уже есть | умный ROI / HUD crop |
-| **AudioIn** | микрофон, VAD, STT | уже есть (F9) | continuous / wake-word |
-| **AudioOut** | TTS | уже есть | прерывание речи, стриминг |
-| **HostInventory** | Steam/Discord/браузер запущены? | да | медиа-сессии (что играет в Spotify) |
-
-**Требование:** Sense отдаёт **структурированный контекст** оркестратору (JSON), а не «простыню текста с эвристиками».
+| Слой | Зачем |
+|------|--------|
+| **Context** | один снимок мира для модели (окно, игра, apps, память, время) |
+| **Planner** | одна команда **или цепочка** (`Steam → Minecraft → музыка`) |
+| **Capabilities** | динамический список доступных tools для модели |
+| **Event Bus** *(фаза Core+)* | A не вызывает B напрямую — подписчики реагируют на события |
 
 ---
 
-### 4.2 Reason — «мозг»
+## 4. Core API — устойчивое ядро
 
-| Модуль | Назначение | Заметки |
-|--------|------------|---------|
-| **ModelRouter** | выбор профиля: laptop / desktop / reasoning | конфиг, не NLP-правила |
-| **IntentPlanner** | LLM-роутер: нужны ли screen / web / tools | уже есть зачаток; усиливать промптом + think |
-| **ChatBrain** | основной ответ | thinking включён на desktop |
-| **VisionBrain** | описание экрана | отдельная VL-модель |
-| **SearchTool** | веб при необходимости | решение модели, не keyword |
-| **GameKB** | база Minecraft/ONI и др. | данные ≠ правила языка |
+Цель: ядро почти не переписывается годами. Всё новое — плагины и providers.
 
-#### Профили моделей (целевое железо 16GB VRAM)
+### 4.1 Компоненты ядра (интерфейсы)
+
+| Компонент | Ответственность | Не делает |
+|-----------|-----------------|-----------|
+| **ContextBuilder / ContextManager** | собирает единый `AssistantContext` | не вызывает LLM |
+| **Planner** | план: answer / tool / screen / search / multi-step | не жмёт клавиши |
+| **ToolExecutor** | валидация schema + whitelist + выполнение | не парсит русский |
+| **MemoryManager** | facade над `MemoryBackend` | не знает про Spotify |
+| **ConversationManager** | история диалога в сессии | не знает про OCR |
+| **SessionManager** | lifecycle сессии, cancel, kill-switch | не бизнес-логика игр |
+| **Orchestrator** | склеивает цикл выше (≤ тонкий glue) | God Object запрещён |
+| **CapabilityRegistry** | «что доступно сейчас» для промпта/tools | не `if spotify:` в роутере |
+
+Идеальный оркестратор по сути:
+
+```text
+context = builder.build()
+plan    = planner.plan(context, utterance)
+result  = executor.execute(plan)
+memory.store(result)
+ux.emit(result)
+```
+
+### 4.2 Sense providers (не привязывать Vision к «скриншоту»)
+
+| Provider | Роль |
+|----------|------|
+| **WindowProvider** | активное окно, title, process, game detect |
+| **ScreenProvider** | сырой кадр (monitor / region) |
+| **OCRProvider** | текст с кадра |
+| **VisionProvider** | VL-модель → описание |
+| **AudioIn / AudioOut** | STT / TTS |
+| **HostInventoryProvider** | Steam / Discord / плеер запущены? |
+
+Меняем движок OCR/Vision — меняем provider, не Orchestrator.
+
+### 4.3 Event Bus (рекомендация аудита)
+
+Постепенно переходить с прямых вызовов на события:
+
+- `UserUtterance`, `ContextUpdated`, `PlanReady`
+- `ActionRequested`, `ActionCompleted`, `ActionFailed`
+- `SpeechStarted`, `KillSwitch`
+
+Это спасает проект через 1–2 года от паутины `A→B→C`.
+
+---
+
+## 5. Модули по доменам
+
+### 5.1 Context — «суперсила»
+
+Один объект на запрос (пример полей):
+
+```text
+AssistantContext
+├── window / process / title
+├── active_game (если есть)
+├── running_apps (inventory)
+├── media_session (что играет)
+├── clipboard (опц., с политикой privacy)
+├── memory_slice (preferences + recent facts)
+├── time / locale
+└── capabilities[]  ← что модель может вызвать прямо сейчас
+```
+
+**Требование:** Context — структурированный JSON для модели, не простыня эвристик.
+
+---
+
+### 5.2 Reason — «мозг»
+
+| Модуль | Назначение |
+|--------|------------|
+| **ModelRouter** | профиль: laptop / desktop / deep / fast-act |
+| **ChatBrain** | основной ответ (thinking на desktop) |
+| **VisionBrain** | через VisionProvider |
+| **SearchTool** | web — решение модели, не keyword |
+| **GameKB** | факты игр (данные ≠ правила языка) |
+
+#### Профили моделей (RTX 5070 Ti 16GB)
 
 | Профиль | Текст | Vision | Режим |
 |---------|-------|--------|-------|
 | `laptop` | qwen3:8b / 14b | moondream / qwen2.5vl:7b | think опционально |
 | `desktop` | **qwen3:30b-a3b** | qwen2.5vl:7b | **think on** |
 | `deep` | deepseek-r1:14b | — | всегда рассуждает |
-| `fast-act` | маленький для tool-call | — | только команды |
+| `fast-act` | компактная для tool-call | — | только команды |
 
 ---
 
-### 4.3 Act — «руки» (критично для «Джарвиса»)
+### 5.3 Planner — отдельно от «просто ответить»
 
-| Модуль | Назначение | Безопасность |
-|--------|------------|--------------|
-| **ActionRegistry** | каталог действий с schema | только зарегистрированные |
-| **AppLauncher** | запуск игр/приложений | whitelist путей / Steam app-id |
-| **MediaControl** | play/pause, следующий трек | OS media keys / Spotify API |
-| **WindowControl** | focus / minimize (опц.) | без произвольного SendInput в игры по умолчанию |
-| **ConfirmGate** | опасные действия → подтверждение | удаление, shutdown, клики в игры |
-| **GameAgentRuntime** *(фаза 3+)* | долгий сценарий фарма | отдельный процесс, kill-switch, лог, ToS disclaimer |
+| Сценарий | План |
+|----------|------|
+| Вопрос «who are KISS» | `search?` → `answer` |
+| «открой Discord» | один step: `launch_app` |
+| «запусти Steam, потом Minecraft, потом музыку» | **цепочка** steps |
 
-**Контракт действия (идея):**
+Planner выдаёт структуру вроде:
+
+```json
+{
+  "steps": [
+    {"type": "tool", "action": "launch_app", "args": {"id": "steam"}},
+    {"type": "tool", "action": "launch_app", "args": {"id": "minecraft"}},
+    {"type": "tool", "action": "media_play", "args": {}}
+  ]
+}
+```
+
+Reason (LLM) **предлагает**; ToolExecutor **проверяет и выполняет**.
+
+---
+
+### 5.4 Act + Plugin API (не свалка actions)
+
+**Запрещено:** один огромный `ActionRegistry` на все приложения мира.
+
+**Сделано так:**
+
+```text
+plugins/
+  windows/     # focus, minimize (осторожно)
+  games/       # steam app-id, launchers
+  media/       # spotify / OS media keys
+  system/      # volume, screenshots (safe subset)
+  browser/     # опционально позже
+  network/     # опционально позже
+```
+
+Каждый плагин:
+
+- объявляет **capabilities** + JSON schema;
+- проходит **whitelist / ConfirmGate**;
+- регистрируется в `CapabilityRegistry` без правки ядра.
+
+Базовый контракт действия:
 
 ```json
 {
@@ -150,150 +264,153 @@
 }
 ```
 
-Модель **предлагает** action; код **валидирует** по registry и выполняет.
+---
+
+### 5.5 Memory — интерфейс с первого дня
+
+Сейчас реализация может остаться JSON. **API — уже backend-agnostic.**
+
+```text
+MemoryBackend (interface)
+├── JsonMemoryBackend      ← сейчас
+├── SqliteMemoryBackend    ← когда JSON тесен
+├── ChromaMemoryBackend    ← семантика / long-term (фаза 5+)
+└── QdrantMemoryBackend    ← только если реально нужен; не MVP
+```
+
+Домены памяти (логические, не «ещё файлы вразброс»):
+
+| Домен | Содержание |
+|-------|------------|
+| Preferences | стиль, язык, wake-word, «не трогай античит» |
+| Episodic | короткий диалог |
+| HostFacts | установленные игры, любимый плеер |
+| Corrections | явные поправки пользователя |
+| Summaries *(позже)* | сжатие длинных сессий |
+
+**Neo4j / тяжёлый RAG:** не в Core. Только если появится задача, которой JSON/SQLite/Chroma не хватает (см. аудит RejuveBio — другой продукт).
 
 ---
 
-### 4.4 Memory — «память»
+### 5.6 Game Agents — отдельный продукт
 
-| Модуль | Содержание |
-|--------|------------|
-| **PreferenceStore** | стиль ответа, язык, wake-word, «не трогай античит» |
-| **EpisodicChat** | короткий контекст диалога |
-| **HostFacts** | установленные игры, любимый плеер музыки |
-| **Corrections** | «в прошлый раз ты ошибся — так правильно» (уже есть зачаток) |
+```text
+assistant/        ← чат + Sense + Reason + Act (помощник)
+game_agents/      ← долгоживущие сценарии (farm), свой runtime
+plugins/          ← интеграции приложений
+```
 
----
-
-### 4.5 Orchestrator — «режим Джарвиса»
-
-Один цикл запроса:
-
-1. Собрать Sense snapshot  
-2. IntentPlanner (LLM): `answer` | `tool` | `screen` | `search` | mix  
-3. Выполнить tools при необходимости  
-4. Сгенерировать ответ (текст/голос)  
-5. Обновить Memory  
-
-**UI «Thinking…»** = оркестратор занят, не обязательно модель в CoT.
+**Не смешивать.** Chat Assistant ≠ Minecraft Agent.  
+Общее: Context / Memory / Event Bus / kill-switch.  
+Разное: зависимости, цикл, ToS, логирование, риск бана.
 
 ---
 
-### 4.6 UX
+### 5.7 UX
 
 | Элемент | Требование |
 |---------|------------|
-| Overlay | как сейчас + статус tools («Launching…», «Listening…») |
-| Wake-word | опционально «Джарвис» / своё имя |
-| One-shot commands | голос → action без длинного чата |
-| Kill-switch | глобальный хоткей «стоп всё» (агенты + TTS) |
+| Overlay | статус tools («Launching…», «Listening…») |
+| Wake-word | опционально |
+| One-shot | голос → action без длинного чата |
+| Kill-switch | глобальный хоткей «стоп всё» |
 
 ---
 
-## 5. Фазы реализации
+## 6. Целевой layout репозитория
 
-### Фаза 0 — Фундамент (сейчас → домПК)
+```text
+assistant/           # ядро помощника (тонкий)
+  core/              # ContextBuilder, Planner, Executor, Session, EventBus
+  sense/             # providers
+  reason/            # llm, router, search
+  memory/            # MemoryManager + backends
+  ux/                # overlay, hotkeys
+plugins/             # spotify, steam, discord, …
+game_agents/         # автономные игровые агенты
+docs/                # этот план
+AGENTS.md
+.cursor/rules/
+```
 
-- [ ] Профили `laptop` / `desktop` / `deep`
-- [ ] Включить thinking на desktop (убрать слепой `/no_think`)
-- [ ] Закрепить принцип model-first (этот план + Cursor rule)
-- [ ] Не раздувать keyword-intent дальше
-
-### Фаза 1 — «Знает, что на ПК»
-
-- [ ] WindowInsight → контекст в каждый запрос
-- [ ] HostInventory (Steam / Discord / плеер)
-- [ ] Роутер решает по контексту, а не по словарю
-
-**Критерий готовности:** вопрос «что у меня открыто?» без F8 даёт точный ответ.
-
-### Фаза 2 — «Одна фраза → действие»
-
-- [ ] ActionRegistry + AppLauncher + MediaControl
-- [ ] Whitelist + ConfirmGate
-- [ ] Tool-calling через LLM (не if-ы на «включи музыку»)
-
-**Критерий:** «запусти Minecraft» / «поставь музыку» работает стабильно.
-
-### Фаза 3 — «Всегда на связи»
-
-- [ ] Wake-word + continuous listen (VAD)
-- [ ] Стриминг ответа / прерывание
-- [ ] Фоновый Sense с низким CPU
-
-**Критерий:** разговор без обязательных F8/F9.
-
-### Фаза 4 — Агенты (осторожно)
-
-- [ ] GameAgentRuntime + сценарии под конкретные игры
-- [ ] Юридически/ToS: только single-player / разрешённое
-- [ ] Kill-switch, лимиты времени, запись лога
-
-**Критерий:** один осознанный ночной сценарий, а не «бот для всего».
+Переезд кода — **постепенный** (не big-bang). Сначала интерфейсы, потом вынос из жирного `overlay.py` / `llm.py`.
 
 ---
 
-## 6. Нефункциональные требования
+## 7. Roadmap
+
+Совмещены исходные фазы и версия аудита v0.2–v1.0.
+
+| Версия | Содержание | Критерий готовности |
+|--------|------------|---------------------|
+| **v0.1 / Phase 0** | Профили laptop/desktop/deep; thinking policy; model-first закреплён | десктоп думает; нет новых keyword-list PR |
+| **v0.2** | WindowProvider + **ContextManager**; ActionRegistry v1 (мало actions) | «что у меня открыто?» без F8 |
+| **v0.3** | **Plugin API**; MemoryBackend interface (JSON impl); тонкий Orchestrator | плагин подключается без правки ядра |
+| **v0.4** | Voice pipeline; wake-word; streaming TTS | разговор без обязательного F9 |
+| **v0.5** | Screen/OCR/Vision providers; Event Bus v1 | смена OCR/VL без сноса Orchestrator |
+| **v0.6** | Plugins: Steam / media / Discord / OBS (по необходимости) | ≥5 whitelist-действий с голоса |
+| **v0.7** | Multi-step Planner; long-term memory backend; kill-switch зрелый | цепочка Steam→игра→музыка |
+| **v1.0** | Локальный Джарвис: ПК-контекст + apps + голос + офлайн + плагины | см. §9 |
+| **позже** | `game_agents/` SDK; autonomous grind (ToS!) | один осознанный сценарий, не «бот для всего» |
+
+### Ближайший конкретный шаг (после утверждения)
+
+1. Профили моделей + thinking на desktop.  
+2. **ContextManager** + WindowProvider.  
+3. Контракт **Plugin / Action** (schema первых 5 действий).  
+4. **MemoryBackend** interface поверх текущего JSON (без смены хранения).
+
+Порядок 2–4 можно менять; законы §2.1–2.2 — нет.
+
+---
+
+## 8. Нефункциональные требования
 
 | Требование | Цель |
 |------------|------|
-| Latency (короткий ответ desktop) | первый токен < ~1.5–3 с при warm модели |
-| Privacy | по умолчанию локально; web — явно |
-| Safety | нет произвольного выполнения shell от модели |
-| Reliability | single-instance, логи, восстановление после падения Ollama |
-| Switchability | смена модели = конфиг профиля, не рефактор логики |
+| Latency (desktop, warm) | первый токен ~1.5–3 с |
+| Privacy | локально по умолчанию; web / clipboard — явно |
+| Safety | нет произвольного shell от модели |
+| Reliability | single-instance, логи, kill-switch |
+| Extensibility | плагин без правки Core |
+| Switchability | модель = профиль; память = backend; vision = provider |
 
 ---
 
-## 7. Карта «желаемое → модуль»
+## 9. Definition of Done — «хороший помощник» (не фильм)
 
-| Хочу как Джарвис | Модуль / фаза |
-|------------------|---------------|
-| Отвечает умно в реальном времени | Reason + desktop think · фаза 0–3 |
-| Видит экран | ScreenInsight · есть / усилить |
-| Знает, что происходит на компе | WindowInsight + HostInventory · фаза 1 |
-| Запуск игры / музыки по фразе | Act · фаза 2 |
-| Голос без кнопок | AudioIn wake-word · фаза 3 |
-| Ночной гринд | GameAgentRuntime · фаза 4 |
-
----
-
-## 8. Риски
-
-| Риск | Митигация |
-|------|-----------|
-| Снова утонем в keyword-правилах | §2 + Cursor rule + code review вопрос |
-| Модель «сама нажмёт» опасное | whitelist + confirm |
-| 16GB VRAM не тянет 32B комфортно | 30b-a3b / R1-14b, не гнаться за 32B |
-| Бан за автоигру | только осознанные сценарии, ToS, kill-switch |
-| Ноут в отпуске ≠ домПК | профили laptop/desktop |
-
----
-
-## 9. Definition of Done для «хорошего помощника» (не фильм)
-
-Ассистент считается успешным MVP-Джарвисом, когда:
-
-1. Понимает неоднозначные вопросы **без** новых regex.  
+1. Неоднозначные вопросы **без** новых regex.  
 2. Знает активное приложение/игру без скрина.  
-3. Выполняет ≥5 whitelist-действий с голоса/текста.  
-4. На desktop отвечает с thinking и приемлемой скоростью.  
-5. Есть аварийная остановка.
+3. ≥5 whitelist-действий с голоса/текста через Plugin API.  
+4. Desktop: thinking + приемлемая скорость.  
+5. Kill-switch работает.  
+6. Orchestrator остаётся тонким (нет God Object на 4k LOC).
 
 Киношный уровень — горизонт, не спринт.
 
 ---
 
-## 10. Следующий конкретный шаг
+## 10. Риски
 
-После утверждения плана:
-
-1. Реализовать **профили моделей** + thinking policy на desktop.  
-2. Спроектировать **ActionRegistry** (schema первых 5 действий).  
-3. Добавить **WindowInsight** в контекст запроса.
-
-Порядок можно менять, закон §2 — нет.
+| Риск | Митигация |
+|------|-----------|
+| Keyword-NLP sprawl | §2.1 + Cursor rule |
+| Orchestrator God Object | §2.2 + Core interfaces |
+| ActionRegistry dump | Plugin API по категориям |
+| Смешение chat и game agent | пакет `game_agents/` отдельно |
+| Memory JSON ад через год | `MemoryBackend` с v0.3 |
+| Vision зашит в screenshot path | Sense providers |
+| 16GB VRAM / 32B | 30b-a3b / R1:14b |
+| Бан за автоигру | ToS, kill-switch, только осознанные сценарии |
+| Тяжёлый RAG раньше времени | Qdrant/Neo4j не в MVP |
 
 ---
 
-*Документ живой: обновлять при смене железа/приоритетов, не плодить параллельные «уставы».*
+## 11. Связь с внешним аудитом RejuveBio
+
+RejuveBio (Flask + OpenAI/Gemini + Neo4j + Qdrant) — **облачный RAG API**, другой продукт.  
+Оттуда берём практики (тесты, контракты, обновление deps), **не** стек как основу десктоп-Джарвиса.
+
+---
+
+*Документ живой. Не плодить параллельные «уставы» — править этот файл.*

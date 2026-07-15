@@ -11,18 +11,23 @@ This project aims at a JARVIS-like local assistant. Architecture: `docs/JARVIS_A
 
 **The model reasons. Code provides tools and safety. Do not grow keyword/regex dictionaries to "understand" language.**
 
+**Keep the Orchestrator thin.** New features go into named components / plugins (ContextBuilder, Planner, ToolExecutor, MemoryBackend, Sense providers) — not into a growing god-object.
+
 ## Never do
 
 - Add `if "who is"` / `if "who are"` / synonym lists to fix intent
 - Expand long marker tuples whenever a new phrasing fails
 - Replace thinking/tool-calling with another heuristic branch "just this once"
+- Dump voice + memory + plugins + vision + game agents into one orchestrator file
+- Nest long-running game agents inside the chat assistant package
 
 ## Do instead
 
 1. Improve **LLM planner/router prompts** (principles, not checklists)
 2. Enable/keep **model thinking** where appropriate (desktop profile)
-3. Add a **typed tool** (launch app, search, screen) with JSON schema + whitelist
-4. Pass richer **Sense context** (active window, inventory) into the model
+3. Add a **typed tool / plugin** (launch app, search, screen) with JSON schema + whitelist
+4. Pass richer **Context** (window, inventory, capabilities) into the model
+5. Prefer **interfaces** (MemoryBackend, ScreenProvider) so backends can be swapped later
 
 ## Allowed in code
 
@@ -30,9 +35,12 @@ This project aims at a JARVIS-like local assistant. Architecture: `docs/JARVIS_A
 - Safety policy (whitelist, confirm gates)
 - Short system principles (interpret user intent naturally)
 - Game/content databases (facts), not language routing tables
+- Plugin packages under `plugins/`; autonomous grind under `game_agents/`
 
-## Review question before merging NLP-ish logic
+## Review questions
 
 > Is this a **tool/capability**, or an attempt to **parse English/Russian with ifs**?
 
-If the latter — reject and use the model.
+> Does this belong in **Core / Plugin / Provider**, or are we fattening the Orchestrator?
+
+If language-parsing or god-object growth — reject.

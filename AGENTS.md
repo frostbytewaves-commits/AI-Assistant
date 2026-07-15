@@ -2,8 +2,15 @@
 
 ## Source of truth
 
-- Architecture & phases: [docs/JARVIS_ARCHITECTURE.md](docs/JARVIS_ARCHITECTURE.md)
-- Dev law: prefer **model reasoning + tools**, not keyword intent lists (see `.cursor/rules/model-first-reasoning.mdc`)
+- Architecture & roadmap: [docs/JARVIS_ARCHITECTURE.md](docs/JARVIS_ARCHITECTURE.md)
+- Dev laws (see `.cursor/rules/model-first-reasoning.mdc`):
+  1. **Model thinks** — no keyword NLP sprawl
+  2. **Thin Orchestrator** — Core interfaces + plugins, not a god object
+
+## Core direction
+
+`Sense → Context → Reason → Planner → Act → Memory`  
+Chat assistant ≠ game agents (`game_agents/` separately). Actions via `plugins/`.
 
 ## Current stack
 
