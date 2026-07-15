@@ -58,7 +58,8 @@ class QueryIntent:
 
 ROUTER_SYSTEM = (
     "You are a routing model for a universal AI assistant running on the user's computer. "
-    "Given the user's question, decide whether the assistant needs the current screen "
+    "Read the user's question as a capable assistant would: infer what they actually want, "
+    "not only the surface keywords. Decide whether the assistant needs the current screen "
     "and whether it needs web search. Reply ONLY with one JSON object, no Markdown or explanation."
 )
 
@@ -67,24 +68,20 @@ User question: {question}
 
 JSON fields:
 - needs_screen (bool): whether a screenshot of the current screen is needed.
-- needs_web (bool): whether web search is needed for fresh data, prices, versions, news, websites, rare facts, or screen-based identification.
+- needs_web (bool): whether web search would help answer better than model knowledge alone.
 - pipeline (str): "text_only" | "vision_answer" | "vision_then_text"
 - focus (str): "crosshair" | "hud" | "scene" | "none"
 - hint (str): one short sentence describing what the user wants.
 
-Rules:
-- needs_screen=true when the question is about what is visible right now: "what is on screen", "who is this", "what is this", "here", "in the crosshair", "in front of me", HUD, a window, an image, or an on-screen error.
-- needs_screen=true when the user asks what to play / which game to choose while a game launcher or library may be on screen; visible library contents are important context.
-- needs_screen=false for general questions, explanations, planning, programming, math, history, advice, recipes, or reference questions that do not depend on the current screen.
-- needs_screen=false for generic game how-to ("how do I get XP", "best farm", "how to build") unless the user mentions the screen, crosshair, or what they see now.
-- needs_screen=false when a browser, YouTube, or video is in the background — visible media is NOT proof the user is playing that game.
-- needs_web=true when the answer needs up-to-date information after 2024, prices, news, versions, websites, product/character/app lookup, or the user explicitly asks to search the web.
-- pipeline=vision_then_text: the assistant must see the screen and then reason with knowledge, such as software errors, game advice, or what to do next.
-- pipeline=vision_answer: visual description or direct image-based answer is enough.
-- pipeline=text_only: no screenshot is needed.
-- focus=crosshair: object in the center/crosshair.
-- focus=hud: health, hunger, hotbar, inventory, or other HUD.
-- focus=scene: overall scene/environment.
+Guidance (think; do not treat as a keyword checklist):
+- needs_screen=true when the answer depends on what is visible right now.
+- needs_screen=false for general knowledge, explanations, planning, and questions that do not depend on the current screen.
+- needs_web=true when search would meaningfully improve the answer: fresher facts, lookups of people/bands/products/characters, news, prices, versions, rare names, or when you are unsure which sense of an ambiguous name the user means.
+- Interpret pronouns and verbs naturally: "who" usually points to people/groups/characters; "what" may point to concepts — but use context, not rigid word rules.
+- pipeline=vision_then_text when the assistant must see the screen and then reason.
+- pipeline=vision_answer when a visual description or image-based answer is enough.
+- pipeline=text_only when no screenshot is needed.
+- focus=crosshair / hud / scene / none as fits the question.
 
 Example: {{"needs_screen":false,"needs_web":false,"pipeline":"text_only","focus":"none","hint":"explain the topic in depth"}}"""
 
