@@ -50,6 +50,37 @@ def get_foreground_window_title(excluded_hwnd: int | None = None) -> str:
     return buf.value.strip()
 
 
+def get_foreground_process_name(excluded_hwnd: int | None = None) -> str:
+    """Executable name of the foreground window process (best-effort)."""
+    hwnd = user32.GetForegroundWindow()
+    if hwnd == 0:
+        return ""
+    if excluded_hwnd and hwnd == excluded_hwnd:
+        return ""
+    pid = ctypes.c_ulong(0)
+    user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+    if not pid.value:
+        return ""
+    PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+    kernel32 = ctypes.windll.kernel32
+    handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid.value)
+    if not handle:
+        return ""
+    try:
+        size = ctypes.c_ulong(260)
+        buf = ctypes.create_unicode_buffer(260)
+        # QueryFullProcessImageNameW
+        QueryFullProcessImageNameW = kernel32.QueryFullProcessImageNameW
+        if not QueryFullProcessImageNameW(handle, 0, buf, ctypes.byref(size)):
+            return ""
+        path = buf.value.strip()
+        if not path:
+            return ""
+        return Path(path).name
+    finally:
+        kernel32.CloseHandle(handle)
+
+
 def is_minecraft_window_title(title: str) -> bool:
     if not title:
         return False

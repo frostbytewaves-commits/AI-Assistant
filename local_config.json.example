@@ -2,5 +2,6 @@
   "games_data_dir": "C:\\AI-Assistant-Data\\games",
   "data_root": "C:\\AI-Assistant-Data",
   "minecraft_play_version": "1.21.11",
-  "reply_language": "auto"
+  "reply_language": "auto",
+  "model_profile": "laptop"
 }

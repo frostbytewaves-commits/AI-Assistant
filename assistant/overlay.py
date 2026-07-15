@@ -16,6 +16,8 @@ from .capture import capture_foreground_window, capture_full_screen, get_foregro
 
 from .config import AssistantConfig
 
+from .core import ContextBuilder
+
 from .screen_context import ScreenContext
 
 from .followup import (
@@ -62,6 +64,7 @@ class GameAssistantApp:
 
         self.llm = OllamaClient(self.config)
         self.memory = AssistantMemory.load(self.config.memory_path)
+        self.context_builder = ContextBuilder()
 
         self.voice = VoiceEngine(self.config)
 
@@ -160,7 +163,7 @@ class GameAssistantApp:
                     "options": {"num_predict": 1},
                 }
                 if self.llm._is_thinking_model(model):
-                    payload["think"] = False
+                    payload["think"] = False  # warm-up stays cheap; answers use profile thinking
 
                 requests.post(
                     f"{base}/api/chat",
@@ -469,6 +472,16 @@ class GameAssistantApp:
 
     def _conversation_context(self) -> str:
         parts = [self.memory.format_context()]
+        try:
+            excluded = None
+            if getattr(self, "root", None) is not None:
+                excluded = int(self.root.winfo_id())
+            host = self.context_builder.build(excluded_hwnd=excluded)
+            block = host.to_prompt_block()
+            if block:
+                parts.append(block)
+        except Exception:
+            pass
         history = format_chat_history(self._chat_history)
         if history:
             parts.append(history)

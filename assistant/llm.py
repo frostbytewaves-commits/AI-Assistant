@@ -121,10 +121,27 @@ class OllamaClient:
         base = model.split(":")[0].lower()
         return base.startswith("qwen3") or "deepseek-r1" in base or base.endswith("-r1")
 
-    def _with_think_flag(self, payload: dict, model: str) -> dict:
-        if self._is_thinking_model(model):
-            payload["think"] = False
+    def _with_think_flag(
+        self,
+        payload: dict,
+        model: str,
+        *,
+        enable_thinking: bool | None = None,
+    ) -> dict:
+        if not self._is_thinking_model(model):
+            return payload
+        use_think = self.config.enable_thinking if enable_thinking is None else enable_thinking
+        payload["think"] = bool(use_think)
         return payload
+
+    def _user_prompt(self, text: str, *, enable_thinking: bool | None = None) -> str:
+        """Append /no_think only when chain-of-thought is disabled for this call."""
+        use_think = self.config.enable_thinking if enable_thinking is None else enable_thinking
+        if use_think:
+            return text
+        if text.rstrip().endswith("/no_think"):
+            return text
+        return f"{text.rstrip()} /no_think"
 
     @staticmethod
     def _message_text(message: dict) -> str:
@@ -267,7 +284,7 @@ class OllamaClient:
             self.resolve_text_model(),
             [
                 {"role": "system", "content": system or self.config.system_prompt},
-                {"role": "user", "content": prompt + " /no_think"},
+                {"role": "user", "content": self._user_prompt(prompt)},
             ],
             on_token,
             max_tokens=self.config.max_tokens,
@@ -1204,7 +1221,7 @@ class OllamaClient:
                 "num_predict": max_tokens or self.config.vision_max_tokens,
                 "temperature": 0.3,
             },
-        }, model)
+        }, model, enable_thinking=False)
         response = requests.post(
             f"{self.base_url}/api/chat",
             json=payload,
@@ -1234,7 +1251,7 @@ class OllamaClient:
                 self.resolve_text_model(),
                 [
                     {"role": "system", "content": system},
-                    {"role": "user", "content": prompt + " /no_think"},
+                    {"role": "user", "content": self._user_prompt(prompt)},
                 ],
                 on_token,
                 max_tokens=self.config.max_tokens,
@@ -1327,11 +1344,19 @@ class OllamaClient:
     ) -> str:
         if on_status and system != ROUTER_SYSTEM:
             self._status(on_status, "Text model thinking…")
+        # Router stays fast / structured; chat answers follow profile thinking policy.
+        thinking = False if system == ROUTER_SYSTEM else None
         payload = self._with_think_flag({
             "model": model,
             "messages": [
                 {"role": "system", "content": system or self.config.system_prompt},
-                {"role": "user", "content": user_message + (" /no_think" if system != ROUTER_SYSTEM else "")},
+                {
+                    "role": "user",
+                    "content": self._user_prompt(
+                        user_message,
+                        enable_thinking=False if system == ROUTER_SYSTEM else None,
+                    ),
+                },
             ],
             "stream": False,
             "keep_alive": self.config.ollama_keep_alive,
@@ -1339,7 +1364,7 @@ class OllamaClient:
                 "num_predict": max_tokens or self.config.max_tokens,
                 "temperature": 0.2 if system == ROUTER_SYSTEM else 0.5,
             },
-        }, model)
+        }, model, enable_thinking=thinking)
         response = requests.post(
             f"{self.base_url}/api/chat",
             json=payload,

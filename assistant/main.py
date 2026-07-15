@@ -73,7 +73,13 @@ def main() -> None:
 
     log.info("Game AI Assistant v2")
     log.info("Hotkey: %s", "OK" if hotkeys_ok else "NO")
-    log.info("Profile: %s | Text: %s | Vision: %s", MODEL_PROFILE, text, vision or "none")
+    log.info(
+        "Profile: %s | Text: %s | Vision: %s | Thinking: %s",
+        MODEL_PROFILE,
+        text,
+        vision or "none",
+        "on" if config.enable_thinking else "off",
+    )
 
     if not hotkeys_ok:
         app.status_var.set("F8/F9/F10 unavailable — use window buttons")

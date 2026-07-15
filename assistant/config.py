@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+import json
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -10,22 +14,53 @@ DATA_DIR = BASE_DIR / "data"
 SCREENSHOT_DIR = DATA_DIR / "screenshots"
 AUDIO_DIR = DATA_DIR / "audio"
 MEMORY_PATH = DATA_DIR / "memory.json"
+LOCAL_CONFIG_PATH = BASE_DIR / "local_config.json"
 
 OLLAMA_URL = "http://localhost:11434"
 
-# Профиль моделей:
-#   gaming  — moondream + qwen3:8b (быстро, ~2 GB vision, игра + ассистент)
-#   balance — minicpm-v + qwen3:8b (средне, нужен: ollama pull minicpm-v)
-#   quality — qwen2.5vl:7b + qwen3:14b (умнее и точнее, но медленнее)
-MODEL_PROFILE = "quality"
+# Профили (см. docs/JARVIS_ARCHITECTURE.md):
+#   laptop  — ноут / отпуск: qwen3:14b + thinking
+#   desktop — домПК 16GB VRAM: qwen3:30b-a3b + thinking (fallback → 14b)
+#   deep    — максимум рассуждения: deepseek-r1:14b
+# Алиасы: gaming / balance / quality — для совместимости
+_DEFAULT_MODEL_PROFILE = "laptop"
 
 _PROFILES: dict[str, dict[str, object]] = {
+    "laptop": {
+        "text": "qwen3:14b",
+        "text_fallbacks": ("qwen3:14b", "qwen3:8b", "qwen2.5:7b"),
+        "vision": "qwen2.5vl:7b",
+        "vision_fallbacks": ("qwen2.5vl:7b", "moondream", "llava:7b"),
+        "use_intent_router": True,
+        "enable_thinking": True,
+        "text_timeout_sec": 300,
+    },
+    "desktop": {
+        "text": "qwen3:30b-a3b",
+        "text_fallbacks": ("qwen3:30b-a3b", "qwen3:14b", "qwen3:8b"),
+        "vision": "qwen2.5vl:7b",
+        "vision_fallbacks": ("qwen2.5vl:7b", "minicpm-v", "llava:7b", "moondream"),
+        "use_intent_router": True,
+        "enable_thinking": True,
+        "text_timeout_sec": 360,
+    },
+    "deep": {
+        "text": "deepseek-r1:14b",
+        "text_fallbacks": ("deepseek-r1:14b", "qwen3:14b", "qwen3:8b"),
+        "vision": "qwen2.5vl:7b",
+        "vision_fallbacks": ("qwen2.5vl:7b", "moondream", "llava:7b"),
+        "use_intent_router": True,
+        "enable_thinking": True,
+        "text_timeout_sec": 420,
+    },
     "gaming": {
         "text": "qwen3:8b",
         "text_fallbacks": ("qwen3:8b", "qwen2.5:7b"),
         "vision": "moondream",
         "vision_fallbacks": ("moondream", "llava:7b", "qwen2.5vl:7b"),
         "use_intent_router": False,
+        "enable_thinking": False,
+        "text_timeout_sec": 180,
     },
     "balance": {
         "text": "qwen3:8b",
@@ -33,23 +68,52 @@ _PROFILES: dict[str, dict[str, object]] = {
         "vision": "minicpm-v",
         "vision_fallbacks": ("minicpm-v", "llava:7b", "moondream", "qwen2.5vl:7b"),
         "use_intent_router": False,
+        "enable_thinking": False,
+        "text_timeout_sec": 180,
     },
+    # legacy alias → laptop + thinking
     "quality": {
         "text": "qwen3:14b",
         "text_fallbacks": ("qwen3:14b", "qwen3:8b", "qwen2.5:7b"),
         "vision": "qwen2.5vl:7b",
         "vision_fallbacks": ("qwen2.5vl:7b", "minicpm-v", "llava:13b", "llava:7b", "moondream"),
         "use_intent_router": True,
+        "enable_thinking": True,
+        "text_timeout_sec": 300,
     },
 }
 
-_active = _PROFILES.get(MODEL_PROFILE, _PROFILES["gaming"])
+
+def _read_local_config() -> dict:
+    if not LOCAL_CONFIG_PATH.exists():
+        return {}
+    try:
+        return json.loads(LOCAL_CONFIG_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def resolve_model_profile() -> str:
+    env = (os.environ.get("AI_ASSISTANT_PROFILE") or "").strip().lower()
+    if env:
+        return env
+    local = _read_local_config()
+    local_profile = str(local.get("model_profile") or "").strip().lower()
+    if local_profile:
+        return local_profile
+    return _DEFAULT_MODEL_PROFILE
+
+
+MODEL_PROFILE = resolve_model_profile()
+_active = _PROFILES.get(MODEL_PROFILE, _PROFILES["laptop"])
 
 TEXT_MODEL = str(_active["text"])
 TEXT_MODEL_FALLBACKS = tuple(_active["text_fallbacks"])  # type: ignore[arg-type]
 VISION_MODEL = str(_active["vision"])
 VISION_MODEL_FALLBACKS = tuple(_active["vision_fallbacks"])  # type: ignore[arg-type]
 _DEFAULT_USE_INTENT_ROUTER = bool(_active["use_intent_router"])
+_DEFAULT_ENABLE_THINKING = bool(_active.get("enable_thinking", False))
+_DEFAULT_TEXT_TIMEOUT_SEC = int(_active.get("text_timeout_sec", 180))
 
 STT_MODEL = "whisper"
 
@@ -198,9 +262,10 @@ class AssistantConfig:
     max_tokens: int = 2048
     vision_max_tokens: int = 512
     vision_timeout_sec: int = 120
-    text_timeout_sec: int = 180
+    text_timeout_sec: int = _DEFAULT_TEXT_TIMEOUT_SEC
     fast_mode: bool = True
     use_intent_router: bool = _DEFAULT_USE_INTENT_ROUTER
+    enable_thinking: bool = _DEFAULT_ENABLE_THINKING
     use_game_database: bool = True
     default_game_id: str = "oni"
     minecraft_play_version: str = DEFAULT_MINECRAFT_PLAY_VERSION
