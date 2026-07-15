@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 from .screen_context import ScreenContext
@@ -74,8 +75,8 @@ JSON fields:
 - hint (str): one short sentence describing what the user wants.
 
 Guidance (think; do not treat as a keyword checklist):
-- needs_screen=true when the answer depends on what is visible right now.
-- needs_screen=false for general knowledge, explanations, planning, and questions that do not depend on the current screen.
+- needs_screen=true when the answer depends on visible pixel content right now (UI text, wallpaper, HUD, Steam library tiles).
+- needs_screen=false for general knowledge, explanations, planning, and when Host window inventory already answers (what apps/windows/games are open or running).
 - needs_web=true when search would meaningfully improve the answer: fresher facts, lookups of people/bands/products/characters, news, prices, versions, rare names, or when you are unsure which sense of an ambiguous name the user means.
 - Interpret pronouns and verbs naturally: "who" usually points to people/groups/characters; "what" may point to concepts — but use context, not rigid word rules.
 - pipeline=vision_then_text when the assistant must see the screen and then reason.
@@ -105,7 +106,11 @@ FOCUS_VISION_PROMPTS = {
 
 
 def question_needs_screen(question: str) -> bool:
-    """Нужен ли скриншот для этого текстового вопроса."""
+    """Hard override: force a screenshot when the ask clearly needs pixels.
+
+    Prefer the LLM router for ambiguous cases. Do not treat 'what is open' /
+    inventory questions as needing a screenshot — Host context covers that.
+    """
     q = question.lower()
     screen_markers = (
         "на экране",
@@ -113,25 +118,17 @@ def question_needs_screen(question: str) -> bool:
         "whats on screen",
         "what is on screen",
         "что видно",
-        "что на",
-        "что здесь",
-        "что это",
-        "что за",
-        "кто это",
+        "что на экране",
         "в прицеле",
         "передо мной",
-        "вижу",
-        "скрин",
-        "screen",
+        "скриншот",
+        "screenshot",
         "crosshair",
-        "какую игру",
         "во что поиграть",
         "что поиграть",
         "what should i play",
-        "which game",
-        "what game",
-        "choose a game",
-        "pick a game",
+        "pick a game to play",
+        "choose a game to play",
     )
     if any(m in q for m in screen_markers):
         return True
@@ -158,52 +155,42 @@ def should_auto_capture_screen(question: str, *, always_capture: bool = False) -
 
 
 def is_minecraft_question(question: str) -> bool:
-    """Вопрос явно про Minecraft — можно использовать базу игры без окна."""
+    """Clear Minecraft topic — not everyday words like farm/experience/recipe."""
     q = question.lower()
     markers = (
         "minecraft",
         "майнкрафт",
-        "майн",
-        "крипер",
+        "майнкраф",
         "creeper",
-        "vanilla",
-        "hotbar",
-        "незер",
+        "крипер",
+        "enderman",
+        "эндермен",
         "nether",
-        "энд",
-        "end ",
-        " villager",
+        "незер",
+        "hotbar",
+        "villager",
         "житель",
-        "моб ",
-        "дроп ",
-        "скрафт",
-        "крафт",
-        "рецепт",
-        "xp farm",
-        " xp",
-        "experience",
-        "level up",
-        "levels",
-        "опыт",
-        "уровн",
-        "ферм",
-        " farm",
-        "spawner",
-        "спawner",
         "piglin",
         "свинозомби",
         "zombified pig",
+        "xp farm",
+        "mob farm",
         "iron farm",
         "gold farm",
-        "mob farm",
-        "автоферм",
-        "опыт",
+        "guardian farm",
+        "enderman farm",
+        "spawner",
         "redstone",
         "редстоун",
-        "enchant",
-        "зачар",
+        "автоферм",
+        "майн ",
     )
-    return any(m in q for m in markers)
+    if any(m in q for m in markers):
+        return True
+    # "майн" alone is too short; require word-ish boundary via spaces/start
+    if re.search(r"(?i)(?:^|\s)майн(?:\s|$)", q):
+        return True
+    return False
 
 
 _ADVISORY_MARKERS = (
@@ -256,75 +243,94 @@ _ADVISORY_MARKERS = (
     "tutorial",
 )
 
-_GAME_ADVISORY_TOPICS = (
-    "farm", "ферм", "xp", "опыт", "grinder", "ranch", "base",
-    "автомат", "automatic", "spawner", "generator", "loop",
-    "co2", "oxygen", "cool", "heat", "power", "food", "water",
-)
+def continuation_user_payload(question: str) -> str:
+    """If this is a follow-up wrapper, return original topic + user line only."""
+    lower_full = question.lower()
+    if "earlier question:" not in lower_full or "user follow-up:" not in lower_full:
+        return question.strip()
+    topic = ""
+    follow = ""
+    for line in question.splitlines():
+        stripped = line.strip()
+        low = stripped.lower()
+        if low.startswith("earlier question:"):
+            topic = stripped.split(":", 1)[1].strip()
+        elif low.startswith("user follow-up:"):
+            follow = stripped.split(":", 1)[1].strip()
+    return f"{topic} {follow}".strip() or question.strip()
 
 
 def is_advisory_question(question: str) -> bool:
-    """How-to / build / optimize — brief answer first, then pick-a-variant deep dive."""
-    q = question.lower()
-    if "earlier question:" in q and "user follow-up:" in q:
-        return True
-    if any(m in q for m in _ADVISORY_MARKERS):
-        return True
-    if any(m in q for m in _GAME_ADVISORY_TOPICS):
-        return True
-    return False
+    """How-to / optimize phrasing — not automatically a game strategy request."""
+    # Judge only the user's topic/follow-up — never continuation boilerplate.
+    q = continuation_user_payload(question).lower()
+    return any(m in q for m in _ADVISORY_MARKERS)
+
+
+def is_supported_game_topic(question: str) -> bool:
+    """True when wording clearly points at a supported game (not everyday vocabulary)."""
+    return is_minecraft_question(question) or is_oni_question(question)
+
+
+def is_game_advisory_question(
+    question: str,
+    *,
+    game_id: str | None = None,
+    active_game: str | None = None,
+) -> bool:
+    """Game strategy deep-dive UI — only with real game context + how-to phrasing."""
+    if not (game_id or active_game or is_supported_game_topic(question)):
+        return False
+    return is_advisory_question(question)
 
 
 def is_oni_strategy_question(question: str) -> bool:
-    """Deprecated alias — use is_advisory_question for ONI context."""
-    if not is_advisory_question(question):
-        return False
-    return is_oni_question(question) or any(
-        w in question.lower()
-        for w in ("co2", "oxygen", "duplicant", "geyser", "electrolyzer", "colony")
+    """Deprecated alias — use is_game_advisory_question for ONI context."""
+    return is_game_advisory_question(question) and (
+        is_oni_question(question)
+        or any(
+            w in question.lower()
+            for w in ("duplicant", "geyser", "electrolyzer", "spom", "aquatuner")
+        )
     )
 
 
 def is_oni_question(question: str) -> bool:
+    """Clear Oxygen Not Included topic — avoid everyday words (oxygen, stress, colony)."""
     q = question.lower()
     markers = (
         "oxygen not included",
-        "oni ",
+        "oxygennotincluded",
         " duplicant",
         "duplicants",
         "electrolyzer",
         "oxylite",
-        "geyser",
-        "hatch",
+        "natural gas geyser",
+        "cool steam geyser",
+        "drecko",
         "dreckos",
         "puft",
-        "morale",
-        "watts",
-        "power grid",
-        "liquid pipe",
-        "gas pipe",
         "polluted oxygen",
         "meal lice",
         "sleet wheat",
         "bristle blossom",
-        "research tree",
-        "colony",
-        "cycle ",
-        "stress",
-        "germs",
-        "food poisoning",
-        "slime lung",
         "carbon skimmer",
-        "co2",
         "spom",
         "aquatuner",
         "steam turbine",
-        "ranch",
         "slickster",
-        "petroleum",
-        "automation",
+        "shine bug",
+        "critter ranch",
+        "liquid lock",
+        "gas pipe",
+        "liquid pipe",
     )
-    return any(m in q for m in markers)
+    if any(m in q for m in markers):
+        return True
+    # Bare "oni" only as a whole word (not "online", "onion", etc.)
+    if re.search(r"(?i)(?:^|\s)oni(?:\s|$)", q):
+        return True
+    return False
 
 
 SCREEN_CAPTURE_DEFAULT_PROMPT = (

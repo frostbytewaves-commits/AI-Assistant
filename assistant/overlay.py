@@ -16,7 +16,7 @@ from .capture import capture_foreground_window, capture_full_screen, get_foregro
 
 from .config import AssistantConfig
 
-from .core import ContextBuilder
+from .core import ContextBuilder, ContextManager
 
 from .screen_context import ScreenContext
 
@@ -31,7 +31,7 @@ from .followup import (
 )
 from .advisory_topics import ensure_advisory_options
 from .conversation import format_chat_history
-from .intent import QueryIntent, effective_screen_question, is_advisory_question
+from .intent import QueryIntent, effective_screen_question, is_game_advisory_question
 from .memory import AssistantMemory
 
 from .llm import OllamaClient
@@ -64,7 +64,19 @@ class GameAssistantApp:
 
         self.llm = OllamaClient(self.config)
         self.memory = AssistantMemory.load(self.config.memory_path)
-        self.context_builder = ContextBuilder()
+        self.context_builder = ContextManager(
+            capabilities=[
+                "web_search",
+                "screen_capture",
+                "voice",
+                "launch_app",
+                "focus_window",
+                "close_window",
+                "open_url",
+                "media_play_pause",
+                "volume_mute",
+            ],
+        )
 
         self.voice = VoiceEngine(self.config)
 
@@ -107,20 +119,224 @@ class GameAssistantApp:
         self.root.configure(bg=md.BG)
 
         self.root.attributes("-topmost", True)
-
         self.root.minsize(460, 520)
-
-
+        # Keep overlay visible over other apps (without stealing keyboard focus).
+        self.root.after(800, self._keep_topmost)
 
         self.status_var = tk.StringVar(value="Ready")
 
         self._build_ui()
 
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+        self._bind_clipboard_shortcuts()
 
         threading.Thread(target=self._warmup_models, daemon=True).start()
 
 
+
+    def _toplevel_hwnd(self) -> int:
+        """Real Win32 HWND of the Tk toplevel (winfo_id is often a child)."""
+        try:
+            hwnd = int(self.root.winfo_id())
+            GA_ROOT = 2
+            root = int(user32.GetAncestor(hwnd, GA_ROOT) or 0)
+            return root or hwnd
+        except Exception:
+            return int(self.root.winfo_id() or 0)
+
+    def _keep_topmost(self) -> None:
+        """Force always-on-top via Win32 — Tk -topmost alone is unreliable here."""
+        try:
+            if not self.root.winfo_exists():
+                return
+            self.root.attributes("-topmost", True)
+            hwnd = self._toplevel_hwnd()
+            if hwnd:
+                HWND_TOPMOST = -1
+                SWP_NOSIZE = 0x0001
+                SWP_NOMOVE = 0x0002
+                SWP_NOACTIVATE = 0x0010
+                user32.SetWindowPos(
+                    hwnd,
+                    HWND_TOPMOST,
+                    0,
+                    0,
+                    0,
+                    0,
+                    SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE,
+                )
+            self.root.after(1200, self._keep_topmost)
+        except Exception:
+            try:
+                self.root.after(2000, self._keep_topmost)
+            except Exception:
+                pass
+
+    def _bind_clipboard_shortcuts(self) -> None:
+        # Chat log
+        self.output.bind("<Control-KeyPress>", self._chat_ctrl_key)
+        self.output.bind("<Control-Insert>", self._chat_copy)
+        # Input: layout-independent — Windows keycodes for A/C/V/X stay the same on RU/EN
+        self.input_entry.bind("<Control-KeyPress>", self._entry_ctrl_key)
+        self.input_entry.bind("<Shift-Insert>", self._entry_paste)
+        self.input_entry.bind("<<Paste>>", self._entry_paste)
+        self.input_entry.bind("<Shift-Delete>", self._entry_cut)
+        self.input_entry.bind("<Button-3>", self._input_context_menu)
+
+    # Win32 virtual-key codes (stable across keyboard layouts)
+    _VK_A, _VK_C, _VK_V, _VK_X = 0x41, 0x43, 0x56, 0x58
+
+    def _entry_ctrl_key(self, event: tk.Event) -> str | None:
+        code = int(getattr(event, "keycode", 0) or 0)
+        # On some Tk builds keycode is already the VK; also accept keysym fallbacks
+        sym = (event.keysym or "").lower()
+        if code in (self._VK_V, 86) or sym in {"v", "м", "cyrillic_em"}:
+            return self._entry_paste()
+        if code in (self._VK_C, 67) or sym in {"c", "с", "cyrillic_es"}:
+            return self._entry_copy()
+        if code in (self._VK_X, 88) or sym in {"x", "ч", "cyrillic_cha"}:
+            return self._entry_cut()
+        if code in (self._VK_A, 65) or sym in {"a", "ф", "cyrillic_ef"}:
+            return self._entry_select_all()
+        return None
+
+    def _chat_ctrl_key(self, event: tk.Event) -> str | None:
+        code = int(getattr(event, "keycode", 0) or 0)
+        sym = (event.keysym or "").lower()
+        if code in (self._VK_C, 67) or sym in {"c", "с", "cyrillic_es"}:
+            return self._chat_copy()
+        if code in (self._VK_A, 65) or sym in {"a", "ф", "cyrillic_ef"}:
+            return self._chat_select_all()
+        return None
+
+    def _clipboard_text(self) -> str:
+        """Read Windows clipboard robustly (Tk CLIPBOARD / STRING / CF_UNICODETEXT)."""
+        errors: list[Exception] = []
+        for getter in (
+            lambda: self.root.clipboard_get(),
+            lambda: self.root.clipboard_get(type="STRING"),
+            lambda: self.root.clipboard_get(type="UTF8_STRING"),
+            lambda: self.root.tk.call("::tk::GetSelection", self.root, "CLIPBOARD"),
+        ):
+            try:
+                value = getter()
+                if value:
+                    return str(value)
+            except Exception as exc:  # TclError and others
+                errors.append(exc)
+        # Win32 CF_UNICODETEXT fallback
+        try:
+            CF_UNICODETEXT = 13
+            OpenClipboard = user32.OpenClipboard
+            GetClipboardData = user32.GetClipboardData
+            CloseClipboard = user32.CloseClipboard
+            kernel32 = ctypes.windll.kernel32
+            if not OpenClipboard(None):
+                return ""
+            try:
+                handle = GetClipboardData(CF_UNICODETEXT)
+                if not handle:
+                    return ""
+                ptr = kernel32.GlobalLock(handle)
+                if not ptr:
+                    return ""
+                try:
+                    return ctypes.wstring_at(ptr)
+                finally:
+                    kernel32.GlobalUnlock(handle)
+            finally:
+                CloseClipboard()
+        except Exception:
+            return ""
+
+    @staticmethod
+    def _readonly_chat_key(event: tk.Event) -> str | None:
+        # Allow shortcuts (Ctrl) and navigation; block typing into the chat log.
+        if event.state & 0x4:  # Control
+            return None
+        if event.keysym in {
+            "Left", "Right", "Up", "Down", "Home", "End", "Prior", "Next",
+            "Shift_L", "Shift_R", "Control_L", "Control_R", "Alt_L", "Alt_R",
+            "Escape", "Tab", "Insert",
+        }:
+            return None
+        return "break"
+
+    def _chat_copy(self, _event=None):
+        try:
+            text = self.output.selection_get()
+        except tk.TclError:
+            return "break"
+        if text:
+            try:
+                self.root.clipboard_clear()
+                self.root.clipboard_append(text)
+                self.root.update_idletasks()
+            except Exception:
+                pass
+        return "break"
+
+    def _chat_select_all(self, _event=None):
+        self.output.tag_add("sel", "1.0", "end")
+        return "break"
+
+    def _entry_copy(self, _event=None):
+        try:
+            text = self.input_entry.selection_get()
+        except tk.TclError:
+            return "break"
+        if text:
+            try:
+                self.root.clipboard_clear()
+                self.root.clipboard_append(text)
+                self.root.update_idletasks()
+            except Exception:
+                pass
+        return "break"
+
+    def _entry_cut(self, _event=None):
+        try:
+            text = self.input_entry.selection_get()
+        except tk.TclError:
+            return "break"
+        if text:
+            try:
+                self.root.clipboard_clear()
+                self.root.clipboard_append(text)
+                self.root.update_idletasks()
+                self.input_entry.delete("sel.first", "sel.last")
+            except Exception:
+                pass
+        return "break"
+
+    def _entry_paste(self, _event=None):
+        text = self._clipboard_text()
+        if not text:
+            return "break"
+        try:
+            self.input_entry.delete("sel.first", "sel.last")
+        except tk.TclError:
+            pass
+        self.input_entry.insert("insert", text)
+        return "break"
+
+    def _entry_select_all(self, _event=None):
+        self.input_entry.selection_range(0, "end")
+        self.input_entry.icursor("end")
+        return "break"
+
+    def _input_context_menu(self, event: tk.Event):
+        menu = tk.Menu(self.root, tearoff=0)
+        menu.add_command(label="Cut", command=lambda: self._entry_cut())
+        menu.add_command(label="Copy", command=lambda: self._entry_copy())
+        menu.add_command(label="Paste", command=lambda: self._entry_paste())
+        menu.add_separator()
+        menu.add_command(label="Select all", command=lambda: self._entry_select_all())
+        try:
+            menu.tk_popup(event.x_root, event.y_root)
+        finally:
+            menu.grab_release()
+        return "break"
 
     def _run_on_main(self, fn, timeout: float = 1.5) -> None:
         if threading.current_thread() is threading.main_thread():
@@ -147,7 +363,13 @@ class GameAssistantApp:
 
         base = self.config.ollama_url.rstrip("/")
 
-        for model in (self.llm.resolve_text_model(), self.llm.resolve_vision_model()):
+        models = [self.llm.resolve_text_model()]
+        if self.config.warmup_vision:
+            vision = self.llm.resolve_vision_model()
+            if vision:
+                models.append(vision)
+
+        for model in models:
 
             if not model:
 
@@ -223,7 +445,7 @@ class GameAssistantApp:
 
             header,
 
-            text="Game Assistant",
+            text="Assistant",
 
             font=("Segoe UI", 13, "bold"),
 
@@ -307,12 +529,13 @@ class GameAssistantApp:
 
         self.output.pack(side="left", fill="both", expand=True)
 
-        self.output.configure(state=tk.DISABLED)
+        # NORMAL so user can select/copy; keys that would edit are blocked.
+        self.output.configure(state=tk.NORMAL)
 
         md.configure_chat_tags(self.output)
 
         md.clear_chat(self.output)
-        self.output.configure(state=tk.DISABLED)
+        self.output.bind("<Key>", self._readonly_chat_key)
 
 
 
@@ -370,6 +593,7 @@ class GameAssistantApp:
         self.input_entry.pack(side="left", fill="x", expand=True, ipady=6, padx=(0, 8))
 
         self.input_entry.bind("<Return>", self._on_input_enter)
+        # Clipboard binds are registered in _bind_clipboard_shortcuts (handles RU layout).
 
 
 
@@ -452,7 +676,7 @@ class GameAssistantApp:
     def _show_welcome(self) -> None:
         self.output.configure(state=tk.NORMAL)
         md.clear_chat(self.output)
-        self.output.configure(state=tk.DISABLED)
+        self.output.configure(state=tk.NORMAL)
 
 
 
@@ -470,13 +694,20 @@ class GameAssistantApp:
         if len(self._chat_history) > 16:
             self._chat_history = self._chat_history[-16:]
 
+    def _host_context(self):
+        """Fresh Host snapshot (open windows) for the model — no screenshot."""
+        excluded = None
+        try:
+            if getattr(self, "root", None) is not None:
+                excluded = int(self.root.winfo_id())
+        except Exception:
+            excluded = None
+        return self.context_builder.build(excluded_hwnd=excluded)
+
     def _conversation_context(self) -> str:
         parts = [self.memory.format_context()]
         try:
-            excluded = None
-            if getattr(self, "root", None) is not None:
-                excluded = int(self.root.winfo_id())
-            host = self.context_builder.build(excluded_hwnd=excluded)
+            host = self._host_context()
             block = host.to_prompt_block()
             if block:
                 parts.append(block)
@@ -495,7 +726,7 @@ class GameAssistantApp:
 
         md.append_user_message(self.output, text)
 
-        self.output.configure(state=tk.DISABLED)
+        self.output.configure(state=tk.NORMAL)
 
         self.output.see(tk.END)
 
@@ -507,7 +738,7 @@ class GameAssistantApp:
 
         md.append_assistant_message(self.output, text)
 
-        self.output.configure(state=tk.DISABLED)
+        self.output.configure(state=tk.NORMAL)
 
         self.output.see(tk.END)
 
@@ -519,7 +750,7 @@ class GameAssistantApp:
 
         md.append_system_note(self.output, text)
 
-        self.output.configure(state=tk.DISABLED)
+        self.output.configure(state=tk.NORMAL)
 
         self.output.see(tk.END)
 
@@ -531,7 +762,7 @@ class GameAssistantApp:
 
         md.append_error(self.output, text)
 
-        self.output.configure(state=tk.DISABLED)
+        self.output.configure(state=tk.NORMAL)
 
         self.output.see(tk.END)
 
@@ -540,16 +771,20 @@ class GameAssistantApp:
     def _poll_busy_watchdog(self) -> None:
 
         if self.is_busy and self._busy_since is not None:
-
-            if time.time() - self._busy_since > 120:
+            # UI watchdog must outlive HTTP text timeout (thinking can be slow on CPU).
+            limit = max(180, int(self.config.text_timeout_sec) + 60)
+            if time.time() - self._busy_since > limit:
 
                 self._set_busy(False)
 
                 self.set_status("Timeout — restart assistant")
 
+                text_model = self.llm.resolve_text_model()
+                vision = self.llm.resolve_vision_model() or "none"
                 self._append_note(
                     "Request took too long. Restart the assistant. "
-                    "Close extra Ollama models (keep qwen2.5vl + qwen3:8b)."
+                    f"Unload unused Ollama models (`ollama stop`), keep primarily {text_model}"
+                    + (f" (vision {vision} only when using Screen)." if vision != "none" else ".")
                 )
 
         self.root.after(1000, self._poll_busy_watchdog)
@@ -606,7 +841,7 @@ class GameAssistantApp:
 
         self._stream_active = True
 
-        self.output.configure(state=tk.DISABLED)
+        self.output.configure(state=tk.NORMAL)
 
 
 
@@ -616,7 +851,7 @@ class GameAssistantApp:
 
         md.append_assistant_stream_chunk(self.output, chunk)
 
-        self.output.configure(state=tk.DISABLED)
+        self.output.configure(state=tk.NORMAL)
 
 
 
@@ -636,7 +871,7 @@ class GameAssistantApp:
 
         self._stream_active = False
 
-        self.output.configure(state=tk.DISABLED)
+        self.output.configure(state=tk.NORMAL)
 
         self.output.see(tk.END)
 
@@ -728,9 +963,10 @@ class GameAssistantApp:
             self._set_busy(True)
             self.set_status("Thinking…")
             self._append_user(question)
-            game_id = self.llm._resolve_game_id(self._followup_topic)
+            topic = self._followup_topic
+            game_id = self.llm._resolve_game_id(topic)
             cont = build_continuation_message(
-                self._followup_topic,
+                topic,
                 question,
                 prior_brief=self._last_assistant_brief,
                 game_id=game_id,
@@ -1098,9 +1334,21 @@ class GameAssistantApp:
 
 
 
+    def _screen_context_now(self, assistant_hwnd: int | None = None) -> ScreenContext:
+        hwnd = assistant_hwnd
+        if hwnd is None:
+            try:
+                hwnd = self._assistant_hwnd()
+            except Exception:
+                hwnd = None
+        try:
+            return self.context_builder.build(excluded_hwnd=hwnd).to_screen_context()
+        except Exception:
+            return ScreenContext.detect(hwnd)
+
     def _grab_screen_now(self) -> tuple[Path, ScreenContext]:
         assistant_hwnd = self._prepare_for_capture()
-        ctx = ScreenContext.detect(assistant_hwnd)
+        ctx = self._screen_context_now(assistant_hwnd)
         try:
             path = capture_foreground_window(
                 self.config.screenshot_dir,
@@ -1115,7 +1363,7 @@ class GameAssistantApp:
         """Voice queries: never hide the assistant; a visible overlay is less disruptive."""
         assistant_hwnd = self._assistant_hwnd()
         foreground_hwnd = get_foreground_window_handle()
-        ctx = ScreenContext.detect(assistant_hwnd)
+        ctx = self._screen_context_now(assistant_hwnd)
         if foreground_hwnd and foreground_hwnd != assistant_hwnd:
             try:
                 path = capture_foreground_window(
@@ -1134,7 +1382,7 @@ class GameAssistantApp:
     def _grab_screen_for_analysis(self) -> tuple[Path, ScreenContext]:
         """F8: полный экран на рабочем столе, иначе активное окно игры."""
         assistant_hwnd = self._prepare_for_capture()
-        ctx = ScreenContext.detect(assistant_hwnd)
+        ctx = self._screen_context_now(assistant_hwnd)
         if ctx.active_game:
             try:
                 path = capture_foreground_window(
@@ -1158,7 +1406,11 @@ class GameAssistantApp:
 
             assistant_hwnd = int(self.root.winfo_id())
 
-            ctx = ScreenContext.detect(assistant_hwnd)
+            try:
+                host = self.context_builder.build(excluded_hwnd=assistant_hwnd)
+                ctx = host.to_screen_context()
+            except Exception:
+                ctx = ScreenContext.detect(assistant_hwnd)
 
             intent = self.llm.plan_query(
 
@@ -1353,7 +1605,7 @@ class GameAssistantApp:
 
 
     def _assistant_hwnd(self) -> int:
-        return int(self.root.winfo_id())
+        return self._toplevel_hwnd()
 
     def _hide_window(self) -> None:
         try:
@@ -1380,8 +1632,14 @@ class GameAssistantApp:
                 self.root.deiconify()
             except Exception:
                 pass
-        self.root.attributes("-topmost", True)
-        self.root.lift()
+        try:
+            self.root.attributes("-topmost", True)
+            hwnd = self._toplevel_hwnd()
+            if hwnd:
+                HWND_TOPMOST = -1
+                user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, 0x0001 | 0x0002 | 0x0010)
+        except Exception:
+            pass
 
     def _wait_until_hidden(self, hwnd: int, timeout_sec: float = 0.65) -> None:
         deadline = time.time() + timeout_sec
@@ -1442,7 +1700,7 @@ class GameAssistantApp:
                 display, options = extract_followup_options(answer)
                 display = strip_false_pick_prompt(display)
                 options = []
-            elif is_advisory_question(topic_q):
+            elif game_id and is_game_advisory_question(topic_q, game_id=game_id):
                 display, options = ensure_advisory_options(answer, topic_q, game_id)
             else:
                 display, options = extract_followup_options(answer)
@@ -1476,7 +1734,13 @@ class GameAssistantApp:
             self.set_status("Ready")
 
             self._set_busy(False)
-
+            try:
+                self.root.attributes("-topmost", True)
+                hwnd = self._toplevel_hwnd()
+                if hwnd:
+                    user32.SetWindowPos(hwnd, -1, 0, 0, 0, 0, 0x0001 | 0x0002 | 0x0010)
+            except Exception:
+                pass
 
 
         self.root.after(0, update_ui)

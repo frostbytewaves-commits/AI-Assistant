@@ -23,10 +23,11 @@ from .intent import (
     ROUTER_SYSTEM,
     ROUTER_USER_TEMPLATE,
     QueryIntent,
+    continuation_user_payload,
     is_advisory_question,
+    is_game_advisory_question,
     is_minecraft_question,
     is_oni_question,
-    is_oni_strategy_question,
     plan_attached_screen_query,
     effective_screen_question,
     question_needs_screen,
@@ -41,6 +42,9 @@ from .screen_context import ScreenContext
 from .minecraft_mobs import MOB_IDENTIFY_PROMPT, is_mob_or_drop_question, normalize_mob_observation
 from .ocr import extract_text
 from .search import build_screen_search_query, build_search_query, web_search
+from .act import ToolExecutor, build_default_registry, parse_action_plan
+from .act.prompts import ACTION_PLANNER_SYSTEM, ACTION_PLANNER_USER
+from .act.types import ActionRequest
 
 StatusCallback = Callable[[str], None]
 TokenCallback = Callable[[str], None]
@@ -57,6 +61,151 @@ class OllamaClient:
             config.games_data_dir,
             config.default_game_id,
         )
+        self.action_registry = build_default_registry()
+        self.tool_executor = ToolExecutor(self.action_registry)
+        self._pending_action: ActionRequest | None = None
+        self._pending_action_chain: list[ActionRequest] = []
+
+    def try_tool_action(
+        self,
+        question: str,
+        *,
+        on_status: StatusCallback | None = None,
+        host_hint: str = "",
+        confirmed: bool = False,
+    ) -> str | None:
+        """If the user wants a whitelist tool, run it and return a short reply; else None."""
+        if not getattr(self.config, "tools_enabled", True):
+            return None
+        q = (question or "").strip()
+        if not q:
+            return None
+
+        # Confirm / cancel a previously gated action
+        if self._pending_action is not None:
+            low = q.lower()
+            if low in {"yes", "y", "ok", "confirm", "да", "д", "ок", "подтверждаю"}:
+                req = self._pending_action
+                chain = list(self._pending_action_chain)
+                self._pending_action = None
+                self._pending_action_chain = []
+                self._status(on_status, "Running…")
+                result = self.tool_executor.execute(req, confirmed=True)
+                replies = [result.message or result.as_user_reply()]
+                for nxt in chain:
+                    self._status(on_status, f"Tool: {nxt.action}…")
+                    nxt_res = self.tool_executor.execute(nxt, confirmed=True)
+                    replies.append(nxt_res.message or nxt_res.as_user_reply())
+                if len(replies) == 1:
+                    return result.as_user_reply()
+                return "Done.\n" + "\n".join(f"- {line}" for line in replies)
+            if low in {"no", "n", "cancel", "нет", "отмена"}:
+                self._pending_action = None
+                self._pending_action_chain = []
+                return "Cancelled."
+            # Fall through — user asked something else; drop pending
+            self._pending_action = None
+            self._pending_action_chain = []
+
+        self._status(on_status, "Checking tools…")
+        catalog = self.action_registry.catalog_for_prompt()
+        try:
+            from plugins.system.window_match import format_open_windows_hint
+
+            windows_hint = format_open_windows_hint()
+        except Exception:
+            windows_hint = host_hint or "(open window list unavailable)"
+        # Prefer live inventory; keep a short slice of conversation host block if present
+        host_block = windows_hint
+        if host_hint and "Host context:" in host_hint:
+            host_block = windows_hint + "\n\n(extra context truncated)"
+
+        user_msg = ACTION_PLANNER_USER.format(
+            catalog=catalog,
+            host_hint=host_block,
+            question=q,
+        )
+        try:
+            raw = self._chat(
+                self.resolve_text_model(),
+                user_msg,
+                system=ACTION_PLANNER_SYSTEM,
+                max_tokens=220,
+                timeout=min(45, self.config.intent_timeout_sec),
+            )
+        except Exception:
+            return None
+
+        planned = parse_action_plan(raw)
+        if not planned:
+            return None
+
+        # Drop none / unknown; require confidence on the plan
+        steps: list[ActionRequest] = []
+        for req in planned:
+            if not req.action or req.action.lower() in {"none", "null", "chat", "answer"}:
+                continue
+            if req.confidence < 0.75:
+                continue
+            try:
+                from plugins.system.normalize import normalize_action_request
+
+                req = normalize_action_request(req)
+            except Exception:
+                pass
+            if self.action_registry.get(req.action) is None:
+                continue
+            try:
+                from plugins.system import action_needs_confirm
+
+                if action_needs_confirm(req.action, req.args):
+                    req.needs_confirm = True
+            except Exception:
+                pass
+            steps.append(req)
+
+        if not steps:
+            return None
+
+        replies: list[str] = []
+        # Only the first focus_window is "keep this focused" after side effects (open/launch).
+        primary_focus = next((s for s in steps if s.action == "focus_window"), None)
+        for i, req in enumerate(steps):
+            self._status(on_status, f"Tool: {req.action}…")
+            result = self.tool_executor.execute(req, confirmed=confirmed)
+            if result.needs_confirm:
+                self._pending_action = req
+                self._pending_action_chain = steps[i + 1 :]
+                replies.append(result.as_user_reply())
+                break
+            replies.append(result.message if result.message else result.as_user_reply())
+            if not result.ok and result.data.get("cooldown"):
+                continue
+
+        if primary_focus is not None and self._pending_action is None:
+            # Telegram/Steam etc. steal focus asynchronously after launch — refocus twice.
+            self._status(on_status, f"Refocus: {primary_focus.args.get('query', '')}…")
+            import time as _time
+
+            last_msg = ""
+            for delay in (0.15, 0.9, 1.8):
+                _time.sleep(delay)
+                refocus = self.tool_executor.execute(
+                    primary_focus, confirmed=True, skip_cooldown=True,
+                )
+                if refocus.ok and refocus.message:
+                    last_msg = refocus.message
+            if last_msg and last_msg not in replies:
+                replies.append(last_msg)
+
+        if not replies:
+            return None
+        if len(replies) == 1:
+            line = replies[0]
+            if line.startswith(("Done.", "Could not", "Confirm", "Cancelled", "Refused")):
+                return line
+            return f"Done. {line}"
+        return "Done.\n" + "\n".join(f"- {line}" for line in replies)
 
     def _reply_lang(self, question: str) -> str:
         return resolve_response_language(question, self.config.reply_language)
@@ -180,13 +329,22 @@ class OllamaClient:
                 )
             )
 
+        active_for_advisory = ctx.active_game or (
+            "minecraft" if (minecraft_question or ctx.minecraft_window) else None
+        ) or (
+            "oni" if (oni_question or ctx.oni_window) else None
+        ) or (game if game in {"minecraft", "oni"} else None)
+        game_advisory = is_game_advisory_question(
+            user_message,
+            game_id=game if game in {"minecraft", "oni"} else None,
+            active_game=active_for_advisory,
+        )
+
         if advisory_mode == "expand":
             parts.append(ADVISORY_EXPAND_ADDENDUM)
             if game == "minecraft" or minecraft_question:
                 parts.append(MINECRAFT_XP_EXPAND_FACTS)
-        elif advisory_mode == "brief" or (
-            advisory_mode == "none" and is_advisory_question(user_message)
-        ):
+        elif advisory_mode == "brief" or (advisory_mode == "none" and game_advisory):
             parts.append(ADVISORY_BRIEF_ADDENDUM)
         elif game == "oni" or oni_question or ctx.oni_window:
             parts.append(ONI_FACT_ADDENDUM)
@@ -203,6 +361,8 @@ class OllamaClient:
         question: str,
         screen_context: ScreenContext | None = None,
     ) -> str | None:
+        # Continuation wrappers must not inject "farm" boilerplate into game detection.
+        question = continuation_user_payload(question)
         ctx = screen_context or ScreenContext()
         explicit_mechanics_game = infer_mechanics_game(question, None)
         if explicit_mechanics_game == "noita":
@@ -216,9 +376,8 @@ class OllamaClient:
         q = question.lower()
         mc_hints = (
             "xp farm", "mob farm", "spawner", "piglin", "zombified",
-            "iron farm", "gold farm", "villager", "redstone", "опыт", "ферм",
-            "свинозомби", "grinder", "enderman farm", "creeper farm",
-            " xp", "experience", "level up", "levels",
+            "iron farm", "gold farm", "villager", "redstone",
+            "свинозомби", "enderman farm", "creeper farm", "автоферм",
         )
         if any(h in q for h in mc_hints):
             return "minecraft"
@@ -277,8 +436,8 @@ class OllamaClient:
         lang_rule = answer_language_rule(self._reply_lang(lang_q))
         prompt = (
             f"{user_message}\n\n"
-            f"{lang_rule} Give as much detail as needed for a complete answer; "
-            "if the question is simple, do not over-explain."
+            f"{lang_rule} Hard length limit for casual who/what asks: 2–4 short sentences, then stop. "
+            "No long encyclopedia paragraph."
         )
         return self._stream_chat(
             self.resolve_text_model(),
@@ -316,7 +475,7 @@ class OllamaClient:
         self,
         question: str,
         *,
-        in_game: bool = True,
+        in_game: bool = False,
         force_screen: bool = False,
         on_status: StatusCallback | None = None,
         screen_context: ScreenContext | None = None,
@@ -324,7 +483,7 @@ class OllamaClient:
         always_screen = force_screen or self.config.always_capture_screen
         auto_capture = should_auto_capture_screen(question, always_capture=always_screen)
         ctx = screen_context or ScreenContext()
-        game_open = ctx.active_game is not None
+        game_open = bool(ctx.active_game) or in_game
 
         if not self.config.use_intent_router:
             if auto_capture and game_open:
@@ -335,12 +494,27 @@ class OllamaClient:
                 intent = QueryIntent.fallback_text(question)
         else:
             self._status(on_status, "Understanding…")
+            inventory = ""
+            if getattr(ctx, "open_windows_summary", ""):
+                inventory = f" Open windows: {ctx.open_windows_summary}."
+            fg = ctx.foreground_title or "unknown"
+            proc = ctx.process_name or "?"
             if ctx.oni_window:
-                context = "Oxygen Not Included is open; a game screenshot may be available"
+                context = (
+                    f"Oxygen Not Included is the foreground app ({fg})."
+                    f"{inventory} Host inventory is available without a screenshot."
+                )
             elif ctx.minecraft_window:
-                context = "Minecraft is open; a game screenshot may be available"
+                context = (
+                    f"Minecraft is the foreground app ({fg})."
+                    f"{inventory} Host inventory is available without a screenshot."
+                )
             else:
-                context = "the user is on a computer desktop or app; it is not necessarily a supported game"
+                context = (
+                    f"Foreground: {fg} ({proc}).{inventory} "
+                    "Host window inventory is available without a screenshot; "
+                    "use needs_screen only when pixel content is required."
+                )
             user_msg = ROUTER_USER_TEMPLATE.format(context=context, question=question)
             try:
                 raw = self._chat(
@@ -433,6 +607,14 @@ class OllamaClient:
             if intent.pipeline == "text_only":
                 intent.pipeline = "vision_then_text" if ctx.active_game else "vision_answer"
         if intent.pipeline == "text_only" or not intent.needs_screen:
+            if advisory_mode == "none":
+                acted = self.try_tool_action(
+                    lang_q,
+                    on_status=on_status,
+                    host_hint=(conversation_context or "")[:1200],
+                )
+                if acted is not None:
+                    return acted
             return self._answer_text_only(
                 question, intent, on_status, on_token, ctx,
                 lang_question=lang_q, advisory_mode=advisory_mode,
@@ -519,19 +701,19 @@ class OllamaClient:
         parts.append(f"Question: {question}")
         if intent.hint:
             parts.append(f"Intent: {intent.hint}")
+        ctx = screen_context or ScreenContext()
         game_id = active_game or self._resolve_game_id(question, screen_context)
         mechanics_hint = infer_mechanics_game(question, None)
-        if (
-            not game_id
-            and mechanics_hint != "noita"
-            and re.search(r"\bxp\b|\bexperience\b|\bопыт\b", question.lower())
-        ):
-            game_id = "minecraft"
+        # Do not map bare "XP/experience" to Minecraft — only clear game context.
         mc_question = game_id == "minecraft" or (
-            mechanics_hint != "noita" and is_minecraft_question(question)
+            mechanics_hint == "minecraft" or is_minecraft_question(question)
         )
         oni_q = game_id == "oni" or is_oni_question(question)
-        advisory = is_advisory_question(question)
+        advisory = is_game_advisory_question(
+            question,
+            game_id=game_id,
+            active_game=active_game or ctx.active_game,
+        )
         direct_recipe_acquisition = bool(
             self.config.use_game_database
             and game_id
@@ -573,8 +755,8 @@ class OllamaClient:
         if not self.config.use_game_database or not game_id:
             md = self._md_rule(lang_q)
             parts.append(
-                f"{md} If the question requires explanation, give a full, "
-                "structured answer with examples and practical steps."
+                f"{md} Casual who/what → 2–4 short sentences max, then stop. "
+                "Longer answers only for explicit guides / deep explanations."
             )
         return self.ask_text(
             "\n\n".join(parts),
@@ -615,7 +797,7 @@ class OllamaClient:
         use_fast = self.config.fast_mode if fast is None else fast
 
         if use_fast and self.config.use_vision and self.resolve_vision_model():
-            intent = self.plan_query(user_message, in_game=True, on_status=on_status)
+            intent = self.plan_query(user_message, in_game=False, on_status=on_status)
             return self.execute_query(user_message, image_path, intent, on_status, on_token)
 
         return self._ask_full(user_message, image_path, ocr_text, on_status, on_token)
@@ -983,7 +1165,9 @@ class OllamaClient:
         ctx = screen_context or ScreenContext()
         lang_q = lang_question if lang_question is not None else user_message
         mode = advisory_mode
-        if mode == "none" and is_advisory_question(lang_q):
+        if mode == "none" and is_game_advisory_question(
+            lang_q, game_id=ctx.active_game, active_game=ctx.active_game
+        ):
             mode = "brief"
         if not ctx.active_game:
             return self._ask_vision_answer(
@@ -992,12 +1176,18 @@ class OllamaClient:
                 conversation_context=conversation_context,
             )
 
-        game_id = ctx.active_game or self.config.default_game_id
+        game_id = ctx.active_game or self.config.default_game_id or None
+        if not game_id:
+            return self._ask_vision_answer(
+                user_message, image_path, intent, on_status, on_token, ctx,
+                lang_question=lang_q, advisory_mode=mode,
+                conversation_context=conversation_context,
+            )
         self._status(on_status, f"{game_id} + screen…")
         search_text = ""
         observation = ""
         needs_web = intent.needs_web or (
-            is_advisory_question(lang_q)
+            is_game_advisory_question(lang_q, game_id=game_id, active_game=game_id)
             and mode != "expand"
             and self.config.web_search_enabled
         )
@@ -1032,7 +1222,7 @@ class OllamaClient:
         if conversation_context:
             parts.append(conversation_context)
             parts.append("")
-        parts.append(f"Player question: {user_message}")
+        parts.append(f"User question: {user_message}")
         if intent.hint:
             parts.append(f"Intent: {intent.hint}")
         game = self._game_kb.get_game(game_id)
@@ -1083,7 +1273,15 @@ class OllamaClient:
         ):
             return self._vision_identify_mob(image_path)
         focus = FOCUS_VISION_PROMPTS.get(intent.focus, FOCUS_VISION_PROMPTS["none"])
-        prompt = f"Minecraft gameplay screenshot.\n{focus}\nBe concise."
+        if ctx.minecraft_window:
+            scene = "Minecraft gameplay screenshot."
+        elif ctx.oni_window:
+            scene = "Oxygen Not Included colony screenshot."
+        elif ctx.active_game:
+            scene = f"{ctx.active_game} gameplay screenshot."
+        else:
+            scene = "Desktop or application screenshot."
+        prompt = f"{scene}\n{focus}\nBe concise."
         return self._vision_chat(model, image_path, prompt, max_tokens=180, on_token=None)
 
     def _vision_identify_mob(self, image_path: Path) -> str:
@@ -1110,7 +1308,7 @@ class OllamaClient:
 
         vision_model = self.resolve_vision_model()
         use_vision = self.config.use_vision and vision_model and not self._should_skip_vision(final_ocr)
-        intent = self.plan_query(user_message, in_game=True, on_status=on_status)
+        intent = self.plan_query(user_message, in_game=False, on_status=on_status)
         do_search = self.config.web_search_enabled and intent.needs_web
 
         with ThreadPoolExecutor(max_workers=2) as pool:
@@ -1282,8 +1480,8 @@ class OllamaClient:
                 "tousled hair usually means Spike Spiegel."
             )
         parts.append(
-            f"{self._md_rule(user_message)} Answer the user's exact question. "
-            "If the task is complex, explain fully, with structure and concrete steps. "
+            f"{self._md_rule(user_message)} Answer the user's exact question in a natural voice. "
+            "Keep short asks short; go structured only when the task is clearly complex. "
             "Do not list taskbar icons, the system clock, or noisy OCR unless they matter to the question."
         )
         return "\n\n".join(parts)
@@ -1342,10 +1540,11 @@ class OllamaClient:
         max_tokens: int | None = None,
         timeout: int | None = None,
     ) -> str:
-        if on_status and system != ROUTER_SYSTEM:
+        if on_status and system not in (ROUTER_SYSTEM, ACTION_PLANNER_SYSTEM):
             self._status(on_status, "Text model thinking…")
-        # Router stays fast / structured; chat answers follow profile thinking policy.
-        thinking = False if system == ROUTER_SYSTEM else None
+        # Router / tool planner stay fast & structured; chat follows profile thinking.
+        structured = system in (ROUTER_SYSTEM, ACTION_PLANNER_SYSTEM)
+        thinking = False if structured else None
         payload = self._with_think_flag({
             "model": model,
             "messages": [
@@ -1354,7 +1553,7 @@ class OllamaClient:
                     "role": "user",
                     "content": self._user_prompt(
                         user_message,
-                        enable_thinking=False if system == ROUTER_SYSTEM else None,
+                        enable_thinking=False if structured else None,
                     ),
                 },
             ],
@@ -1362,7 +1561,7 @@ class OllamaClient:
             "keep_alive": self.config.ollama_keep_alive,
             "options": {
                 "num_predict": max_tokens or self.config.max_tokens,
-                "temperature": 0.2 if system == ROUTER_SYSTEM else 0.5,
+                "temperature": 0.1 if structured else 0.5,
             },
         }, model, enable_thinking=thinking)
         response = requests.post(

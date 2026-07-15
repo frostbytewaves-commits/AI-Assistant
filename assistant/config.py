@@ -27,13 +27,15 @@ _DEFAULT_MODEL_PROFILE = "laptop"
 
 _PROFILES: dict[str, dict[str, object]] = {
     "laptop": {
-        "text": "qwen3:14b",
-        "text_fallbacks": ("qwen3:14b", "qwen3:8b", "qwen2.5:7b"),
-        "vision": "qwen2.5vl:7b",
-        "vision_fallbacks": ("qwen2.5vl:7b", "moondream", "llava:7b"),
+        # Vacation / iGPU-CPU: smaller text model + thinking; don't load vision until Screen.
+        "text": "qwen3:8b",
+        "text_fallbacks": ("qwen3:8b", "qwen3:14b", "qwen2.5:7b"),
+        "vision": "moondream",
+        "vision_fallbacks": ("moondream", "qwen2.5vl:7b", "llava:7b"),
         "use_intent_router": True,
         "enable_thinking": True,
-        "text_timeout_sec": 300,
+        "text_timeout_sec": 240,
+        "warmup_vision": False,
     },
     "desktop": {
         "text": "qwen3:30b-a3b",
@@ -43,6 +45,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "use_intent_router": True,
         "enable_thinking": True,
         "text_timeout_sec": 360,
+        "warmup_vision": True,
     },
     "deep": {
         "text": "deepseek-r1:14b",
@@ -52,6 +55,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "use_intent_router": True,
         "enable_thinking": True,
         "text_timeout_sec": 420,
+        "warmup_vision": False,
     },
     "gaming": {
         "text": "qwen3:8b",
@@ -61,6 +65,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "use_intent_router": False,
         "enable_thinking": False,
         "text_timeout_sec": 180,
+        "warmup_vision": False,
     },
     "balance": {
         "text": "qwen3:8b",
@@ -70,8 +75,9 @@ _PROFILES: dict[str, dict[str, object]] = {
         "use_intent_router": False,
         "enable_thinking": False,
         "text_timeout_sec": 180,
+        "warmup_vision": False,
     },
-    # legacy alias → laptop + thinking
+    # legacy alias → laptop-like smart chat with 14b when GPU allows
     "quality": {
         "text": "qwen3:14b",
         "text_fallbacks": ("qwen3:14b", "qwen3:8b", "qwen2.5:7b"),
@@ -80,6 +86,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "use_intent_router": True,
         "enable_thinking": True,
         "text_timeout_sec": 300,
+        "warmup_vision": False,
     },
 }
 
@@ -114,6 +121,7 @@ VISION_MODEL_FALLBACKS = tuple(_active["vision_fallbacks"])  # type: ignore[arg-
 _DEFAULT_USE_INTENT_ROUTER = bool(_active["use_intent_router"])
 _DEFAULT_ENABLE_THINKING = bool(_active.get("enable_thinking", False))
 _DEFAULT_TEXT_TIMEOUT_SEC = int(_active.get("text_timeout_sec", 180))
+_DEFAULT_WARMUP_VISION = bool(_active.get("warmup_vision", False))
 
 STT_MODEL = "whisper"
 
@@ -124,45 +132,54 @@ HOTKEY_VOICE = "f9"
 HOTKEY_TOGGLE_SPEAK = "f10"
 
 SYSTEM_PROMPT = (
-    "You are a smart universal AI assistant on the user's computer, similar to ChatGPT. "
+    "You are a smart universal AI assistant on the user's computer — like a knowledgeable friend chatting, "
+    "not a search-engine brief and not a Wiki page. "
+    "You help with everyday questions, the desktop, software, and (when relevant) games. "
     + LANGUAGE_MATCH_RULE
     + " "
     "Infer what the user actually means from wording and context; do not latch onto an "
     "unlikely technical reading when a natural everyday reading fits better. "
-    "If the question is simple, answer directly without padding. "
-    "If the user asks to explain, compare, plan, solve, or deeply understand something, give a full, "
-    "well-structured answer with examples, practical steps, trade-offs, and important caveats. "
-    "Use general knowledge, screen context, OCR, and web search results when provided. "
+    "DEFAULT LENGTH for casual asks (who/what/is X, quick facts): STRICTLY 2–4 short sentences. "
+    "Say what it is, one or two memorable details (people/dates/why famous), then stop. "
+    "Do not write a long packed paragraph; do not list every hit, era, or reunion unless asked. "
+    "If they want more, they can say 'tell me more'. "
+    "Go longer ONLY when they clearly ask to explain, compare, plan, solve, or give a full guide. "
+    "Use general knowledge, Host context (open windows/apps), screen/OCR, and web search when provided. "
+    "When Host context lists open windows, use it to answer what is open or running — do not ask for a screenshot for that. "
+    "Use a screenshot only when visual content matters. "
     "Do not invent facts: if information is missing or freshness matters and no search result is available, say so. "
     "Describe the screen honestly. Do not invent game elements when it is not a game. "
-    "For game advice, reason from mechanics and constraints instead of reciting memorized builds. "
-    "If version, platform, DLC, or mods can change the answer, state your assumption or ask one short clarification. "
-    "Default to vanilla/base-game advice first. Do not include mods, DLC, expansions, datapacks, or server-specific mechanics unless the user explicitly confirmed them. "
-    "Do not give exact numbers unless they come from provided database/search context."
+    "Only apply game-specific assumptions (vanilla/DLC/mods/platform) when the user is clearly talking about a game "
+    "or a supported game is open."
 )
 
 MINECRAFT_SYSTEM_PROMPT = (
-    "Minecraft is currently open. "
-    "Answer as a game assistant. "
+    "Minecraft is currently open or the question is clearly about Minecraft. "
+    "Answer as a game specialist for this title. "
     "For drops and recipes, use only the Game Database block, not memory. "
     "HUD: hearts mean health and drumstick icons mean hunger, but mention them only when visible and relevant. "
     "For farms, derive the answer from spawn/generation rules, player action, transport, kill/processing, collection, and bottlenecks. "
-    "Mention Java/Bedrock/version uncertainty when it affects a farm."
+    "Default to vanilla/base-game advice first. Do not include mods, datapacks, or server-specific mechanics unless the user confirmed them. "
+    "Mention Java/Bedrock/version uncertainty when it affects a farm. "
+    "Do not give exact numbers unless they come from provided database/search context."
 )
 
 ONI_SYSTEM_PROMPT = (
-    "The user is playing or asking about Oxygen Not Included — a complex colony management simulation. "
+    "The user is playing or clearly asking about Oxygen Not Included — a complex colony management simulation. "
     "Act as an expert ONI advisor who understands systems design: gases, liquids, power, heat, "
     "food, morale, ranching, automation, and duplicant needs. "
-    "Qualify advice by tech stage, DLC/planetoid, and available resources when they matter."
+    "Qualify advice by tech stage, DLC/planetoid, and available resources when they matter. "
+    "Default to base-game advice first unless DLC is confirmed. "
+    "Do not give exact numbers unless they come from provided database/search context."
 )
 
 ONI_FACT_ADDENDUM = (
     "For exact building stats, element properties, and research names, use ONLY numbers from the Game Database block."
 )
 
-ADVISORY_BRIEF_ADDENDUM = (
-    "Strategy / how-to question — this is the FIRST (brief) pass only.\n"
+# Used only when a supported game context is active (window or explicit game topic).
+GAME_ADVISORY_BRIEF_ADDENDUM = (
+    "Game strategy / how-to question — this is the FIRST (brief) pass only.\n"
     "Answer in 2-4 sentences: the core idea and where to start. "
     "If several valid approaches exist (designs, farms, setups), name them briefly — "
     "do NOT give step-by-step guides or long bullet lists yet.\n"
@@ -177,14 +194,16 @@ ADVISORY_BRIEF_ADDENDUM = (
     "Each option = one concrete variant the user can pick for a full build guide. "
     "Nothing after ---end---. "
     "The ---options--- block is REQUIRED — without it the UI cannot show choices.\n"
-    "If the user asked about XP, options must be XP/orb mob farms — not crop farms. "
+    "If the user asked about Minecraft XP, options must be XP/orb mob farms — not crop farms. "
     "For Minecraft XP use these exact titles when possible: "
     "Zombified Piglin Farm, Guardian Farm, Blaze / Mob Grinder, Enderman Farm. "
-    "Never echo the user's words back without adding new game advice."
+    "Never echo the user's words back without adding useful game advice."
 )
 
-ADVISORY_EXPAND_ADDENDUM = (
-    "The user selected ONE follow-up option from your previous brief answer. "
+ADVISORY_BRIEF_ADDENDUM = GAME_ADVISORY_BRIEF_ADDENDUM
+
+GAME_ADVISORY_EXPAND_ADDENDUM = (
+    "The user selected ONE follow-up option from your previous brief game answer. "
     "Give the COMPLETE detailed guide for ONLY that variant: step-by-step build/setup, "
     "materials, layout, redstone/automation if relevant, trade-offs, and common mistakes. "
     "Derive the guide from the Game Mechanics Formula Layer: source, trigger, transport, processing, collection, bottlenecks. "
@@ -194,6 +213,8 @@ ADVISORY_EXPAND_ADDENDUM = (
     "Use headers and bullet lists. Do NOT repeat the brief overview. "
     "Do NOT add another ---options--- block."
 )
+
+ADVISORY_EXPAND_ADDENDUM = GAME_ADVISORY_EXPAND_ADDENDUM
 
 MINECRAFT_XP_EXPAND_FACTS = (
     "Minecraft XP facts (never contradict these):\n"
@@ -266,10 +287,13 @@ class AssistantConfig:
     fast_mode: bool = True
     use_intent_router: bool = _DEFAULT_USE_INTENT_ROUTER
     enable_thinking: bool = _DEFAULT_ENABLE_THINKING
+    warmup_vision: bool = _DEFAULT_WARMUP_VISION
     use_game_database: bool = True
-    default_game_id: str = "oni"
+    default_game_id: str = ""  # empty = no forced game; set only when a game is detected
+
     minecraft_play_version: str = DEFAULT_MINECRAFT_PLAY_VERSION
     games_data_dir: Path = field(default_factory=resolve_games_dir)
+    tools_enabled: bool = True
     intent_timeout_sec: int = 30
     tesseract_cmd: str = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 

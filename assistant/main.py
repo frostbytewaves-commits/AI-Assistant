@@ -1,4 +1,4 @@
-"""Точка входа игрового AI-ассистента."""
+"""Точка входа desktop AI-ассистента (игры — сильная специализация)."""
 
 import logging
 
@@ -97,4 +97,4 @@ def main() -> None:
                 keyboard.clear_all_hotkeys()
             except Exception:
                 pass
-        log.info("=== Game Assistant stop ===")
+        log.info("=== Assistant stop ===")

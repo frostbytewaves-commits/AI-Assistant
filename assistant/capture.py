@@ -57,28 +57,118 @@ def get_foreground_process_name(excluded_hwnd: int | None = None) -> str:
         return ""
     if excluded_hwnd and hwnd == excluded_hwnd:
         return ""
-    pid = ctypes.c_ulong(0)
-    user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
-    if not pid.value:
-        return ""
-    PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
-    kernel32 = ctypes.windll.kernel32
-    handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid.value)
-    if not handle:
+    return get_process_name_for_hwnd(int(hwnd))
+
+
+def get_process_name_for_hwnd(hwnd: int) -> str:
+    """Executable name for a window handle (best-effort, never blocks long)."""
+    if not hwnd:
         return ""
     try:
-        size = ctypes.c_ulong(260)
-        buf = ctypes.create_unicode_buffer(260)
-        # QueryFullProcessImageNameW
-        QueryFullProcessImageNameW = kernel32.QueryFullProcessImageNameW
-        if not QueryFullProcessImageNameW(handle, 0, buf, ctypes.byref(size)):
+        pid = ctypes.c_ulong(0)
+        user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+        if not pid.value:
             return ""
-        path = buf.value.strip()
-        if not path:
+        PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+        kernel32 = ctypes.windll.kernel32
+        handle = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid.value)
+        if not handle:
             return ""
-        return Path(path).name
-    finally:
-        kernel32.CloseHandle(handle)
+        try:
+            size = ctypes.c_ulong(260)
+            buf = ctypes.create_unicode_buffer(260)
+            QueryFullProcessImageNameW = kernel32.QueryFullProcessImageNameW
+            if not QueryFullProcessImageNameW(handle, 0, buf, ctypes.byref(size)):
+                return ""
+            path = buf.value.strip()
+            if not path:
+                return ""
+            return Path(path).name
+        finally:
+            kernel32.CloseHandle(handle)
+    except Exception:
+        return ""
+
+
+def _window_title(hwnd: int) -> str:
+    try:
+        length = user32.GetWindowTextLengthW(hwnd)
+        if length <= 0:
+            return ""
+        buf = ctypes.create_unicode_buffer(length + 1)
+        user32.GetWindowTextW(hwnd, buf, length + 1)
+        # Strip bidi marks that break console/logs; keep the rest of the title.
+        return buf.value.strip().replace("\u200e", "").replace("\u200f", "")
+    except Exception:
+        return ""
+
+
+_SKIP_WINDOW_TITLES = {
+    "",
+    "program manager",
+    "default ime",
+    "msctfime ui",
+    "windows input experience",
+}
+
+
+def list_visible_windows(
+    excluded_hwnd: int | None = None,
+    *,
+    limit: int = 18,
+) -> list[dict[str, str | int]]:
+    """Top-level visible windows with a title (Win32 EnumWindows).
+
+    Each item: hwnd, title, process_name. Foreground first when present.
+    Process names are resolved only for the final limited set (faster / safer).
+    """
+    GW_OWNER = 4
+    raw: list[tuple[int, str]] = []
+    seen_titles: set[str] = set()
+    hard_cap = max(limit * 4, limit)
+
+    def _callback(hwnd, _lparam):  # noqa: ANN001
+        if len(raw) >= hard_cap:
+            return False
+        try:
+            hwnd_i = int(hwnd)
+            if excluded_hwnd and hwnd_i == int(excluded_hwnd):
+                return True
+            if not user32.IsWindowVisible(hwnd):
+                return True
+            if user32.GetWindow(hwnd, GW_OWNER):
+                return True
+            title = _window_title(hwnd_i)
+            low = title.lower()
+            if low in _SKIP_WINDOW_TITLES or low in seen_titles:
+                return True
+            seen_titles.add(low)
+            raw.append((hwnd_i, title))
+        except Exception:
+            return True
+        return True
+
+    enum_proc = ctypes.WINFUNCTYPE(ctypes.c_bool, ctypes.c_void_p, ctypes.c_void_p)(_callback)
+    list_visible_windows._enum_proc = enum_proc  # type: ignore[attr-defined]
+    try:
+        user32.EnumWindows(enum_proc, 0)
+    except Exception:
+        return []
+
+    fg = get_foreground_window_handle()
+    if fg and (not excluded_hwnd or fg != int(excluded_hwnd)):
+        raw.sort(key=lambda item: 0 if item[0] == fg else 1)
+
+    entries: list[dict[str, str | int]] = []
+    for hwnd_i, title in raw[: max(1, limit)]:
+        entries.append(
+            {
+                "hwnd": hwnd_i,
+                "title": title,
+                "process_name": get_process_name_for_hwnd(hwnd_i),
+            }
+        )
+    return entries
 
 
 def is_minecraft_window_title(title: str) -> bool:

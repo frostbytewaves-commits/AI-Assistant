@@ -1,5 +1,5 @@
-"""Sense providers (Window / Screen / OCR / Vision) — see architecture plan."""
+"""Sense providers — OS/hardware observation (no language routing)."""
 
-from .window_provider import WindowInfo, WindowProvider
+from .window_provider import WindowEntry, WindowInfo, WindowProvider, detect_game_id
 
-__all__ = ["WindowInfo", "WindowProvider"]
+__all__ = ["WindowEntry", "WindowInfo", "WindowProvider", "detect_game_id"]

@@ -55,7 +55,7 @@ class GameInfo:
 
 
 class GameKnowledgeBase:
-    def __init__(self, games_dir: Path, default_game_id: str = "minecraft") -> None:
+    def __init__(self, games_dir: Path, default_game_id: str = "") -> None:
         self.games_dir = games_dir
         self.default_game_id = default_game_id
         self._registry = self._load_registry()
@@ -180,7 +180,7 @@ class GameKnowledgeBase:
             if gid in ("other", "unknown"):
                 return None
             return gid
-        if "oxygen not included" in lower or "oni" in lower:
+        if "oxygen not included" in lower:
             return "oni"
         if "minecraft" in lower:
             return "minecraft"

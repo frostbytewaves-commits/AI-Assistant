@@ -1,4 +1,4 @@
-' Launch Game Assistant — без UAC (hotkey через Win32)
+' Launch AI Assistant — без UAC (hotkey через Win32)
 Option Explicit
 
 Dim fso, shell, root, bat

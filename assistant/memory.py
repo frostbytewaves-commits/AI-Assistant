@@ -57,9 +57,13 @@ def _compact(text: str) -> str:
 
 def _detect_game(text: str) -> str | None:
     lower = text.lower()
-    if any(m in lower for m in ("minecraft", "майнкрафт", "майн", "bedrock", "java")):
+    if any(m in lower for m in ("minecraft", "майнкрафт", "bedrock edition", "java edition")):
         return "minecraft"
-    if any(m in lower for m in ("oxygen not included", "oni", "кислород")):
+    if re.search(r"(?i)(?:^|\s)майн(?:\s|$)", lower):
+        return "minecraft"
+    if "oxygen not included" in lower or "oxygennotincluded" in lower:
+        return "oni"
+    if re.search(r"(?i)(?:^|\s)oni(?:\s|$)", lower):
         return "oni"
     if any(m in lower for m in ("noita", "нойта")):
         return "noita"
@@ -254,13 +258,18 @@ class AssistantMemory:
         games = self.data.get("games", {})
         corrections = self.data.get("corrections", [])
         lines = ["Persistent memory and defaults:"]
+        lines.append(
+            "- You are a general desktop assistant with optional game expertise when games are relevant."
+        )
         if prefs.get("assume_vanilla", True):
             lines.append(
-                "- Default assumption: vanilla/base game. Do not use mods, DLC, expansions, datapacks, or servers unless the user explicitly confirmed them."
+                "- When giving GAME advice: assume vanilla/base game. Do not use mods, DLC, expansions, "
+                "datapacks, or servers unless the user explicitly confirmed them."
             )
         if prefs.get("require_mod_confirmation", True):
             lines.append(
-                "- If mods/DLC could be relevant, ask one short confirmation question before giving modded/DLC-specific advice."
+                "- If mods/DLC could matter for a game answer, ask one short confirmation before "
+                "giving modded/DLC-specific advice."
             )
         for game, values in sorted(games.items()):
             details: list[str] = []

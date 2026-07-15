@@ -18,6 +18,8 @@ class ScreenContext:
     process_name: str = ""
     minecraft_window: bool = False
     oni_window: bool = False
+    # Compact inventory from ContextManager — for router / short hints.
+    open_windows_summary: str = ""
 
     @property
     def active_game(self) -> str | None:

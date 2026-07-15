@@ -16,8 +16,8 @@ def format_chat_history(history: list[ChatTurn], *, limit: int = 8) -> str:
         if text:
             lines.append(f"{role}: {text}")
     lines.append(
-        "Use the conversation above. Do not switch to unrelated topics "
-        "(e.g. crop farms when user asked about XP farms). "
-        "Never reply with only agreement — always add useful game advice."
+        "Use the conversation above. Stay on the user's topic; "
+        "do not switch to unrelated subjects. "
+        "Never reply with only empty agreement — add something useful for the current topic."
     )
     return "\n".join(lines)

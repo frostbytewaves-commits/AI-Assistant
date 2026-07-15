@@ -66,7 +66,7 @@ CLARIFICATION_RULES = (
 
 MINECRAFT = MechanicsPack(
     game_id="minecraft",
-    aliases=("minecraft", "майнкрафт", "майн"),
+    aliases=("minecraft", "майнкрафт"),
     principles=(
         "Minecraft systems are made from world rules: spawning, random ticks, redstone updates, entity AI, fluids, block states, and player actions.",
         "A farm is not a fixed build; it is a pipeline: generate target -> move target -> process target -> collect outputs -> prevent competing spawns.",
@@ -108,7 +108,7 @@ MINECRAFT = MechanicsPack(
 
 ONI = MechanicsPack(
     game_id="oni",
-    aliases=("oxygen not included", "oni", "кислород"),
+    aliases=("oxygen not included", "oxygennotincluded"),
     principles=(
         "ONI is a conservation and routing game: mass, heat, power, gas pressure, liquid flow, and automation thresholds drive systems.",
         "A system is a loop: input resource -> machine conversion -> output products/heat -> storage/removal -> automation control.",
@@ -174,56 +174,60 @@ def infer_mechanics_game(question: str, active_game: str | None = None) -> str |
     for pack in PACKS:
         if _matches(lower, pack.aliases):
             return pack.game_id
+    # Strong Minecraft cues only — bare "xp"/"farm"/"experience" false-positive on life topics.
     minecraft_hints = (
-        "xp",
-        "experience",
-        "level up",
         "spawner",
         "piglin",
         "guardian farm",
-        "enderman",
+        "enderman farm",
         "iron farm",
+        "gold farm",
+        "mob farm",
+        "xp farm",
         "redstone",
         "villager",
-        "опыт",
-        "ферм",
+        "nether portal",
+        "creeper",
+        "автоферм",
     )
     if _matches(lower, minecraft_hints):
         return "minecraft"
-    oni_hints = ("co2", "oxygen", "duplicant", "electrolyzer", "slickster", "heat", "cooling")
+    oni_hints = (
+        "duplicant",
+        "electrolyzer",
+        "slickster",
+        "spom",
+        "aquatuner",
+        "oxylite",
+        "drecko",
+        "meal lice",
+    )
     if _matches(lower, oni_hints):
         return "oni"
     return None
 
 
 def looks_like_game_question(question: str) -> bool:
-    """Heuristic for unsupported games: include universal formulas, not a fake pack."""
+    """True only when the user is clearly talking about a game (not everyday how-tos)."""
     lower = question.lower()
+    if infer_mechanics_game(question, None) is not None:
+        return True
     markers = (
-        "game",
-        "play",
-        "farm",
-        "build",
-        "boss",
-        "level",
-        "xp",
-        "quest",
-        "weapon",
-        "armor",
-        "base",
-        "resource",
-        "strategy",
-        "mechanic",
-        "игр",
-        "фарм",
-        "босс",
-        "уров",
-        "опыт",
-        "ресурс",
-        "база",
-        "оруж",
-        "брон",
-        "механик",
+        "gameplay",
+        "in-game",
+        "in game",
+        "this game",
+        "the game",
+        "boss fight",
+        "loot table",
+        "skill tree",
+        "crafting recipe",
+        "геймплей",
+        "в игре",
+        "эта игра",
+        "этой игре",
+        "лут",
+        "крафт рецепт",
     )
     return _matches(lower, markers)
 

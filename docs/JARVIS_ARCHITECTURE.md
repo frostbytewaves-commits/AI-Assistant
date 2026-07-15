@@ -344,7 +344,7 @@ AGENTS.md
 | Версия | Содержание | Критерий готовности |
 |--------|------------|---------------------|
 | **v0.1 / Phase 0** | Профили laptop/desktop/deep; thinking policy; model-first закреплён | десктоп думает; нет новых keyword-list PR |
-| **v0.2** | WindowProvider + **ContextManager**; ActionRegistry v1 (мало actions) | «что у меня открыто?» без F8 |
+| **v0.2** | WindowProvider + **ContextManager**; open-window inventory; **ActionRegistry v1** (launch/focus/url/media) | «что открыто?» без F8; whitelist tools |
 | **v0.3** | **Plugin API**; MemoryBackend interface (JSON impl); тонкий Orchestrator | плагин подключается без правки ядра |
 | **v0.4** | Voice pipeline; wake-word; streaming TTS | разговор без обязательного F9 |
 | **v0.5** | Screen/OCR/Vision providers; Event Bus v1 | смена OCR/VL без сноса Orchestrator |
@@ -355,10 +355,11 @@ AGENTS.md
 
 ### Ближайший конкретный шаг (после утверждения)
 
-1. Профили моделей + thinking на desktop.  
-2. **ContextManager** + WindowProvider.  
-3. Контракт **Plugin / Action** (schema первых 5 действий).  
-4. **MemoryBackend** interface поверх текущего JSON (без смены хранения).
+1. ~~Профили моделей + thinking на desktop.~~  
+2. ~~**ContextManager** + WindowProvider (+ open windows inventory).~~  
+3. ~~Контракт **Plugin / Action** (schema первых whitelist-действий).~~  
+4. **MemoryBackend** interface поверх текущего JSON (без смены хранения).  
+5. Тонкий Orchestrator (вынос из overlay/llm).
 
 Порядок 2–4 можно менять; законы §2.1–2.2 — нет.
 
