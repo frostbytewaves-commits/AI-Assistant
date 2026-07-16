@@ -7,9 +7,11 @@ from pathlib import Path
 
 from game_data.paths import resolve_games_dir, DEFAULT_MINECRAFT_PLAY_VERSION
 from .language import LANGUAGE_MATCH_RULE
+from .runtime_paths import app_root, bundle_dir
 
 
-BASE_DIR = Path(__file__).resolve().parents[1]
+BASE_DIR = app_root()
+BUNDLE_DIR = bundle_dir()
 DATA_DIR = BASE_DIR / "data"
 SCREENSHOT_DIR = DATA_DIR / "screenshots"
 AUDIO_DIR = DATA_DIR / "audio"
@@ -36,6 +38,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "enable_thinking": True,
         "text_timeout_sec": 240,
         "warmup_vision": False,
+        "num_ctx": 8192,
     },
     "desktop": {
         "text": "qwen3:30b-a3b",
@@ -46,6 +49,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "enable_thinking": True,
         "text_timeout_sec": 360,
         "warmup_vision": True,
+        "num_ctx": 16384,
     },
     "deep": {
         "text": "deepseek-r1:14b",
@@ -56,6 +60,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "enable_thinking": True,
         "text_timeout_sec": 420,
         "warmup_vision": False,
+        "num_ctx": 16384,
     },
     "gaming": {
         "text": "qwen3:8b",
@@ -66,6 +71,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "enable_thinking": False,
         "text_timeout_sec": 180,
         "warmup_vision": False,
+        "num_ctx": 8192,
     },
     "balance": {
         "text": "qwen3:8b",
@@ -76,6 +82,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "enable_thinking": False,
         "text_timeout_sec": 180,
         "warmup_vision": False,
+        "num_ctx": 8192,
     },
     # legacy alias → laptop-like smart chat with 14b when GPU allows
     "quality": {
@@ -87,6 +94,7 @@ _PROFILES: dict[str, dict[str, object]] = {
         "enable_thinking": True,
         "text_timeout_sec": 300,
         "warmup_vision": False,
+        "num_ctx": 16384,
     },
 }
 
@@ -111,6 +119,32 @@ def resolve_model_profile() -> str:
     return _DEFAULT_MODEL_PROFILE
 
 
+def resolve_num_ctx(profile: str | None = None) -> int:
+    """Context window for Ollama (overrides GUI default when set in API options)."""
+    local = _read_local_config()
+    raw = local.get("num_ctx")
+    if raw is not None:
+        try:
+            value = int(raw)
+            if value > 0:
+                return value
+        except (TypeError, ValueError):
+            pass
+    name = profile or resolve_model_profile()
+    active = _PROFILES.get(name, _PROFILES["laptop"])
+    return int(active.get("num_ctx", 8192))
+
+
+def resolve_enabled_plugins() -> list[str] | None:
+    local = _read_local_config()
+    raw = local.get("enabled_plugins")
+    if raw is None:
+        return None
+    if isinstance(raw, list):
+        return [str(x).strip() for x in raw if str(x).strip()]
+    return None
+
+
 MODEL_PROFILE = resolve_model_profile()
 _active = _PROFILES.get(MODEL_PROFILE, _PROFILES["laptop"])
 
@@ -122,6 +156,8 @@ _DEFAULT_USE_INTENT_ROUTER = bool(_active["use_intent_router"])
 _DEFAULT_ENABLE_THINKING = bool(_active.get("enable_thinking", False))
 _DEFAULT_TEXT_TIMEOUT_SEC = int(_active.get("text_timeout_sec", 180))
 _DEFAULT_WARMUP_VISION = bool(_active.get("warmup_vision", False))
+_DEFAULT_NUM_CTX = resolve_num_ctx(MODEL_PROFILE)
+_DEFAULT_ENABLED_PLUGINS = resolve_enabled_plugins()
 
 STT_MODEL = "whisper"
 
@@ -282,6 +318,7 @@ class AssistantConfig:
     skip_vision_if_ocr_chars: int = 400
     max_tokens: int = 2048
     vision_max_tokens: int = 512
+    num_ctx: int = _DEFAULT_NUM_CTX  # prompt+history window; override via local_config.json
     vision_timeout_sec: int = 120
     text_timeout_sec: int = _DEFAULT_TEXT_TIMEOUT_SEC
     fast_mode: bool = True
@@ -294,6 +331,11 @@ class AssistantConfig:
     minecraft_play_version: str = DEFAULT_MINECRAFT_PLAY_VERSION
     games_data_dir: Path = field(default_factory=resolve_games_dir)
     tools_enabled: bool = True
+    enabled_plugins: list[str] | None = field(
+        default_factory=lambda: (
+            list(_DEFAULT_ENABLED_PLUGINS) if _DEFAULT_ENABLED_PLUGINS is not None else None
+        )
+    )
     intent_timeout_sec: int = 30
     tesseract_cmd: str = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 

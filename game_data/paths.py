@@ -7,7 +7,14 @@ import os
 import shutil
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+try:
+    from assistant.runtime_paths import app_root
+except Exception:  # pragma: no cover — early import / tools
+    def app_root() -> Path:  # type: ignore[misc]
+        return Path(__file__).resolve().parents[1]
+
+
+PROJECT_ROOT = app_root()
 DEFAULT_DATA_ROOT = Path(r"C:\AI-Assistant-Data")
 LEGACY_GAMES_DIR = PROJECT_ROOT / "data" / "games"
 LOCAL_CONFIG = PROJECT_ROOT / "local_config.json"

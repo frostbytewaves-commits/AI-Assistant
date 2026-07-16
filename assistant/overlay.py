@@ -16,7 +16,7 @@ from .capture import capture_foreground_window, capture_full_screen, get_foregro
 
 from .config import AssistantConfig
 
-from .core import ContextBuilder, ContextManager
+from .core import ContextBuilder, ContextManager, Orchestrator
 
 from .screen_context import ScreenContext
 
@@ -30,13 +30,14 @@ from .followup import (
     strip_false_pick_prompt,
 )
 from .advisory_topics import ensure_advisory_options
-from .conversation import format_chat_history
 from .intent import QueryIntent, effective_screen_question, is_game_advisory_question
 from .memory import AssistantMemory
 
 from .llm import OllamaClient
 
 from . import markdown_ui as md
+
+from .orb import OrbAnimator
 
 from .voice import VoiceEngine
 
@@ -77,6 +78,12 @@ class GameAssistantApp:
                 "volume_mute",
             ],
         )
+        self.orchestrator = Orchestrator(
+            self.config,
+            self.llm,
+            self.memory,
+            context_builder=self.context_builder,
+        )
 
         self.voice = VoiceEngine(self.config)
 
@@ -108,7 +115,12 @@ class GameAssistantApp:
 
         self._followup_option_widgets: list[tk.Widget] = []
 
-
+        # Soft AI orb: idle | listening | busy (Apple Intelligence mesh)
+        self._orb_state = "idle"
+        self._orb_phase = 0.0
+        self._orb_after_id: str | None = None
+        self._orb_size = 56
+        self._orb: OrbAnimator | None = None
 
         self.root = tk.Tk()
 
@@ -382,7 +394,10 @@ class GameAssistantApp:
                     "messages": [{"role": "user", "content": "hi /no_think"}],
                     "stream": False,
                     "keep_alive": self.config.ollama_keep_alive,
-                    "options": {"num_predict": 1},
+                    "options": {
+                        "num_predict": 1,
+                        "num_ctx": int(self.config.num_ctx),
+                    },
                 }
                 if self.llm._is_thinking_model(model):
                     payload["think"] = False  # warm-up stays cheap; answers use profile thinking
@@ -421,7 +436,7 @@ class GameAssistantApp:
 
             focusthickness=0,
 
-            padding=(12, 7),
+            padding=(14, 8),
 
             font=("Segoe UI", 10),
 
@@ -437,51 +452,51 @@ class GameAssistantApp:
 
 
 
-        header = tk.Frame(self.root, bg=md.BG, pady=12, padx=18)
+        header = tk.Frame(self.root, bg=md.BG, pady=14, padx=20)
 
         header.pack(fill="x")
 
-        tk.Label(
-
-            header,
-
-            text="Assistant",
-
-            font=("Segoe UI", 13, "bold"),
-
-            bg=md.BG,
-
-            fg=md.TEXT,
-
-        ).pack(side="left")
-
-        right_header = tk.Frame(header, bg=md.BG)
-        right_header.pack(side="right")
-
-        self.status_label = tk.Label(
-            right_header,
-            textvariable=self.status_var,
-            font=("Segoe UI", 9),
-            bg=md.SURFACE,
-            fg=md.TEXT_MUTED,
-            padx=10,
-            pady=3,
-        )
-        self.status_label.pack(side="left", padx=(0, 8))
+        left_header = tk.Frame(header, bg=md.BG)
+        left_header.pack(side="left", fill="y")
 
         self.speak_indicator = tk.Canvas(
-            right_header,
-            width=16,
-            height=16,
+            left_header,
+            width=self._orb_size,
+            height=self._orb_size,
             bg=md.BG,
             highlightthickness=0,
             bd=0,
         )
-        self.speak_indicator.pack(side="right", padx=(8, 0))
-        self._mic_dot = self.speak_indicator.create_oval(4, 4, 12, 12, fill="#6b6b6b", outline="")
-        self._set_mic_dot(False)
+        self.speak_indicator.pack(side="left", padx=(0, 12))
+        self._orb = OrbAnimator(
+            self.speak_indicator,
+            size=self._orb_size,
+            bg_hex=md.BG,
+        )
+        self._mic_dot = None  # legacy; voice paths use _set_mic_dot → orb state
 
+        title_col = tk.Frame(left_header, bg=md.BG)
+        title_col.pack(side="left", fill="y")
+        tk.Label(
+            title_col,
+            text="Assistant",
+            font=("Segoe UI", 14, "bold"),
+            bg=md.BG,
+            fg=md.TEXT,
+        ).pack(anchor="w")
+        self.status_label = tk.Label(
+            title_col,
+            textvariable=self.status_var,
+            font=("Segoe UI", 9),
+            bg=md.BG,
+            fg=md.TEXT_MUTED,
+            padx=0,
+            pady=0,
+        )
+        self.status_label.pack(anchor="w")
 
+        self._set_orb_state("idle")
+        self._start_orb_pulse()
 
         sep = tk.Frame(self.root, bg=md.BORDER, height=1)
 
@@ -554,10 +569,11 @@ class GameAssistantApp:
         input_bar = tk.Frame(
             bottom,
             bg=md.SURFACE,
-            padx=10,
-            pady=8,
+            padx=14,
+            pady=10,
             highlightthickness=1,
             highlightbackground=md.BORDER,
+            highlightcolor=md.ACCENT,
         )
 
         input_bar.pack(fill="x", side="bottom")
@@ -668,10 +684,48 @@ class GameAssistantApp:
 
 
     def _set_mic_dot(self, recording: bool) -> None:
-        color = "#ff3b3b" if recording else "#6b6b6b"
-        self.speak_indicator.itemconfig(self._mic_dot, fill=color)
+        """Legacy voice hook — maps to orb listening / idle."""
+        self._set_orb_state("listening" if recording else ("busy" if self.is_busy else "idle"))
 
+    def _set_orb_state(self, state: str) -> None:
+        if state not in {"idle", "listening", "busy"}:
+            state = "idle"
+        self._orb_state = state
+        if self._orb is not None:
+            self._orb.set_mode(state)  # type: ignore[arg-type]
+            breath = 1.0 if state != "idle" else 0.55
+            try:
+                self._orb.paint(breath)
+            except tk.TclError:
+                pass
 
+    def _start_orb_pulse(self) -> None:
+        if self._orb_after_id is not None:
+            return
+        self._tick_orb_pulse()
+
+    def _stop_orb_pulse(self) -> None:
+        if self._orb_after_id is not None:
+            try:
+                self.root.after_cancel(self._orb_after_id)
+            except Exception:
+                pass
+            self._orb_after_id = None
+
+    def _tick_orb_pulse(self) -> None:
+        if self._orb is None:
+            return
+        if self._orb_state == "listening":
+            speed, base, amp = 0.18, 0.55, 0.42
+        elif self._orb_state == "busy":
+            speed, base, amp = 0.12, 0.48, 0.48
+        else:
+            speed, base, amp = 0.05, 0.38, 0.28
+        try:
+            self._orb.tick(speed=speed, base=base, amp=amp)
+        except tk.TclError:
+            return
+        self._orb_after_id = self.root.after(40, self._tick_orb_pulse)
 
     def _show_welcome(self) -> None:
         self.output.configure(state=tk.NORMAL)
@@ -694,29 +748,21 @@ class GameAssistantApp:
         if len(self._chat_history) > 16:
             self._chat_history = self._chat_history[-16:]
 
+    def _excluded_hwnd(self) -> int | None:
+        try:
+            return self._assistant_hwnd()
+        except Exception:
+            return None
+
     def _host_context(self):
         """Fresh Host snapshot (open windows) for the model — no screenshot."""
-        excluded = None
-        try:
-            if getattr(self, "root", None) is not None:
-                excluded = int(self.root.winfo_id())
-        except Exception:
-            excluded = None
-        return self.context_builder.build(excluded_hwnd=excluded)
+        return self.context_builder.build(excluded_hwnd=self._excluded_hwnd())
 
     def _conversation_context(self) -> str:
-        parts = [self.memory.format_context()]
-        try:
-            host = self._host_context()
-            block = host.to_prompt_block()
-            if block:
-                parts.append(block)
-        except Exception:
-            pass
-        history = format_chat_history(self._chat_history)
-        if history:
-            parts.append(history)
-        return "\n\n".join(parts)
+        return self.orchestrator.build_conversation_context(
+            self._chat_history,
+            excluded_hwnd=self._excluded_hwnd(),
+        )
 
     def _append_user(self, text: str) -> None:
 
@@ -806,6 +852,13 @@ class GameAssistantApp:
         if not self.voice_recording:
 
             self.voice_btn.configure(state=state)
+
+        if self.voice_recording:
+            self._set_orb_state("listening")
+        elif busy:
+            self._set_orb_state("busy")
+        else:
+            self._set_orb_state("idle")
 
 
 
@@ -1149,40 +1202,22 @@ class GameAssistantApp:
                 return
 
             on_token = self._make_token_callback()
-
-            intent = QueryIntent.fallback_text(prompt)
-
-            answer = self.llm.execute_query(
-
+            result = self.orchestrator.handle_turn(
                 prompt,
-
-                None,
-
-                intent,
-
-                on_status=self._llm_status,
-
-                on_token=on_token,
-
-                advisory_mode="expand",
-
+                pre_intent=QueryIntent.fallback_text(prompt),
                 lang_question=display_title,
-
+                advisory_mode="expand",
                 active_game=game_id,
-
-                conversation_context=self._conversation_context(),
-
+                chat_history=self._chat_history,
+                excluded_hwnd=self._excluded_hwnd(),
+                on_status=self._llm_status,
+                on_token=on_token,
             )
-
             if on_token is not None:
-
                 flush_remaining = getattr(on_token, "flush_remaining", None)
-
                 if flush_remaining is not None:
-
                     flush_remaining()
-
-            self._finish(answer, parse_followup=False)
+            self._finish(result.answer, parse_followup=False)
 
         except Exception as exc:
 
@@ -1283,37 +1318,17 @@ class GameAssistantApp:
         try:
 
             on_token = self._make_token_callback()
-
-            intent = self.llm.plan_attached_screen_query(
-
-                user_question,
-
-                screen_context=ctx,
-
-                on_status=self._llm_status,
-
-            )
-
             effective = effective_screen_question(user_question)
-
-            answer = self.llm.execute_query(
-
+            result = self.orchestrator.handle_turn(
                 effective,
-
-                image_path,
-
-                intent,
-
-                on_status=self._llm_status,
-
-                on_token=on_token,
-
+                image_path=image_path,
                 screen_context=ctx,
-
                 lang_question=user_question.strip() or None,
-
-                conversation_context=self._conversation_context(),
-
+                chat_history=self._chat_history,
+                excluded_hwnd=self._excluded_hwnd(),
+                on_status=self._llm_status,
+                on_token=on_token,
+                attached_screen=True,
             )
 
             if on_token is not None:
@@ -1324,7 +1339,7 @@ class GameAssistantApp:
 
                     flush_remaining()
 
-            self._finish(answer)
+            self._finish(result.answer)
 
         except Exception as exc:
 
@@ -1403,56 +1418,10 @@ class GameAssistantApp:
     ) -> None:
 
         try:
-
-            assistant_hwnd = int(self.root.winfo_id())
-
-            try:
-                host = self.context_builder.build(excluded_hwnd=assistant_hwnd)
-                ctx = host.to_screen_context()
-            except Exception:
-                ctx = ScreenContext.detect(assistant_hwnd)
-
-            intent = self.llm.plan_query(
-
-                question,
-
-                force_screen=self.config.always_capture_screen,
-
-                on_status=self._llm_status,
-
-                screen_context=ctx,
-
-            )
-
-            image_path = None
-
-            if intent.needs_screen:
-
-                self.root.after(0, lambda: self.set_status("Screenshot…"))
-
-                image_path, ctx = self._grab_screen_for_voice()
-
-            self._run_query(
-
-                question,
-
-                image_path=image_path,
-
-                pre_intent=intent,
-
-                screen_context=ctx,
-
-                lang_question=lang_question,
-
-            )
-
+            self._run_query(question, lang_question=lang_question)
         except Exception as exc:
-
             self.root.after(0, self._show_window)
-
             self._finish_error(str(exc))
-
-
 
     def _run_query(
 
@@ -1476,46 +1445,21 @@ class GameAssistantApp:
 
             on_token = self._make_token_callback()
 
-            ctx = screen_context
-
-            intent = pre_intent or self.llm.plan_query(
-
-                question,
-
-                force_screen=self.config.always_capture_screen,
-
-                on_status=self._llm_status,
-
-                screen_context=ctx,
-
-            )
-
-            if image_path is None and intent.needs_screen:
-
+            def capture() -> tuple[Path, ScreenContext]:
                 self.root.after(0, lambda: self.set_status("Screenshot…"))
+                return self._grab_screen_for_voice()
 
-                image_path, ctx = self._grab_screen_for_voice()
-
-            answer = self.llm.execute_query(
-
+            result = self.orchestrator.handle_turn(
                 question,
-
-                image_path,
-
-                intent,
-
-                on_status=self._llm_status,
-
-                on_token=on_token,
-
-                screen_context=ctx,
-
+                image_path=image_path,
+                screen_context=screen_context,
+                pre_intent=pre_intent,
                 lang_question=lang_question,
-
-                active_game=self.llm._resolve_game_id(lang_question or question, ctx),
-
-                conversation_context=self._conversation_context(),
-
+                chat_history=self._chat_history,
+                excluded_hwnd=self._excluded_hwnd(),
+                on_status=self._llm_status,
+                on_token=on_token,
+                capture_screen=capture,
             )
 
             if on_token is not None:
@@ -1526,7 +1470,7 @@ class GameAssistantApp:
 
                     flush_remaining()
 
-            self._finish(answer)
+            self._finish(result.answer)
 
         except Exception as exc:
 
@@ -1823,6 +1767,8 @@ class GameAssistantApp:
 
 
     def on_close(self) -> None:
+
+        self._stop_orb_pulse()
 
         try:
 

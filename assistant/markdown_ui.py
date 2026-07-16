@@ -1,19 +1,27 @@
-"""Простой Markdown-рендер для Tkinter Text (стиль ChatGPT)."""
+"""Простой Markdown-рендер для Tkinter Text (мягкий Apple-like dark)."""
 
 import re
 import tkinter as tk
 
-# ChatGPT-like dark palette
-BG = "#212121"
-SURFACE = "#2f2f2f"
-SURFACE_HOVER = "#3a3a3a"
-TEXT = "#ececec"
-TEXT_MUTED = "#a8a8a8"
-USER_BG = "#303030"
+# Soft dark — closer to macOS / Apple HIG than ChatGPT green
+BG = "#1c1c1e"
+SURFACE = "#2c2c2e"
+SURFACE_HOVER = "#3a3a3c"
+TEXT = "#f5f5f7"
+TEXT_MUTED = "#98989d"
+USER_BG = "#2c2c2e"
 ASSISTANT_BG = BG
-ACCENT = "#10a37f"
-BORDER = "#3f3f3f"
-CODE_BG = "#171717"
+ACCENT = "#0a84ff"  # system blue
+BORDER = "#38383a"
+CODE_BG = "#000000"
+
+# AI orb states
+ORB_IDLE = "#5e5e62"
+ORB_IDLE_GLOW = "#3a3a3c"
+ORB_LISTEN = "#ff453a"
+ORB_LISTEN_GLOW = "#ff6961"
+ORB_BUSY = "#64d2ff"
+ORB_BUSY_GLOW = "#0a84ff"
 
 
 def configure_chat_tags(text: tk.Text) -> None:
@@ -27,7 +35,7 @@ def configure_chat_tags(text: tk.Text) -> None:
         lmargin2=base_margin,
         rmargin=base_margin,
         spacing1=2,
-        spacing3=7,
+        spacing3=8,
     )
     text.tag_configure(
         "user_body",
@@ -46,10 +54,10 @@ def configure_chat_tags(text: tk.Text) -> None:
     text.tag_configure("h2", foreground=TEXT, font=("Segoe UI", 13, "bold"), lmargin1=base_margin, lmargin2=base_margin, spacing1=8, spacing3=4)
     text.tag_configure("h3", foreground=TEXT, font=("Segoe UI", 12, "bold"), lmargin1=base_margin, lmargin2=base_margin, spacing1=6, spacing3=4)
     text.tag_configure("bold", font=("Segoe UI", 11, "bold"))
-    text.tag_configure("code", foreground="#f2a7b5", background=CODE_BG, font=("Cascadia Mono", 10))
+    text.tag_configure("code", foreground="#ff9f0a", background=CODE_BG, font=("Cascadia Mono", 10))
     text.tag_configure("bullet", foreground=TEXT, font=("Segoe UI", 11), lmargin1=base_margin + 18, lmargin2=base_margin + 34, rmargin=base_margin, spacing3=5)
     text.tag_configure("muted", foreground=TEXT_MUTED, font=("Segoe UI", 10))
-    text.tag_configure("error", foreground="#ff6b6b", font=("Segoe UI", 11))
+    text.tag_configure("error", foreground="#ff453a", font=("Segoe UI", 11))
 
 
 def _insert_inline(text: tk.Text, line: str, base_tag: str) -> None:
@@ -118,20 +126,15 @@ def append_assistant_stream_chunk(text: tk.Text, chunk: str) -> None:
 
 
 def finalize_assistant_stream(text: tk.Text, start_mark: str, full_content: str) -> None:
-    if start_mark:
-        text.delete(start_mark, tk.END)
-        render_markdown_block(text, full_content.strip(), "body")
+    text.delete(start_mark, tk.END)
+    render_markdown_block(text, full_content, "body")
     text.insert(tk.END, "\n")
-
-
-def append_system_note(text: tk.Text, message: str) -> None:
-    text.insert(tk.END, message + "\n\n", "muted")
-
-
-def append_error(text: tk.Text, message: str) -> None:
-    text.insert(tk.END, f"Error: {message}\n\n", "error")
+    text.see(tk.END)
 
 
 def clear_chat(text: tk.Text) -> None:
-    text.configure(state=tk.NORMAL)
     text.delete("1.0", tk.END)
+
+
+def append_error(text: tk.Text, message: str) -> None:
+    text.insert(tk.END, message + "\n", "error")

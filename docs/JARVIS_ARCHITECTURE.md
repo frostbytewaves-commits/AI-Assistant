@@ -239,19 +239,30 @@ Reason (LLM) **предлагает**; ToolExecutor **проверяет и вы
 
 ```text
 plugins/
-  windows/     # focus, minimize (осторожно)
-  games/       # steam app-id, launchers
-  media/       # spotify / OS media keys
-  system/      # volume, screenshots (safe subset)
+  system/      # launch / focus / close / url / media (сейчас)
+  media/       # позже: Spotify-specific
+  games/       # позже: Steam, лаунчеры
   browser/     # опционально позже
-  network/     # опционально позже
 ```
 
-Каждый плагин:
+Discovery (`assistant/act/plugin.py` → `load_plugins()`): каждый пакет `plugins/<name>/` с функцией `register(registry)` подхватывается **без правки ядра**.
 
-- объявляет **capabilities** + JSON schema;
-- проходит **whitelist / ConfirmGate**;
-- регистрируется в `CapabilityRegistry` без правки ядра.
+Контракт пакета:
+
+```python
+PLUGIN_NAME = "system"
+
+def register(registry: ActionRegistry) -> None: ...
+
+# опционально:
+def normalize_request(req) -> ...: ...
+def action_needs_confirm(action, args) -> bool: ...
+def host_hint() -> str: ...
+def planner_notes() -> str: ...
+```
+
+Каждый `ActionSpec` объявляет capabilities + JSON schema; каталог для planner включает схемы args.  
+Whitelist / ConfirmGate — в `ToolExecutor`. Фильтр: `enabled_plugins` в конфиге / `local_config.json`.
 
 Базовый контракт действия:
 
@@ -315,6 +326,15 @@ plugins/          ← интеграции приложений
 | One-shot | голос → action без длинного чата |
 | Kill-switch | глобальный хоткей «стоп всё» |
 
+**Приоритет (решение 2026-07):** сначала довести **начинку** (voice, tools, memory, надёжность) до рабочей; визуальный redesign — после.
+
+**UI later (запомнить):** целевой вид — Apple Intelligence–like (центральный mesh-орб + glass pill-input).  
+Стек на выбор, когда дойдём до дизайна:
+- **B** — Python core + `pywebview` + HTML/CSS (быстрее к рефу)
+- **C** — полный UI rewrite на **Tauri** (предпочтительно) или Electron + мост к Python (максимум «настоящей апки»)
+
+До этого Tk-overlay остаётся рабочим shell; большие вложения в Tk-glass/WebGL не делать.
+
 ---
 
 ## 6. Целевой layout репозитория
@@ -345,23 +365,25 @@ AGENTS.md
 |--------|------------|---------------------|
 | **v0.1 / Phase 0** | Профили laptop/desktop/deep; thinking policy; model-first закреплён | десктоп думает; нет новых keyword-list PR |
 | **v0.2** | WindowProvider + **ContextManager**; open-window inventory; **ActionRegistry v1** (launch/focus/url/media) | «что открыто?» без F8; whitelist tools |
-| **v0.3** | **Plugin API**; MemoryBackend interface (JSON impl); тонкий Orchestrator | плагин подключается без правки ядра |
+| **v0.3** | ~~**Plugin API**~~; ~~MemoryBackend~~; ~~тонкий Orchestrator~~ | плагин подключается без правки ядра |
 | **v0.4** | Voice pipeline; wake-word; streaming TTS | разговор без обязательного F9 |
 | **v0.5** | Screen/OCR/Vision providers; Event Bus v1 | смена OCR/VL без сноса Orchestrator |
 | **v0.6** | Plugins: Steam / media / Discord / OBS (по необходимости) | ≥5 whitelist-действий с голоса |
 | **v0.7** | Multi-step Planner; long-term memory backend; kill-switch зрелый | цепочка Steam→игра→музыка |
 | **v1.0** | Локальный Джарвис: ПК-контекст + apps + голос + офлайн + плагины | см. §9 |
-| **позже** | `game_agents/` SDK; autonomous grind (ToS!) | один осознанный сценарий, не «бот для всего» |
+| **позже** | UI shell: Tauri/Electron или pywebview (Apple Intelligence–like); `game_agents/` SDK | дизайн после рабочей начинки |
 
 ### Ближайший конкретный шаг (после утверждения)
 
 1. ~~Профили моделей + thinking на desktop.~~  
 2. ~~**ContextManager** + WindowProvider (+ open windows inventory).~~  
 3. ~~Контракт **Plugin / Action** (schema первых whitelist-действий).~~  
-4. **MemoryBackend** interface поверх текущего JSON (без смены хранения).  
-5. Тонкий Orchestrator (вынос из overlay/llm).
+4. ~~**MemoryBackend** interface поверх текущего JSON (без смены хранения).~~  
+5. ~~Тонкий Orchestrator (вынос из overlay/llm).~~  
+6. ~~Plugin API discovery.~~  
+7. **Дальше — начинка:** voice pipeline (v0.4), надёжность tools, screen providers — **не** большой UI rewrite.
 
-Порядок 2–4 можно менять; законы §2.1–2.2 — нет.
+Порядок 2–4 можно менять; законы §2.1–2.2 — нет. UI C/B — только после рабочей начинки.
 
 ---
 

@@ -3,5 +3,7 @@
   "data_root": "C:\\AI-Assistant-Data",
   "minecraft_play_version": "1.21.11",
   "reply_language": "auto",
-  "model_profile": "laptop"
+  "model_profile": "laptop",
+  "num_ctx": 8192,
+  "enabled_plugins": ["system"]
 }

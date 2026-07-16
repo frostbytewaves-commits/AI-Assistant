@@ -1,8 +1,4 @@
-"""Persistent assistant memory.
-
-The memory is intentionally small and conservative: it stores user/game
-preferences and confirmed constraints, not raw chat logs.
-"""
+"""MemoryManager — domain facade over MemoryBackend (preferences, games, corrections)."""
 
 from __future__ import annotations
 
@@ -12,6 +8,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from .backend import MemoryBackend
+from .json_backend import JsonMemoryBackend
 
 DEFAULT_MEMORY: dict[str, Any] = {
     "user_preferences": {
@@ -140,30 +138,29 @@ def _version(text: str) -> str | None:
 
 
 @dataclass
-class AssistantMemory:
-    path: Path
+class MemoryManager:
+    """Facade: preferences / games / corrections. Storage via MemoryBackend."""
+
+    backend: MemoryBackend
     data: dict[str, Any] = field(default_factory=lambda: json.loads(json.dumps(DEFAULT_MEMORY)))
 
+    @property
+    def path(self) -> Path | None:
+        """Compatibility for callers that still look at .path (JSON backend only)."""
+        return getattr(self.backend, "path", None)
+
     @classmethod
-    def load(cls, path: Path) -> "AssistantMemory":
-        path.parent.mkdir(parents=True, exist_ok=True)
-        if path.exists():
-            try:
-                loaded = json.loads(path.read_text(encoding="utf-8"))
-                data = _deep_merge(DEFAULT_MEMORY, loaded)
-                return cls(path=path, data=data)
-            except Exception:
-                return cls(path=path)
-        memory = cls(path=path)
-        memory.save()
+    def load(cls, path: Path, *, backend: MemoryBackend | None = None) -> "MemoryManager":
+        store = backend or JsonMemoryBackend(path)
+        loaded = store.load()
+        data = _deep_merge(DEFAULT_MEMORY, loaded) if loaded else json.loads(json.dumps(DEFAULT_MEMORY))
+        memory = cls(backend=store, data=data)
+        if not loaded:
+            memory.save()
         return memory
 
     def save(self) -> None:
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(
-            json.dumps(self.data, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
+        self.backend.save(self.data)
 
     def update_from_user(self, text: str, *, fallback_game: str | None = None) -> None:
         cleaned = _compact(text)
@@ -285,3 +282,7 @@ class AssistantMemory:
             lines.append("User corrections to keep:")
             lines.extend(f"- {item}" for item in corrections[-8:])
         return "\n".join(lines)
+
+
+# Back-compat alias used by overlay and older imports.
+AssistantMemory = MemoryManager

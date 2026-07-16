@@ -42,7 +42,7 @@ from .screen_context import ScreenContext
 from .minecraft_mobs import MOB_IDENTIFY_PROMPT, is_mob_or_drop_question, normalize_mob_observation
 from .ocr import extract_text
 from .search import build_screen_search_query, build_search_query, web_search
-from .act import ToolExecutor, build_default_registry, parse_action_plan
+from .act import ToolExecutor, load_default_plugins, parse_action_plan
 from .act.prompts import ACTION_PLANNER_SYSTEM, ACTION_PLANNER_USER
 from .act.types import ActionRequest
 
@@ -61,7 +61,10 @@ class OllamaClient:
             config.games_data_dir,
             config.default_game_id,
         )
-        self.action_registry = build_default_registry()
+        self.plugins = load_default_plugins(
+            enabled=getattr(config, "enabled_plugins", None),
+        )
+        self.action_registry = self.plugins.registry
         self.tool_executor = ToolExecutor(self.action_registry)
         self._pending_action: ActionRequest | None = None
         self._pending_action_chain: list[ActionRequest] = []
@@ -109,13 +112,7 @@ class OllamaClient:
 
         self._status(on_status, "Checking tools…")
         catalog = self.action_registry.catalog_for_prompt()
-        try:
-            from plugins.system.window_match import format_open_windows_hint
-
-            windows_hint = format_open_windows_hint()
-        except Exception:
-            windows_hint = host_hint or "(open window list unavailable)"
-        # Prefer live inventory; keep a short slice of conversation host block if present
+        windows_hint = self.plugins.host_hint()
         host_block = windows_hint
         if host_hint and "Host context:" in host_hint:
             host_block = windows_hint + "\n\n(extra context truncated)"
@@ -123,6 +120,7 @@ class OllamaClient:
         user_msg = ACTION_PLANNER_USER.format(
             catalog=catalog,
             host_hint=host_block,
+            plugin_notes=self.plugins.planner_notes() or "(none)",
             question=q,
         )
         try:
@@ -147,21 +145,11 @@ class OllamaClient:
                 continue
             if req.confidence < 0.75:
                 continue
-            try:
-                from plugins.system.normalize import normalize_action_request
-
-                req = normalize_action_request(req)
-            except Exception:
-                pass
+            req = self.plugins.normalize(req)
             if self.action_registry.get(req.action) is None:
                 continue
-            try:
-                from plugins.system import action_needs_confirm
-
-                if action_needs_confirm(req.action, req.args):
-                    req.needs_confirm = True
-            except Exception:
-                pass
+            if self.plugins.needs_confirm(req.action, req.args):
+                req.needs_confirm = True
             steps.append(req)
 
         if not steps:
@@ -1415,10 +1403,10 @@ class OllamaClient:
             "messages": messages,
             "stream": False,
             "keep_alive": self.config.ollama_keep_alive,
-            "options": {
-                "num_predict": max_tokens or self.config.vision_max_tokens,
-                "temperature": 0.3,
-            },
+            "options": self._ollama_options(
+                num_predict=max_tokens or self.config.vision_max_tokens,
+                temperature=0.3,
+            ),
         }, model, enable_thinking=False)
         response = requests.post(
             f"{self.base_url}/api/chat",
@@ -1499,10 +1487,10 @@ class OllamaClient:
             "messages": messages,
             "stream": True,
             "keep_alive": self.config.ollama_keep_alive,
-            "options": {
-                "num_predict": max_tokens,
-                "temperature": 0.4,
-            },
+            "options": self._ollama_options(
+                num_predict=max_tokens,
+                temperature=0.4,
+            ),
         }, model)
         response = requests.post(
             f"{self.base_url}/api/chat",
@@ -1559,10 +1547,10 @@ class OllamaClient:
             ],
             "stream": False,
             "keep_alive": self.config.ollama_keep_alive,
-            "options": {
-                "num_predict": max_tokens or self.config.max_tokens,
-                "temperature": 0.1 if structured else 0.5,
-            },
+            "options": self._ollama_options(
+                num_predict=max_tokens or self.config.max_tokens,
+                temperature=0.1 if structured else 0.5,
+            ),
         }, model, enable_thinking=thinking)
         response = requests.post(
             f"{self.base_url}/api/chat",
@@ -1578,6 +1566,14 @@ class OllamaClient:
         if legacy:
             return legacy
         raise RuntimeError("Model returned an empty response")
+
+    def _ollama_options(self, *, num_predict: int, temperature: float) -> dict:
+        """Generation options; num_ctx overrides Ollama app GUI default per request."""
+        return {
+            "num_predict": num_predict,
+            "temperature": temperature,
+            "num_ctx": int(self.config.num_ctx),
+        }
 
     @staticmethod
     def _strip_thinking(text: str) -> str:

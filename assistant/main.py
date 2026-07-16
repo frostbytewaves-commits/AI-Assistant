@@ -74,11 +74,12 @@ def main() -> None:
     log.info("Game AI Assistant v2")
     log.info("Hotkey: %s", "OK" if hotkeys_ok else "NO")
     log.info(
-        "Profile: %s | Text: %s | Vision: %s | Thinking: %s",
+        "Profile: %s | Text: %s | Vision: %s | Thinking: %s | num_ctx: %s",
         MODEL_PROFILE,
         text,
         vision or "none",
         "on" if config.enable_thinking else "off",
+        config.num_ctx,
     )
 
     if not hotkeys_ok:

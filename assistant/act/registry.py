@@ -2,7 +2,29 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from .types import ActionHandler, ActionSpec
+
+
+def _schema_summary(parameters: dict[str, Any]) -> str:
+    props = parameters.get("properties") or {}
+    if not props:
+        return "args: {}"
+    required = set(parameters.get("required") or [])
+    parts: list[str] = []
+    for key, meta in props.items():
+        flag = "*" if key in required else ""
+        typ = meta.get("type", "any")
+        enum = meta.get("enum")
+        if enum:
+            typ = "|".join(str(x) for x in enum[:12])
+            if len(enum) > 12:
+                typ += "|…"
+        default = meta.get("default", None)
+        extra = f"={default!r}" if default is not None and key not in required else ""
+        parts.append(f"{key}{flag}:{typ}{extra}")
+    return "args: {" + ", ".join(parts) + "}"
 
 
 class ActionRegistry:
@@ -30,7 +52,10 @@ class ActionRegistry:
         if not specs:
             return "No tools available."
         lines = ["Available tools (whitelist only — never invent new action names):"]
-        lines.extend(s.catalog_line() for s in specs)
+        for s in specs:
+            confirm = " [confirm]" if s.needs_confirm else ""
+            lines.append(f"- {s.name}{confirm} ({s.plugin}): {s.description}")
+            lines.append(f"  {_schema_summary(s.parameters)}")
         return "\n".join(lines)
 
     def names(self) -> list[str]:
