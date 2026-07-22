@@ -1,0 +1,19 @@
+---
+description: Project handoff — read docs/AGENT_HANDOFF.md; core before UI; next is v0.4 Voice
+alwaysApply: true
+---
+
+# Session bootstrap
+
+Before planning work, treat **`docs/AGENT_HANDOFF.md`** as the compressed project memory (status, decisions, next step).
+
+## Hard priorities
+
+1. Working **core** (voice, tools, memory) before major UI rewrite.
+2. Do **not** start Tauri/Electron/pywebview Apple-Intelligence shell unless the user explicitly asks.
+3. Default next feature: **v0.4 Voice pipeline** (see handoff §8).
+4. Obey model-first + thin Orchestrator (`.cursor/rules/model-first-reasoning.mdc`).
+
+## Architecture source of truth
+
+`docs/JARVIS_ARCHITECTURE.md` · `AGENTS.md` · this handoff.

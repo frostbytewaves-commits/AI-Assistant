@@ -2,6 +2,7 @@
 
 ## Source of truth
 
+- **Session memory / handoff (читать первым):** [docs/AGENT_HANDOFF.md](docs/AGENT_HANDOFF.md)
 - Architecture & roadmap: [docs/JARVIS_ARCHITECTURE.md](docs/JARVIS_ARCHITECTURE.md)
 - Dev laws (see `.cursor/rules/model-first-reasoning.mdc`):
   1. **Model thinks** — no keyword NLP sprawl
