@@ -49,12 +49,14 @@
 | v0.1 профили + thinking | ✅ |
 | v0.2 ContextManager + WindowProvider + ActionRegistry v1 | ✅ |
 | v0.3 MemoryBackend + тонкий Orchestrator + Plugin API | ✅ |
-| **v0.4 Voice pipeline** | ⬅️ **следующий шаг** |
+| **v0.4 Voice pipeline** | 🟡 **v0.4-mini сделан; дальше hardening/wake-word** |
 | v0.5 Screen/OCR/Vision providers + Event Bus | очередь |
 | v0.6 Steam/media/Discord plugins | очередь |
 | UI Tauri/pywebview | после начинки |
 
-Последний daily push: `a572772` — *Daily patch: MemoryBackend, thin Orchestrator, Plugin API, and packaged exe.*
+Последние daily pushes:
+- `a572772` — *Daily patch: MemoryBackend, thin Orchestrator, Plugin API, and packaged exe.*
+- `31f0d4b` — *Daily patch: Voice pipeline coordinator and 32B desktop profile.*
 
 ---
 
@@ -63,7 +65,14 @@
 ### Core
 - `assistant/core/context.py` — ContextManager, inventory окон («что открыто?» без F8)
 - `assistant/core/orchestrator.py` — `handle_turn`: context → plan → capture → execute
+- `assistant/core/voice_pipeline.py` — UI-free voice turn lifecycle: record → STT → Orchestrator → optional TTS
 - Overlay дергает Orchestrator, сам UI/capture/hotkeys
+
+### Voice
+- `VoiceEngine` (`assistant/voice.py`) оставлен за низкоуровневые record/STT/TTS/playback
+- `VoiceTurnCoordinator` держит состояния `idle/listening/transcribing/thinking/speaking/error`
+- `PushToTalkActivation` — текущая F9/button activation; `VoiceActivationProvider` — задел под wake-word
+- `assistant/overlay.py` больше не держит весь voice lifecycle вручную; голосовой путь сходится в `Orchestrator.handle_turn()`
 
 ### Memory
 - `assistant/memory/` — `MemoryBackend`, `JsonMemoryBackend`, `InMemoryBackend`, `MemoryManager`
@@ -77,6 +86,7 @@
 
 ### Models / Ollama
 - Профили: `laptop` | `desktop` | `deep` (+ legacy gaming/balance/quality)
+- `desktop` теперь целится в `qwen3:32b` на домПК; fallback: `qwen3:30b-a3b` → `qwen3:14b` → `qwen3:8b`
 - `num_ctx` в API options (не только слайдер Ollama GUI): laptop 8k, desktop 16k; override в `local_config.json`
 
 ### Packaging
@@ -91,8 +101,9 @@
 - Это **не** финальный дизайн
 
 ### Tests
-- `pytest` — memory, orchestrator, plugin API, num_ctx, intent gates, normalize, planner
+- `pytest` — memory, orchestrator, plugin API, voice pipeline, num_ctx, intent gates, normalize, planner
 - `requirements-dev.txt`, `pytest.ini`
+- Последняя ручная проверка на Windows PowerShell: `49 passed in 0.91s`
 
 ---
 
@@ -100,9 +111,11 @@
 
 ```text
 assistant/core/orchestrator.py   # ход диалога
+assistant/core/voice_pipeline.py # voice lifecycle без Tk/UI
 assistant/llm.py                 # Ollama + try_tool_action
 assistant/act/plugin.py          # discovery плагинов
 assistant/memory/                # память
+assistant/voice.py               # record/STT/TTS/playback plumbing
 assistant/overlay.py             # Tk UI (держать тонким)
 plugins/system/                  # whitelist actions
 docs/JARVIS_ARCHITECTURE.md      # архитектура
@@ -135,15 +148,16 @@ cd C:\AI-Assistant
 
 ---
 
-## 8. Следующая работа (v0.4 Voice) — что имеется в виду
+## 8. Следующая работа (v0.4 Voice) — что осталось
 
-Цель: разговор/команды голосом надёжнее, меньше обязательности F9.
+v0.4-mini уже сделал базовую развязку: voice lifecycle вынесен из Tk overlay в `VoiceTurnCoordinator`, добавлены тесты без микрофона/Ollama/Tk.
 
-Имеет смысл улучшить (не раздувая NLP):
+Дальше имеет смысл улучшить (не раздувая NLP):
 - стабильность hold-to-talk / release
 - транскрипция (faster-whisper), язык RU/EN
-- путь voice → Orchestrator → tools/answer
-- по возможности: streaming TTS, задел под wake-word
+- реальная ручная проверка F9/mic/TTS/Ollama runtime
+- streaming TTS
+- wake-word provider поверх `VoiceActivationProvider`
 
 Не делать в том же PR: Tauri UI, keyword-роутинг, смешение game_agents в chat.
 
@@ -173,7 +187,7 @@ cd C:\AI-Assistant
 1. `git pull`
 2. Прочитать **этот файл** + `AGENTS.md`
 3. Не предлагать Tauri/Electron UI, пока пользователь сам не попросит
-4. Следующий фичи-шаг по умолчанию: **v0.4 Voice**
+4. Следующий фичи-шаг по умолчанию: **v0.4 Voice hardening / wake-word**
 5. Перед коммитом — только по просьбе; daily patch — по «на сегодня»
 
 ---
