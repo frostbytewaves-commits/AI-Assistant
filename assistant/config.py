@@ -22,7 +22,7 @@ OLLAMA_URL = "http://localhost:11434"
 
 # Профили (см. docs/JARVIS_ARCHITECTURE.md):
 #   laptop  — ноут / отпуск: qwen3:14b + thinking
-#   desktop — домПК 16GB VRAM: qwen3:30b-a3b + thinking (fallback → 14b)
+#   desktop — домПК 16GB VRAM: qwen3:32b + thinking (fallback → 30b-a3b/14b)
 #   deep    — максимум рассуждения: deepseek-r1:14b
 # Алиасы: gaming / balance / quality — для совместимости
 _DEFAULT_MODEL_PROFILE = "laptop"
@@ -41,8 +41,8 @@ _PROFILES: dict[str, dict[str, object]] = {
         "num_ctx": 8192,
     },
     "desktop": {
-        "text": "qwen3:30b-a3b",
-        "text_fallbacks": ("qwen3:30b-a3b", "qwen3:14b", "qwen3:8b"),
+        "text": "qwen3:32b",
+        "text_fallbacks": ("qwen3:32b", "qwen3:30b-a3b", "qwen3:14b", "qwen3:8b"),
         "vision": "qwen2.5vl:7b",
         "vision_fallbacks": ("qwen2.5vl:7b", "minicpm-v", "llava:7b", "moondream"),
         "use_intent_router": True,

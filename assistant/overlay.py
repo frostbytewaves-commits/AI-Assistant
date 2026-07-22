@@ -16,7 +16,13 @@ from .capture import capture_foreground_window, capture_full_screen, get_foregro
 
 from .config import AssistantConfig
 
-from .core import ContextBuilder, ContextManager, Orchestrator
+from .core import (
+    ContextBuilder,
+    ContextManager,
+    Orchestrator,
+    PushToTalkActivation,
+    VoiceTurnCoordinator,
+)
 
 from .screen_context import ScreenContext
 
@@ -86,6 +92,15 @@ class GameAssistantApp:
         )
 
         self.voice = VoiceEngine(self.config)
+        self.voice_pipeline = VoiceTurnCoordinator(
+            config=self.config,
+            voice=self.voice,
+            orchestrator=self.orchestrator,
+        )
+        self.voice_activation = PushToTalkActivation(
+            self.start_voice_hold,
+            self.stop_voice_hold,
+        )
 
         self.is_busy = False
 
@@ -866,11 +881,11 @@ class GameAssistantApp:
 
         if self.voice_recording:
 
-            self.stop_voice_hold()
+            self.voice_activation.stop()
 
         else:
 
-            self.start_voice_hold()
+            self.voice_activation.start()
 
 
 
@@ -1500,7 +1515,7 @@ class GameAssistantApp:
 
         try:
 
-            self.voice.start_recording()
+            self.voice_pipeline.start_recording()
 
         except Exception as exc:
 
@@ -1522,7 +1537,7 @@ class GameAssistantApp:
 
         if self.is_busy:
 
-            self.voice.cancel_recording()
+            self.voice_pipeline.cancel_recording()
 
             self.voice_recording = False
 
@@ -1623,7 +1638,7 @@ class GameAssistantApp:
 
 
 
-    def _finish(self, answer: str, *, parse_followup: bool = True) -> None:
+    def _finish(self, answer: str, *, parse_followup: bool = True, speak: bool = True) -> None:
 
         display = answer
 
@@ -1649,7 +1664,7 @@ class GameAssistantApp:
             else:
                 display, options = extract_followup_options(answer)
 
-        if self.config.speak_answers:
+        if speak and self.config.speak_answers:
 
             threading.Thread(target=lambda: self.voice.speak(display), daemon=True).start()
 
@@ -1725,38 +1740,42 @@ class GameAssistantApp:
 
             self._pending_screen_context = None
 
-            audio_path = self.voice.stop_recording()
+            on_token = self._make_token_callback()
 
-            question = self.voice.transcribe(audio_path)
+            def capture() -> tuple[Path, ScreenContext]:
+                self.root.after(0, lambda: self.set_status("Screenshot…"))
+                return self._grab_screen_for_voice()
 
-            if not question:
-
-                raise RuntimeError("Could not recognize speech")
-
-
-
-            self.root.after(0, lambda: self._append_user(question))
-
-            intent = self.llm.plan_query(
-                question,
-                force_screen=False,
-                on_status=self._llm_status,
-                screen_context=ctx,
-            )
-
-            if not intent.needs_screen:
-                image_path = None
-                ctx = None
-            elif image_path is None:
-
-                image_path, ctx = self._grab_screen_for_voice()
-
-            self._run_query(
-                question,
+            result = self.voice_pipeline.complete_recording(
                 image_path=image_path,
-                pre_intent=intent,
                 screen_context=ctx,
+                chat_history=self._chat_history,
+                excluded_hwnd=self._excluded_hwnd(),
+                on_status=self._llm_status,
+                on_token=on_token,
+                capture_screen=capture,
             )
+
+            if on_token is not None:
+                flush_remaining = getattr(on_token, "flush_remaining", None)
+                if flush_remaining is not None:
+                    flush_remaining()
+
+            self._last_user_question = result.question
+
+            def append_voice_question() -> None:
+                self._append_user(result.question)
+
+            self.root.after(0, append_voice_question)
+            if self.config.speak_answers:
+                threading.Thread(
+                    target=lambda: self.voice_pipeline.speak_answer(
+                        result.answer,
+                        on_status=self._llm_status,
+                    ),
+                    daemon=True,
+                ).start()
+            self._finish(result.answer, speak=False)
 
         except Exception as exc:
 

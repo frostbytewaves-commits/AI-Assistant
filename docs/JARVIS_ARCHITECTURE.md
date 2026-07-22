@@ -201,7 +201,7 @@ AssistantContext
 | Профиль | Текст | Vision | Режим |
 |---------|-------|--------|-------|
 | `laptop` | qwen3:8b / 14b | moondream / qwen2.5vl:7b | think опционально |
-| `desktop` | **qwen3:30b-a3b** | qwen2.5vl:7b | **think on** |
+| `desktop` | **qwen3:32b** (fallback: qwen3:30b-a3b / 14b) | qwen2.5vl:7b | **think on** |
 | `deep` | deepseek-r1:14b | — | всегда рассуждает |
 | `fast-act` | компактная для tool-call | — | только команды |
 
@@ -423,7 +423,7 @@ AGENTS.md
 | Смешение chat и game agent | пакет `game_agents/` отдельно |
 | Memory JSON ад через год | `MemoryBackend` с v0.3 |
 | Vision зашит в screenshot path | Sense providers |
-| 16GB VRAM / 32B | 30b-a3b / R1:14b |
+| 16GB VRAM / 32B | qwen3:32b допустим для домПК; fallback 30b-a3b / R1:14b |
 | Бан за автоигру | ToS, kill-switch, только осознанные сценарии |
 | Тяжёлый RAG раньше времени | Qdrant/Neo4j не в MVP |
 
